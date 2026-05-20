@@ -51,6 +51,8 @@ export default function FilmPage() {
             </p>
           )}
 
+           {film.synopsis && <p className="synopsis">{film.synopsis}</p>}
+
           {film.projection_date && (
             <p>
               <strong>Projection :</strong>{" "}
@@ -65,6 +67,28 @@ export default function FilmPage() {
               <strong>Cinéma :</strong> {film.cinema}
             </p>
           )}
+
+          <div className="links">
+                {film.url_imdb && (
+                  <a href={film.url_imdb} target="_blank" rel="noreferrer">
+                    IMDb
+                  </a>
+                )}
+
+
+                {film.url_allocine && (
+                  <a href={film.url_allocine} target="_blank" rel="noreferrer">
+                    Allociné
+                  </a>
+                )}
+
+
+                {film.url_youtube && (
+                  <a href={film.url_youtube} target="_blank" rel="noreferrer">
+                    Bande-annonce
+                  </a>
+                )}
+
         </div>
       </div>
     </div>
