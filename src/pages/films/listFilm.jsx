@@ -1,4 +1,4 @@
-import { useFilms } from "./useFilms";
+import { useFilms } from "./FetchFilm";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
