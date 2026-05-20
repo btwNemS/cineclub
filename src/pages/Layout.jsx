@@ -18,6 +18,10 @@ function Layout() {
           </li>
         </ul>
       </nav>
+      <div id="auth">
+        <button>Connexion</button>
+        <button>Inscription</button>
+      </div>
 
       <Outlet />
     </>
