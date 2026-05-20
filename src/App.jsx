@@ -5,6 +5,7 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
+import Backoffice from "./pages/Backoffice";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="backoffice" element={<Backoffice />} />
         </Route>
       </Routes>
     </BrowserRouter>
