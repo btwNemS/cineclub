@@ -1,5 +1,3 @@
-import ListFilm from "./films/listFilm";
-
 export default function FilmProgrammed() {
-  return <ListFilm />;
+  return <h1>Liste des films programmés</h1>;
 }
