@@ -11,7 +11,7 @@ export default function Comment({ post }) {
       credentials: "include",
       body: JSON.stringify({
         content: text,
-        film_id: filmId,
+        film_id: post.filmId,
         answersTo:parentId 
       })
     });

@@ -5,6 +5,10 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
+import Backoffice from "./pages/Backoffice";
+import FilmPassed from "./pages/FilmPassed";
+import FilmProgrammed from "./pages/FilmProgrammed";
+import FilmSuggested from "./pages/FilmSuggested";
 
 function App() {
   return (
@@ -14,7 +18,11 @@ function App() {
           <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="filmPassed" element={<FilmPassed />} />
+          <Route path="filmProgrammed" element={<FilmProgrammed />} />
+          <Route path="filmSuggested" element={<FilmSuggested />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="backoffice" element={<Backoffice />} />
         </Route>
       </Routes>
     </BrowserRouter>
