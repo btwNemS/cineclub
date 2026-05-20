@@ -1,4 +1,13 @@
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Typography,
+  Box,
+} from "@mui/material";
 
 export default function AddMovie() {
   async function postFilm(e) {
@@ -13,21 +22,30 @@ export default function AddMovie() {
   }
 
   return (
-    <div>
-      <h3>Ajouter un film</h3>
-      <form onSubmit={postFilm}>
-        <input type="text" name="name" placeholder="Titre du film" />
-        <input type="text" name="synopsis" placeholder="Synopsis du film" />
-        <input type="file" name="image" />
+    <Box>
+      <Typography variant="h6">Ajouter un film</Typography>
+      <Box
+        component="form"
+        onSubmit={postFilm}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField name="name" label="Titre du film" />
+        <TextField name="synopsis" label="Synopsis du film" />
+        <Button variant="outlined" component="label">
+          Choisir une image
+          <input type="file" name="image" hidden />
+        </Button>
         <FormControl>
           <InputLabel>Status</InputLabel>
           <Select name="status" label="Status">
-            <MenuItem value="suggested">suggeré</MenuItem>
-            <MenuItem value="programmed">programmé</MenuItem>
+            <MenuItem value="suggested">Suggéré</MenuItem>
+            <MenuItem value="programmed">Programmé</MenuItem>
           </Select>
         </FormControl>
-        <button type="submit">Ajouter</button>
-      </form>
-    </div>
+        <Button type="submit" variant="contained">
+          Ajouter
+        </Button>
+      </Box>
+    </Box>
   );
 }
