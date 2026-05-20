@@ -52,14 +52,15 @@ function Layout() {
           <li>
             <Link to="/contact" style={linkStyle}>Contact</Link>
           </li>
-          
-          {user && user.role === 'admin' && (
-            <li>
-              <Link to="/backoffice" style={adminLinkStyle}>
-                ⚙️ Panneau Admin
-              </Link>
-            </li>
-          )}
+          <li>
+            <Link to="filmPassed">Films passés</Link>
+          </li>
+          <li>
+            <Link to="/filmProgrammed">Films prévus</Link>
+          </li>
+          <li>
+            <Link to="/filmSuggested">Films suggérés</Link>
+          </li>
         </ul>
 
  
