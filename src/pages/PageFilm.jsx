@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import YouTubeEmbed from "./LienYoutube";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -75,9 +76,7 @@ export default function FilmPage() {
           )}
 
           {film.url_youtube && (
-            <a href={film.url_youtube} target="_blank" rel="noreferrer">
-              Bande-annonce
-            </a>
+            <YouTubeEmbed url={film.url_youtube} />
           )}
         </div>
       </div>
