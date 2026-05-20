@@ -61,7 +61,7 @@ function Layout() {
           <li>
             <Link to="/filmSuggested" style={linkStyle}>Films suggérés</Link>
           </li>
-           {user && user.role === 'admin' && (
+           {user && user.role === 'ADMIN' && (
             <li>
               <Link to="/backoffice" style={adminLinkStyle}>
                 ⚙️ Panneau Admin
