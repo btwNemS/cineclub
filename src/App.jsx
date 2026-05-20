@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import Comment from "./Comment";
 import Backoffice from "./pages/Backoffice";
 import Blogs from "./pages/Blogs";
 import Contact from "./pages/Contact";
@@ -23,7 +24,7 @@ function App() {
           <Route path="filmSuggested" element={<FilmSuggested />} />
           <Route path="*" element={<NoPage />} />
           <Route path="backoffice" element={<Backoffice />} />
-          <Route path="testPost" element={<Backoffice />} />
+          <Route path="testComment" element={<Comment />} />
         </Route>
       </Routes>
     </BrowserRouter>
