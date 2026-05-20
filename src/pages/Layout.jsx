@@ -16,6 +16,15 @@ function Layout() {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
+          <li>
+            <Link to="filmPassed">Films passés</Link>
+          </li>
+          <li>
+            <Link to="/filmProgrammed">Films prévus</Link>
+          </li>
+          <li>
+            <Link to="/filmSuggested">Films suggérés</Link>
+          </li>
         </ul>
       </nav>
 
