@@ -29,65 +29,58 @@ export default function FilmPage() {
   return (
     <div className="container">
       <h1 className="title">CinéClub</h1>
-        <img
-          src={`${API_URL}/${film.url_image}`}
-          alt={film.name}
-        />
+      <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
 
-        <div className="card-content">
-          <h2>{film.name}</h2>
+      <div className="card-content">
+        <h2>{film.name}</h2>
 
-          {film.author && (
-            <p>
-              <strong>Réalisateur :</strong> {film.author}
-            </p>
+        {film.author && (
+          <p>
+            <strong>Réalisateur :</strong> {film.author}
+          </p>
+        )}
+
+        {film.film_genre && (
+          <p>
+            <strong>Genre :</strong> {film.film_genre}
+          </p>
+        )}
+
+        {film.synopsis && <p>{film.synopsis}</p>}
+
+        {film.projection_date && (
+          <p>
+            <strong>Projection :</strong>{" "}
+            {new Date(film.projection_date).toLocaleDateString()}
+          </p>
+        )}
+
+        {film.cinema && (
+          <p>
+            <strong>Cinéma :</strong> {film.cinema}
+          </p>
+        )}
+
+        <div className="links">
+          {film.url_imdb && (
+            <a href={film.url_imdb} target="_blank" rel="noreferrer">
+              IMDb
+            </a>
           )}
 
-          {film.film_genre && (
-            <p>
-              <strong>Genre :</strong> {film.film_genre}
-            </p>
+          {film.url_allocine && (
+            <a href={film.url_allocine} target="_blank" rel="noreferrer">
+              Allociné
+            </a>
           )}
 
-           {film.synopsis && <p>{film.synopsis}</p>}
-
-          {film.projection_date && (
-            <p>
-              <strong>Projection :</strong>{" "}
-              {new Date(
-                film.projection_date
-              ).toLocaleDateString()}
-            </p>
+          {film.url_youtube && (
+            <a href={film.url_youtube} target="_blank" rel="noreferrer">
+              Bande-annonce
+            </a>
           )}
-
-          {film.cinema && (
-            <p>
-              <strong>Cinéma :</strong> {film.cinema}
-            </p>
-          )}
-
-          <div className="links">
-                {film.url_imdb && (
-                  <a href={film.url_imdb} target="_blank" rel="noreferrer">
-                    IMDb
-                  </a>
-                )}
-
-
-                {film.url_allocine && (
-                  <a href={film.url_allocine} target="_blank" rel="noreferrer">
-                    Allociné
-                  </a>
-                )}
-
-
-                {film.url_youtube && (
-                  <a href={film.url_youtube} target="_blank" rel="noreferrer">
-                    Bande-annonce
-                  </a>
-                )}
-                </div>
         </div>
       </div>
+    </div>
   );
 }
