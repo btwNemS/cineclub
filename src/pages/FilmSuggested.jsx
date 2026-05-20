@@ -59,9 +59,7 @@ export default function FilmSuggested() {
                 </p>
               )}
 
-              <p>
-                <strong>Status :</strong> {film.status}
-              </p>
+            
 
               
             </div>

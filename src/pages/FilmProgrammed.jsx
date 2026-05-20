@@ -58,10 +58,7 @@ export default function FilmProgrammed() {
                 </p>
               )}
 
-              <p>
-                <strong>Status :</strong> {film.status}
-              </p>
-
+              
            
             </div>
           </div>
