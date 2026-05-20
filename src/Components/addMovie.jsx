@@ -22,12 +22,12 @@ export default function AddMovie() {
   }
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto" }}>
       <Typography variant="h6">Ajouter un film</Typography>
       <Box
         component="form"
         onSubmit={postFilm}
-        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 , width: "70%"}}
       >
         <TextField name="name" label="Titre du film" />
         <TextField name="synopsis" label="Synopsis du film" />
