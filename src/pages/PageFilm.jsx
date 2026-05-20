@@ -88,7 +88,7 @@ export default function FilmPage() {
                     Bande-annonce
                   </a>
                 )}
-
+                </div>
         </div>
       </div>
     </div>
