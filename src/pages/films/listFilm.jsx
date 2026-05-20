@@ -2,7 +2,7 @@ import { useFilms } from "./useFilms";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function SmallFilm() {
+export default function ListFilm() {
   const { films, loading, error } = useFilms();
 
   if (loading) {
