@@ -44,7 +44,6 @@ export default function FilmProgrammed() {
                 </p>
               )}
 
-              {film.synopsis && <p className="synopsis">{film.synopsis}</p>}
 
               {film.projection_date && (
                 <p>
@@ -63,25 +62,7 @@ export default function FilmProgrammed() {
                 <strong>Status :</strong> {film.status}
               </p>
 
-              <div className="links">
-                {film.url_imdb && (
-                  <a href={film.url_imdb} target="_blank" rel="noreferrer">
-                    IMDb
-                  </a>
-                )}
-
-                {film.url_allocine && (
-                  <a href={film.url_allocine} target="_blank" rel="noreferrer">
-                    Allociné
-                  </a>
-                )}
-
-                {film.url_youtube && (
-                  <a href={film.url_youtube} target="_blank" rel="noreferrer">
-                    Bande-annonce
-                  </a>
-                )}
-              </div>
+           
             </div>
           </div>
         ))}
