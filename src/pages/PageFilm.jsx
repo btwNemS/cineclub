@@ -29,8 +29,6 @@ export default function FilmPage() {
   return (
     <div className="container">
       <h1 className="title">CinéClub</h1>
-
-      <div className="card">
         <img
           src={`${API_URL}/${film.url_image}`}
           alt={film.name}
@@ -51,7 +49,7 @@ export default function FilmPage() {
             </p>
           )}
 
-           {film.synopsis && <p className="synopsis">{film.synopsis}</p>}
+           {film.synopsis && <p>{film.synopsis}</p>}
 
           {film.projection_date && (
             <p>
@@ -91,6 +89,5 @@ export default function FilmPage() {
                 </div>
         </div>
       </div>
-    </div>
   );
 }
