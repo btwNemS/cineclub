@@ -14,7 +14,7 @@ export default function AddMovie() {
     e.preventDefault();
     const form = new FormData(e.target);
 
-    await fetch(import.meta.env.VITE_API_URL, {
+    await fetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
       method: "POST",
       credentials: "include",
       body: form,
