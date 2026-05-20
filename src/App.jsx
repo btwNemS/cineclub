@@ -10,6 +10,7 @@ import FilmSuggested from "./pages/FilmSuggested";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
+import PageFilm from "./pages/PageFilm";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="*" element={<NoPage />} />
           <Route path="backoffice" element={<Backoffice />} />
           <Route path="testComment" element={<Comment />} />
+          <Route path="/film/:id" element={<PageFilm />} />
         </Route>
       </Routes>
     </BrowserRouter>
