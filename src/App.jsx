@@ -9,7 +9,6 @@ import FilmSuggested from "./pages/FilmSuggested";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import NoPage from "./pages/NoPage";
-import NoPage from "./pages/NoPage";
 
 function App() {
   return (
