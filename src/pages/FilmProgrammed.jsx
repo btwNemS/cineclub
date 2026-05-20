@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmProgrammed() {
@@ -27,7 +27,8 @@ export default function FilmProgrammed() {
         {films
   .filter((film) => film.status === "programmed")
   .map((film) => (
-          <div className="card" key={film.id}>
+    <Link to={`/film/${film.id}`}>
+ <div className="card" key={film.id}>
             <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
             <div className="card-content">
               <h2>{film.name}</h2>
@@ -58,15 +59,15 @@ export default function FilmProgrammed() {
                 </p>
               )}
 
-              <p>
-                <strong>Status :</strong> {film.status}
-              </p>
-
+              
            
             </div>
           </div>
+          </Link>
         ))}
       </div>
     </div>
+
+          
   );
 }

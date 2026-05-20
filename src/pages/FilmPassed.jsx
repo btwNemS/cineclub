@@ -59,9 +59,7 @@ export default function FilmPassed() {
                 </p>
               )}
 
-              <p>
-                <strong>Status :</strong> {film.status}
-              </p>
+              
             </div>
           </div>
         ))}
