@@ -24,7 +24,9 @@ export default function FilmSuggested() {
       <h1 className="title">CinéClub</h1>
 
       <div className="films-grid">
-        {films.map((film) => (
+        {films
+  .filter((film) => film.status === "suggested")
+  .map((film) => (
           <div className="card" key={film.id}>
             <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
             <div className="card-content">
