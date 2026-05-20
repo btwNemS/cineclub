@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmSuggested() {
@@ -27,6 +27,7 @@ export default function FilmSuggested() {
         {films
   .filter((film) => film.status === "suggested")
   .map((film) => (
+    <Link to={`/film/${film.id}`}>
           <div className="card" key={film.id}>
             <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
             <div className="card-content">
@@ -64,6 +65,7 @@ export default function FilmSuggested() {
               
             </div>
           </div>
+          </Link>
         ))}
       </div>
     </div>
