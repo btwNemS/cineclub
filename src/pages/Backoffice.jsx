@@ -6,7 +6,6 @@ import AddMovie from "../Components/addMovie";
 export default function Backoffice() {
   return (
     <Box>
-      <Typography variant="h1">Backoffice</Typography>
       <AddMovie />
     </Box>
   );

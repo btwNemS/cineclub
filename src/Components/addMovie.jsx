@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -10,6 +11,8 @@ import {
 } from "@mui/material";
 
 export default function AddMovie() {
+  const [status, setStatus] = useState("");
+
   async function postFilm(e) {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -37,11 +40,33 @@ export default function AddMovie() {
         </Button>
         <FormControl>
           <InputLabel>Status</InputLabel>
-          <Select name="status" label="Status">
+          <Select
+            name="status"
+            label="Status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
             <MenuItem value="suggested">Suggéré</MenuItem>
             <MenuItem value="programmed">Programmé</MenuItem>
           </Select>
         </FormControl>
+        {status === "programmed" && (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              name="projection_date"
+              label="Date de projection"
+              type="date"
+              fullWidth
+              slotProps={{ inputLabel: { shrink: true } }}
+            />
+            <TextField name="cinema" label="Cinéma" fullWidth />
+          </Box>
+        )}
+        <TextField name="author" label="Auteur du film" />
+        <TextField name="film_genre" label="Genre du film" />
+        <TextField name="url_allocine" label="URL Allociné" />
+        <TextField name="url_imdb" label="URL IMDb" />
+        <TextField name="url_youtube" label="URL YouTube" />
         <Button type="submit" variant="contained">
           Ajouter
         </Button>
