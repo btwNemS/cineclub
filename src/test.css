@@ -62,9 +62,7 @@ body {
   line-height: 1.4;
 }
 
-.synopsis {
-  color: #d0d0d0;
-}
+
 
 .links {
   display: flex;
@@ -90,4 +88,9 @@ body {
 
 .error {
   color: red;
+}
+
+a{
+  color: black;
+  text-decoration: none;
 }
