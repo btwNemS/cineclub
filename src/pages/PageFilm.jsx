@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import YouTubeEmbed from "./LienYoutube";
+import DeleteMovie from "../Components/deleteMovie";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -79,6 +80,7 @@ export default function FilmPage() {
             <YouTubeEmbed url={film.url_youtube} />
           )}
         </div>
+        <DeleteMovie id={id} />
       </div>
     </div>
   );
