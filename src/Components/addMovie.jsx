@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useNavigate} from "react-router-dom";
 import {
   FormControl,
   InputLabel,
@@ -14,6 +15,7 @@ export default function AddMovie() {
   const [status, setStatus] = useState("");
   const [imageName, setImageName] = useState(null);
 
+
   async function postFilm(e) {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -24,11 +26,15 @@ export default function AddMovie() {
       body: form,
     });
   }
-  function postFilm(e) {
+  const navigate = useNavigate();
+  function OnPost(e) {
     alert("Film ajouté !");
-    console.log(new FormData(e.target));
-    
+  if (status === "programmed") {
+    navigate("/filmProgrammed");
+  } else {
+    navigate("/filmSuggested");
   }
+    }
   return (
     <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto", marginBottom: 6 , marginTop: 6}}>
       <Typography variant="h6">Ajouter un film</Typography>
@@ -72,7 +78,7 @@ export default function AddMovie() {
         <TextField name="url_allocine" label="URL Allociné" />
         <TextField name="url_imdb" label="URL IMDb" />
         <TextField name="url_youtube" label="URL YouTube" />
-        <Button type="submit" variant="contained" onClick={postFilm}>
+        <Button type="submit" variant="contained" onClick={OnPost}>
           Ajouter
         </Button>
       </Box>
