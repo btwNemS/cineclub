@@ -12,6 +12,7 @@ import {
 
 export default function AddMovie() {
   const [status, setStatus] = useState("");
+  const [imageName, setImageName] = useState(null);
 
   async function postFilm(e) {
     e.preventDefault();
@@ -25,7 +26,7 @@ export default function AddMovie() {
   }
 
   return (
-    <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto" }}>
+    <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto", marginBottom: 6 , marginTop: 6}}>
       <Typography variant="h6">Ajouter un film</Typography>
       <Box
         component="form"
@@ -34,9 +35,9 @@ export default function AddMovie() {
       >
         <TextField name="name" label="Titre du film" />
         <TextField name="synopsis" label="Synopsis du film" />
-        <Button variant="outlined" component="label">
-          Choisir une image
-          <input type="file" name="image" hidden />
+        <Button variant="outlined" component="label" color={imageName ? "success" : "primary"}>
+          {imageName ?? "Choisir une image"}
+          <input type="file" name="image" hidden onChange={(e) => setImageName(e.target.files[0]?.name ?? null)} />
         </Button>
         <FormControl>
           <InputLabel>Status</InputLabel>
