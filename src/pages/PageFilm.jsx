@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import YouTubeEmbed from "./LienYoutube";
 import DeleteMovie from "../Components/deleteMovie";
+import { useAuth } from '../AuthModal';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmPage() {
   const { id } = useParams();
-
+  const { user, logout } = useAuth(); 
   const [film, setFilm] = useState(null);
 
   useEffect(() => {
@@ -86,8 +87,31 @@ export default function FilmPage() {
           </p>
         )}
 
+
         
         <DeleteMovie id={id} />
+
+        <div className="links">
+          {film.url_imdb && (
+            <a href={film.url_imdb} target="_blank" rel="noreferrer">
+              IMDb
+            </a>
+          )}
+
+          {film.url_allocine && (
+            <a href={film.url_allocine} target="_blank" rel="noreferrer">
+              Allociné
+            </a>
+          )}
+
+          {film.url_youtube && (
+            <YouTubeEmbed url={film.url_youtube} />
+          )}
+        </div>
+        {user && user.role === 'ADMIN' && (
+          <DeleteMovie id={id} />
+        )}
+
       </div>
     </div>
   );
