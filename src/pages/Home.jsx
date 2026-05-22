@@ -72,7 +72,7 @@ export default function Home() {
       <Box sx={SectionContainerStyle}>
         <Box sx={HeaderRowStyle}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-            📅 Films Prévus
+           Films Prévus
           </Typography>
           <Button 
             component={Link} 
@@ -113,7 +113,7 @@ export default function Home() {
       <Box sx={SectionContainerStyle}>
         <Box sx={HeaderRowStyle}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-            💡 Films Suggérés
+           Films Suggérés
           </Typography>
           <Button 
             component={Link} 
@@ -150,7 +150,7 @@ export default function Home() {
       <Box sx={SectionContainerStyle}>
         <Box sx={HeaderRowStyle}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-            🎞️ Archives (Films passés)
+            Films passés
           </Typography>
           <Button 
             component={Link} 
