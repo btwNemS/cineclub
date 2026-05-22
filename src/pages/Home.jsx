@@ -85,7 +85,7 @@ export default function Home() {
           </Button>
         </Box>
         
-        {/* Grille de cartes de films (utilise tes classes CSS de test.css) */}
+        {/* Grille de cartes de films  */}
         <div className="films-grid">
           {films
             .filter((film) => film.status === "programmed")
