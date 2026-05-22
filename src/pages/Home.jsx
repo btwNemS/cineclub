@@ -64,8 +64,7 @@ export default function Home() {
       
       {/* Description */}
       <Typography variant="h6" sx={DescriptionStyle}>
-        Rejoignez notre communauté de passionnés de cinéma. Découvrez nos prochaines projections, 
-        votez pour les suggestions et partagez votre avis sur les films passés !
+        Envie de regarder des films, avec le CinéClub de l'IUT, on te propose plusieurs créneaux de séances de cinéma à faire entre étudiants.
       </Typography>
 
       {/* --- SECTION 1 : FILMS PRÉVUS --- */}
