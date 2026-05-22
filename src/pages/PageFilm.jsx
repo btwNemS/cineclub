@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import YouTubeEmbed from "./LienYoutube";
 import DeleteMovie from "../Components/deleteMovie";
-import { useAuth } from '../AuthModal';
+import { useAuth } from '../Authentification';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
