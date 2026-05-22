@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: beige;
+  background-color: rgb(241, 246, 251);
   font-family: Arial, Helvetica, sans-serif;
   color: rgb(0, 0, 0);
 }
@@ -93,4 +93,15 @@ body {
 a{
   color: black;
   text-decoration: none;
+}
+
+.video{
+  width: 60vw;
+  height: 60vh;
+}
+
+.container2{
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
+  padding: 15px;
 }

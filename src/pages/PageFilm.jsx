@@ -29,9 +29,32 @@ export default function FilmPage() {
   }
 
   return (
-    <div className="container">
-      <h1 className="title">CinéClub</h1>
+    <div className="container2">
       <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
+    
+        {film.url_youtube && (
+          <div className="video">
+            <YouTubeEmbed className="video" url={film.url_youtube} />
+            </div>
+          )}
+
+      
+      <div className="links">
+          {film.url_imdb && (
+            <a href={film.url_imdb} target="_blank" rel="noreferrer">
+              IMDb
+            </a>
+          )}
+
+          {film.url_allocine && (
+            <a href={film.url_allocine} target="_blank" rel="noreferrer">
+              Allociné
+            </a>
+          )}
+        </div>
+          
+        
+      
 
       <div className="card-content">
         <h2>{film.name}</h2>
@@ -63,23 +86,7 @@ export default function FilmPage() {
           </p>
         )}
 
-        <div className="links">
-          {film.url_imdb && (
-            <a href={film.url_imdb} target="_blank" rel="noreferrer">
-              IMDb
-            </a>
-          )}
-
-          {film.url_allocine && (
-            <a href={film.url_allocine} target="_blank" rel="noreferrer">
-              Allociné
-            </a>
-          )}
-
-          {film.url_youtube && (
-            <YouTubeEmbed url={film.url_youtube} />
-          )}
-        </div>
+        
         <DeleteMovie id={id} />
       </div>
     </div>
