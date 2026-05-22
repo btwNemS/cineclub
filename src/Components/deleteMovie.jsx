@@ -9,17 +9,29 @@ import {
   Button,
   Typography,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 
 export default function DeleteMovie({ id }) {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
-  async function deleteFilm(e) {
-    e.preventDefault();
-    await fetch(import.meta.env.VITE_API_URL + "/films/protected/delete/" + e.target.dataset.id, {
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  async function deleteFilm() {
+    await fetch(import.meta.env.VITE_API_URL + "/films/protected/delete/" + id, {
       method: "DELETE",
       credentials: "include",
     });
+    setOpen(false);
     alert("Film supprimé !");
     navigate(-1);
   }
@@ -32,9 +44,26 @@ export default function DeleteMovie({ id }) {
 
   return (
     <Box>
-      <Button variant="contained" color="error" onClick={deleteFilm} data-id={id}>
+      <Button variant="contained" color="error" onClick={handleClickOpen} data-id={id}>
         Supprimer
       </Button>
+      
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Confirmer la suppression</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Êtes-vous sûr de vouloir supprimer ce film ? Cette action est irréversible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Annuler
+          </Button>
+          <Button onClick={deleteFilm} color="error">
+            Supprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
