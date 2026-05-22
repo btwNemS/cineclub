@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom"; // Ajout de useNavigate
 import { useAuth } from '../Authentification';
 import AuthModal from '../AuthModal';
 import { Button, Typography, Box } from '@mui/material';
@@ -7,8 +7,16 @@ import { Button, Typography, Box } from '@mui/material';
 function Layout() {
   const { user, logout } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
-
   
+  // Initialisation pour la redirection
+  const navigate = useNavigate();
+
+  // Nouvelle fonction pour gérer la déconnexion ET la redirection
+  const Deconnecter = async () => {
+    await logout(); // Déconnecte l'utilisateur
+    navigate("/");  // Ramène à la page d'accueil
+  };
+
   const navStyle = {
     display: 'flex', 
     justifyContent: 'space-between', 
@@ -37,7 +45,6 @@ function Layout() {
     textDecoration: 'none', 
     fontWeight: 'bold'
   };
-
 
   return (
     <>
@@ -68,10 +75,8 @@ function Layout() {
               </Link>
             </li>
           )}
-
         </ul>
 
- 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           {user ? (
             <>
@@ -79,7 +84,8 @@ function Layout() {
                 Bonjour, <strong>{user.pseudo}</strong> 
                 <span style={{ fontSize: '0.8rem', color: '#aaa', marginLeft: '5px' }}>({user.role})</span>
               </Typography>
-              <Button variant="outlined" color="error" size="small" onClick={logout}>
+              {/* Le onClick appelle maintenant handleLogout */}
+              <Button variant="outlined" color="error" size="small" onClick={Deconnecter}>
                 Déconnexion
               </Button>
             </>
