@@ -43,13 +43,13 @@ export default function AddMovie() {
         onSubmit={postFilm}
         sx={{ display: "flex", flexDirection: "column", gap: 2 , width: "70%"}}
       >
-        <TextField name="name" label="Titre du film" />
-        <TextField name="synopsis" label="Synopsis du film" />
-        <Button variant="outlined" component="label" color={imageName ? "success" : "primary"}>
+        <TextField name="name" label="Titre du film" required />
+        <TextField name="synopsis" label="Synopsis du film" required />
+        <Button variant="outlined" component="label" color={imageName ? "success" : "primary"} required>
           {imageName ?? "Choisir une image"}
           <input type="file" name="image" hidden onChange={(e) => setImageName(e.target.files[0]?.name ?? null)} />
         </Button>
-        <FormControl>
+        <FormControl required>
           <InputLabel>Status</InputLabel>
           <Select
             name="status"
@@ -69,11 +69,11 @@ export default function AddMovie() {
               type="date"
               fullWidth
               slotProps={{ inputLabel: { shrink: true } }}
-            />
-            <TextField name="cinema" label="Cinéma" fullWidth />
+            required/>
+            <TextField name="cinema" label="Cinéma" fullWidth required />
           </Box>
         )}
-        <TextField name="author" label="Auteur du film" />
+        <TextField name="author" label="Auteur du film"  />
         <TextField name="film_genre" label="Genre du film" />
         <TextField name="url_allocine" label="URL Allociné" />
         <TextField name="url_imdb" label="URL IMDb" />
