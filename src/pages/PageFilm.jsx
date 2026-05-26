@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../Authentification";
 import DeleteMovie from "../Components/deleteMovie";
 import YouTubeEmbed from "./LienYoutube";
+import imdbLogo from "../images/imdb.png";
+import allocineLogo from "../images/allocine.webp";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -40,14 +42,17 @@ export default function FilmPage() {
       <div className="links">
         {film.url_imdb && (
           <a href={film.url_imdb} target="_blank" rel="noreferrer">
-            IMDb
+            <img src={imdbLogo} alt="IMDb" className="imdb-logo" /> 
+            
           </a>
         )}
 
         {film.url_allocine && (
           <a href={film.url_allocine} target="_blank" rel="noreferrer">
-            Allociné
+            <img src={allocineLogo} alt="AlloCiné" className="allocine-logo" />
+            
           </a>
+        
         )}
       </div>
 

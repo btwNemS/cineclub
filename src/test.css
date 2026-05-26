@@ -68,10 +68,14 @@ body {
   margin-top: 16px;
 }
 
-.links a {
-  color: #4da6ff;
-  text-decoration: none;
-  font-weight: bold;
+.links a> img {
+  width: 5vw;
+  height: auto; 
+}
+
+.imdb-logo {
+  width: 10vw;
+  height: auto;
 }
 
 .links a:hover {
