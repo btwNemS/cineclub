@@ -88,7 +88,7 @@ export default function Home() {
         <div className="films-grid">
           {films
             .filter((film) => film.status === "programmed")
-            .slice(0, 3) // Affiche uniquement un aperçu de 3 films maximum sur la ligne
+            .slice(0, 6) // Affiche uniquement un aperçu de 6 films maximum sur la ligne
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
