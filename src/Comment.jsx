@@ -20,7 +20,7 @@ function addReplyToTree(tree, parentId, newComment) {
   });
 }
 
-function Comment({ content, children = [], level, post, filmId, setComments }) {
+export function Comment({ content, children = [], level, post, filmId, setComments }) {
   const [text, setText] = useState("");
 
   const sendComment = async (parentId) => {
@@ -79,3 +79,5 @@ function Comment({ content, children = [], level, post, filmId, setComments }) {
     </>
   );
 }
+
+export default Comment;
