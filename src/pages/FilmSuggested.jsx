@@ -32,7 +32,7 @@ export default function FilmSuggested() {
                 <img
                   src={`${API_URL}/${film.url_image}`}
                   alt={film.name}
-                  class="imageSuggeree"
+                  class="image"
                 />
                 <div className="card-content">
                   <h2>{film.name}</h2>

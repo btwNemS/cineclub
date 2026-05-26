@@ -13,6 +13,12 @@ import {
   Box 
 } from '@mui/material';
 
+
+const buttonStyle = {
+  backgroundColor: '#202349',
+  color: 'white'
+}
+
 // Déclaration du composant AuthModal, recevant les props open et handleClose
 export default function AuthModal({ open, handleClose }) {
   // Récupération des fonctions login et signin depuis le contexte d'authentification
@@ -118,7 +124,7 @@ export default function AuthModal({ open, handleClose }) {
         {/* Boutons d'action en bas de la modale */}
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleClose} color="inherit">ANNULER</Button>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" style={buttonStyle} >
             {isLogin ? 'SE CONNECTER' : "S'INSCRIRE"}
           </Button>
         </DialogActions>
