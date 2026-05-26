@@ -9,46 +9,74 @@ import {
   Button,
   Typography,
   Box,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 
 
 export default function AddMovie() {
   const [status, setStatus] = useState("");
   const [imageName, setImageName] = useState(null);
+  const [feedback, setFeedback] = useState(null);
   const navigate = useNavigate();
 
   async function postFilm(e) {
     e.preventDefault();
-    // validation: ensure an image file was chosen and is of an allowed image type
     const file = e.target.elements.image?.files?.[0];
     if (!file) {
-      alert("Veuillez sélectionner une image pour l'affiche du film.");
+      setFeedback({ severity: "warning", message: "Veuillez sélectionner une image pour l'affiche du film." });
       return;
     }
     const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg, image/jpeg"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Le fichier sélectionné doit être une image (jpg, png, webp, jpeg).");
+      setFeedback({ severity: "warning", message: "Le fichier sélectionné doit être une image (jpg, png, webp, jpeg)." });
       return;
     }
 
     const form = new FormData(e.target);
 
-    await fetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
-      method: "POST",
-      credentials: "include",
-      body: form,
-    });
-    alert("Film ajouté !");
-  if (status === "programmed") {
-    navigate("/filmProgrammed");
-  } else {
-    navigate("/filmSuggested");
-  }
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
+        method: "POST",
+        credentials: "include",
+        body: form,
+      });
+
+      if (!response.ok) {
+        setFeedback({ severity: "error", message: "Erreur lors de l'ajout du film. Veuillez réessayer." });
+        return;
+      }
+
+      setFeedback({ severity: "success", message: "Film ajouté !" });
+      setTimeout(() => {
+        if (status === "programmed") {
+          navigate("/filmProgrammed");
+        } else {
+          navigate("/filmSuggested");
+        }
+      }, 1200);
+    } catch {
+      setFeedback({ severity: "error", message: "Impossible de contacter le serveur." });
+    }
   }
 
   return (
     <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto", marginBottom: 6 , marginTop: 6}}>
       <Typography variant="h6">Ajouter un film</Typography>
+      {feedback && (
+        <Alert
+          severity={feedback.severity}
+          onClose={() => setFeedback(null)}
+          sx={{ width: "70%" }}
+        >
+          <AlertTitle>
+            {feedback.severity === "success" && "Succès"}
+            {feedback.severity === "error" && "Erreur"}
+            {feedback.severity === "warning" && "Attention"}
+          </AlertTitle>
+          {feedback.message}
+        </Alert>
+      )}
       <Box
         component="form"
         onSubmit={postFilm}
