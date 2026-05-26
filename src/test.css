@@ -103,3 +103,8 @@ a {
   grid-template-columns: 4fr 1fr;
   padding: 15px;
 }
+
+.imageSuggeree {
+  aspect-ratio: 0.7086546701;
+  width: 70%;
+}

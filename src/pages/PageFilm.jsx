@@ -81,8 +81,6 @@ export default function FilmPage() {
           </p>
         )}
 
-        <DeleteMovie id={id} />
-
         {user && user.role === "ADMIN" && <DeleteMovie id={id} />}
       </div>
     </div>
