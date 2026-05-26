@@ -17,6 +17,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "@mui/material/styles";
 
 import { useAuth } from "../Authentification";
+import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
 import YouTubeEmbed from "./LienYoutube";
 
@@ -24,11 +25,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmPage() {
   const { id } = useParams();
+
   const { user } = useAuth();
 
   const theme = useTheme();
 
   const [film, setFilm] = useState(null);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetch(`${API_URL}/films/get/${id}`)
@@ -42,6 +45,10 @@ export default function FilmPage() {
       .then((data) => {
         setFilm(data);
       });
+
+    fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
+      .then((res) => res.json())
+      .then((data) => setComments(data));
   }, [id]);
 
   if (!film) {
@@ -206,6 +213,31 @@ export default function FilmPage() {
             </Typography>
           )}
         </Stack>
+
+        <Box sx={{ mt: 5 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              mb: 3,
+              color: theme.palette.secondary.main,
+              fontWeight: 700,
+            }}
+          >
+            Commentaires
+          </Typography>
+
+          {comments.map((post) => (
+            <Comment
+              key={post.id}
+              content={post.content}
+              children={post.children}
+              level={0}
+              post={post}
+              filmId={id}
+              setComments={setComments}
+            />
+          ))}
+        </Box>
 
         {user?.role === "ADMIN" && (
           <Box sx={{ mt: 4 }}>
