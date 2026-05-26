@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import YouTubeEmbed from "./LienYoutube";
+import { useAuth } from "../Authentification";
 import DeleteMovie from "../Components/deleteMovie";
 import { useAuth } from '../Authentification';
 import Comment from "../Comment";
+import YouTubeEmbed from "./LienYoutube";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmPage() {
   const { id } = useParams();
-  const { user, logout } = useAuth(); 
+  const { user } = useAuth();
   const [film, setFilm] = useState(null);
   const [comments, setComments] = useState([]);
 
@@ -37,31 +38,25 @@ export default function FilmPage() {
 
   return (
     <div className="container2">
-      <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
-    
-        {film.url_youtube && (
-          <div className="video">
-            <YouTubeEmbed className="video" url={film.url_youtube} />
-            </div>
-          )}
-
-      
-      <div className="links">
-          {film.url_imdb && (
-            <a href={film.url_imdb} target="_blank" rel="noreferrer">
-              IMDb
-            </a>
-          )}
-
-          {film.url_allocine && (
-            <a href={film.url_allocine} target="_blank" rel="noreferrer">
-              Allociné
-            </a>
-          )}
+      {film.url_youtube && (
+        <div className="video">
+          <YouTubeEmbed className="video" url={film.url_youtube} />
         </div>
-          
-        
-      
+      )}
+
+      <div className="links">
+        {film.url_imdb && (
+          <a href={film.url_imdb} target="_blank" rel="noreferrer">
+            IMDb
+          </a>
+        )}
+
+        {film.url_allocine && (
+          <a href={film.url_allocine} target="_blank" rel="noreferrer">
+            Allociné
+          </a>
+        )}
+      </div>
 
       <div className="card-content">
         <h2>{film.name}</h2>
@@ -133,6 +128,7 @@ export default function FilmPage() {
           <DeleteMovie id={id} />
         )}
 
+        {user && user.role === "ADMIN" && <DeleteMovie id={id} />}
       </div>
     </div>
   );
