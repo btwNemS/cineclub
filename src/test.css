@@ -62,8 +62,6 @@ body {
   line-height: 1.4;
 }
 
-
-
 .links {
   display: flex;
   gap: 14px;
@@ -90,18 +88,18 @@ body {
   color: red;
 }
 
-a{
+a {
   color: black;
   text-decoration: none;
 }
 
-.video{
-  width: 60vw;
-  height: 60vh;
+.video {
+  width: 85vw;
+  aspect-ratio: 16/7;
 }
 
-.container2{
+.container2 {
   display: grid;
-  grid-template-columns: 2fr 3fr 1fr;
+  grid-template-columns: 4fr 1fr;
   padding: 15px;
 }
