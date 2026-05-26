@@ -81,11 +81,9 @@ export default function FilmPage() {
           </p>
         )}
 
-<<<<<<< HEAD
         <DeleteMovie id={id} />
 
         {user && user.role === "ADMIN" && <DeleteMovie id={id} />}
-=======
         <div className="links">
           {film.url_imdb && (
             <a href={film.url_imdb} target="_blank" rel="noreferrer">
@@ -99,15 +97,9 @@ export default function FilmPage() {
             </a>
           )}
 
-          {film.url_youtube && (
-            <YouTubeEmbed url={film.url_youtube} />
-          )}
+          {film.url_youtube && <YouTubeEmbed url={film.url_youtube} />}
         </div>
-        {user && user.role === 'ADMIN' && (
-          <DeleteMovie id={id} />
-        )}
-
->>>>>>> 5ffa75ae23f0a2cd14db9aa2b0e70f0ea7b93f4d
+        {user && user.role === "ADMIN" && <DeleteMovie id={id} />}
       </div>
     </div>
   );
