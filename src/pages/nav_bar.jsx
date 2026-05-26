@@ -1,110 +1,151 @@
-import { useState } from 'react';
-import { Link, Outlet, useNavigate } from "react-router-dom"; // Ajout de useNavigate
-import { useAuth } from '../Authentification';
-import AuthModal from '../AuthModal';
-import { Button, Typography, Box } from '@mui/material';
+import { useTheme } from "@mui/material/styles";
+import { useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+import { Box, Button, Typography } from "@mui/material";
+
+import { useAuth } from "../Authentification";
+import AuthModal from "../AuthModal";
 
 function Layout() {
   const { user, logout } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
-  
-  // Initialisation pour la redirection
+
   const navigate = useNavigate();
+  const theme = useTheme();
 
-  // Nouvelle fonction pour gérer la déconnexion ET la redirection
   const Deconnecter = async () => {
-    await logout(); // Déconnecte l'utilisateur
-    navigate("/");  // Ramène à la page d'accueil
+    await logout();
+    navigate("/");
   };
 
-  const navStyle = {
-    display: 'flex', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
-    padding: '1rem 2rem', 
-    backgroundColor: '#1e1e1e',
-    borderBottom: '1px solid #333'
-  };
-
-  const ulStyle = {
-    display: 'flex', 
-    gap: '1.5rem', 
-    listStyle: 'none', 
-    margin: 0, 
-    padding: 0
-  };
-
-  const linkStyle = {
-    color: 'white', 
-    textDecoration: 'none', 
-    fontWeight: 'bold'
-  };
-
-  const adminLinkStyle = {
-    color: '#4da6ff', 
-    textDecoration: 'none', 
-    fontWeight: 'bold'
-  };
-
-  const espaceButtonStyle = {
-    backgroundColor: '#202349', 
-    color: 'white', 
-    border: 'none', 
-    padding: '0.5rem 1rem', 
-    borderRadius: '4px', 
-    cursor: 'pointer'
+  const navLinkStyle = {
+    color: theme.palette.text.primary,
+    textDecoration: "none",
+    fontWeight: 600,
+    transition: "0.2s ease",
   };
 
   return (
     <>
-      <nav style={navStyle}>
-        <ul style={ulStyle}>
-          <li>
-            <Link to="/" style={linkStyle}>Home</Link>
-          </li>
-          <li>
-            <Link to="/blogs" style={linkStyle}>Blogs</Link>
-          </li>
-          <li>
-            <Link to="/contact" style={linkStyle}>Contact</Link>
-          </li>
-          <li>
-            <Link to="filmPassed" style={linkStyle}>Films passés</Link>
-          </li>
-          <li>
-            <Link to="/filmProgrammed" style={linkStyle}>Films prévus</Link>
-          </li>
-          <li>
-            <Link to="/filmSuggested" style={linkStyle}>Films suggérés</Link>
-          </li>
-           {user && user.role === 'ADMIN' && (
-            <li>
-              <Link to="/backoffice" style={adminLinkStyle}>
+      <Box
+        component="nav"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+
+          px: 4,
+          py: 2,
+
+          backgroundColor: theme.palette.background.paper,
+
+          borderBottom: `1px solid ${theme.palette.divider}`,
+
+          boxShadow: theme.shadows[4],
+        }}
+      >
+        <Box
+          component="ul"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 3,
+
+            listStyle: "none",
+
+            m: 0,
+            p: 0,
+          }}
+        >
+          {[
+            { to: "/", label: "Home" },
+            { to: "/blogs", label: "Blogs" },
+            { to: "/contact", label: "Contact" },
+            { to: "/filmPassed", label: "Films passés" },
+            { to: "/filmProgrammed", label: "Films prévus" },
+            { to: "/filmSuggested", label: "Films suggérés" },
+          ].map((item) => (
+            <Box component="li" key={item.to}>
+              <Link to={item.to} style={navLinkStyle}>
+                {item.label}
+              </Link>
+            </Box>
+          ))}
+
+          {user?.role === "ADMIN" && (
+            <Box component="li">
+              <Link
+                to="/backoffice"
+                style={{
+                  textDecoration: "none",
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
+              >
                 ⚙️ Panneau Admin
               </Link>
-            </li>
+            </Box>
           )}
-        </ul>
+        </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
           {user ? (
             <>
-              <Typography variant="body1" sx={{ color: 'white' }}>
-                Bonjour, <strong>{user.pseudo}</strong> 
-                <span style={{ fontSize: '0.8rem', color: '#aaa', marginLeft: '5px' }}>({user.role})</span>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: theme.palette.text.primary,
+                }}
+              >
+                Bonjour{" "}
+                <Box
+                  component="span"
+                  sx={{
+                    fontWeight: 700,
+                    color: theme.palette.secondary.main,
+                  }}
+                >
+                  {user.pseudo}
+                </Box>
+                <Box
+                  component="span"
+                  sx={{
+                    ml: 1,
+                    fontSize: "0.8rem",
+                    color: theme.palette.text.secondary,
+                  }}
+                >
+                  ({user.role})
+                </Box>
               </Typography>
-              {/* Le onClick appelle maintenant handleLogout */}
-              <Button variant="outlined" color="error" size="small" onClick={Deconnecter}>
+
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                onClick={Deconnecter}
+              >
                 Déconnexion
               </Button>
             </>
           ) : (
-            <Button variant="contained"  color="primary" onClick={() => setModalOpen(true)} style={espaceButtonStyle}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setModalOpen(true)}
+            >
               Espace Membre
             </Button>
           )}
         </Box>
-      </nav>
+      </Box>
 
       <AuthModal open={modalOpen} handleClose={() => setModalOpen(false)} />
 
