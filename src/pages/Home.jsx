@@ -1,6 +1,6 @@
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
 
 // Récupération de l'URL de ton API depuis le fichier .env
 const API_URL = import.meta.env.VITE_API_URL;
@@ -26,64 +26,65 @@ export default function Home() {
 
   // --- DÉFINITION DES STYLES (Selon ta méthode) ---
   const ContainerStyle = {
-    textAlign: "center", 
-    marginTop: "5vh" 
+    textAlign: "center",
+    marginTop: "5vh",
   };
 
   const DescriptionStyle = {
-    maxWidth: "600px", 
-    margin: "0 auto", 
-    marginBottom: "40px", 
-    color: "#333"
+    maxWidth: "600px",
+    margin: "0 auto",
+    marginBottom: "40px",
+    color: "#333",
   };
 
   const SectionContainerStyle = {
     maxWidth: "1100px",
     margin: "50px auto",
-    textAlign: "left" // Aligne les titres de section à gauche
+    textAlign: "left", // Aligne les titres de section à gauche
   };
 
   const HeaderRowStyle = {
-    display: "flex", 
-    justifyContent: "space-between", 
+    display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
     borderBottom: "2px solid #ccc",
-    paddingBottom: "10px"
+    paddingBottom: "10px",
   };
 
   const ButtonStyle = {
-    borderRadius: "8px", 
-    textTransform: "none"
+    borderRadius: "8px",
+    textTransform: "none",
   };
 
   return (
     <div className="container" style={ContainerStyle}>
       {/* Titre principal */}
       <h1 className="title">Bienvenue au CinéClub</h1>
-      
+
       {/* Description */}
       <Typography variant="h6" sx={DescriptionStyle}>
-        Envie de regarder des films, avec le CinéClub de l'IUT, on te propose plusieurs créneaux de séances de cinéma à faire entre étudiants.
+        Envie de regarder des films, avec le CinéClub de l'IUT, on te propose
+        plusieurs créneaux de séances de cinéma à faire entre étudiants.
       </Typography>
 
       {/* --- SECTION 1 : FILMS PRÉVUS --- */}
       <Box sx={SectionContainerStyle}>
         <Box sx={HeaderRowStyle}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-           Films Prévus
+            Films Prévus
           </Typography>
-          <Button 
-            component={Link} 
-            to="/filmProgrammed" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            component={Link}
+            to="/filmProgrammed"
+            variant="contained"
+            color="primary"
             sx={ButtonStyle}
           >
             Voir plus
           </Button>
         </Box>
-        
+
         {/* Grille de cartes de films  */}
         <div className="films-grid">
           {films
@@ -92,15 +93,34 @@ export default function Home() {
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
-                  <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
+                  <img
+                    src={`${API_URL}/${film.url_image}`}
+                    alt={film.name}
+                    class="image"
+                  />
                   <div className="card-content">
                     <h2>{film.name}</h2>
-                    {film.author && <p><strong>Réalisateur :</strong> {film.author}</p>}
-                    {film.film_genre && <p><strong>Genre :</strong> {film.film_genre}</p>}
-                    {film.projection_date && (
-                      <p><strong>Projection :</strong> {new Date(film.projection_date).toLocaleDateString()}</p>
+                    {film.author && (
+                      <p>
+                        <strong>Réalisateur :</strong> {film.author}
+                      </p>
                     )}
-                    {film.cinema && <p><strong>Cinéma :</strong> {film.cinema}</p>}
+                    {film.film_genre && (
+                      <p>
+                        <strong>Genre :</strong> {film.film_genre}
+                      </p>
+                    )}
+                    {film.projection_date && (
+                      <p>
+                        <strong>Projection :</strong>{" "}
+                        {new Date(film.projection_date).toLocaleDateString()}
+                      </p>
+                    )}
+                    {film.cinema && (
+                      <p>
+                        <strong>Cinéma :</strong> {film.cinema}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Link>
@@ -112,19 +132,19 @@ export default function Home() {
       <Box sx={SectionContainerStyle}>
         <Box sx={HeaderRowStyle}>
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-           Films Suggérés
+            Films Suggérés
           </Typography>
-          <Button 
-            component={Link} 
-            to="/filmSuggested" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            component={Link}
+            to="/filmSuggested"
+            variant="contained"
+            color="primary"
             sx={ButtonStyle}
           >
             Voir plus
           </Button>
         </Box>
-        
+
         <div className="films-grid">
           {films
             .filter((film) => film.status === "suggested")
@@ -132,12 +152,28 @@ export default function Home() {
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
-                  <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
+                  <img
+                    src={`${API_URL}/${film.url_image}`}
+                    alt={film.name}
+                    class="image"
+                  />
                   <div className="card-content">
                     <h2>{film.name}</h2>
-                    {film.author && <p><strong>Réalisateur :</strong> {film.author}</p>}
-                    {film.film_genre && <p><strong>Genre :</strong> {film.film_genre}</p>}
-                    {film.cinema && <p><strong>Cinéma :</strong> {film.cinema}</p>}
+                    {film.author && (
+                      <p>
+                        <strong>Réalisateur :</strong> {film.author}
+                      </p>
+                    )}
+                    {film.film_genre && (
+                      <p>
+                        <strong>Genre :</strong> {film.film_genre}
+                      </p>
+                    )}
+                    {film.cinema && (
+                      <p>
+                        <strong>Cinéma :</strong> {film.cinema}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Link>
@@ -151,17 +187,17 @@ export default function Home() {
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
             Films passés
           </Typography>
-          <Button 
-            component={Link} 
-            to="/filmPassed" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            component={Link}
+            to="/filmPassed"
+            variant="contained"
+            color="primary"
             sx={ButtonStyle}
           >
             Voir plus
           </Button>
         </Box>
-        
+
         <div className="films-grid">
           {films
             .filter((film) => film.status === "passed")
@@ -169,13 +205,28 @@ export default function Home() {
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
-                  <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
+                  <img
+                    src={`${API_URL}/${film.url_image}`}
+                    alt={film.name}
+                    class="image"
+                  />
                   <div className="card-content">
                     <h2>{film.name}</h2>
-                    {film.author && <p><strong>Réalisateur :</strong> {film.author}</p>}
-                    {film.film_genre && <p><strong>Genre :</strong> {film.film_genre}</p>}
+                    {film.author && (
+                      <p>
+                        <strong>Réalisateur :</strong> {film.author}
+                      </p>
+                    )}
+                    {film.film_genre && (
+                      <p>
+                        <strong>Genre :</strong> {film.film_genre}
+                      </p>
+                    )}
                     {film.projection_date && (
-                      <p><strong>Projection :</strong> {new Date(film.projection_date).toLocaleDateString()}</p>
+                      <p>
+                        <strong>Projection :</strong>{" "}
+                        {new Date(film.projection_date).toLocaleDateString()}
+                      </p>
                     )}
                   </div>
                 </div>
