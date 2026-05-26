@@ -19,8 +19,19 @@ export default function AddMovie() {
 
   async function postFilm(e) {
     e.preventDefault();
+    // validation: ensure an image file was chosen and is of an allowed image type
+    const file = e.target.elements.image?.files?.[0];
+    if (!file) {
+      alert("Veuillez sélectionner une image pour l'affiche du film.");
+      return;
+    }
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg, image/jpeg"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Le fichier sélectionné doit être une image (jpg, png, webp, jpeg).");
+      return;
+    }
+
     const form = new FormData(e.target);
-    
 
     await fetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
       method: "POST",
@@ -47,7 +58,7 @@ export default function AddMovie() {
         <TextField name="synopsis" label="Synopsis du film" required />
         <Button variant="outlined" component="label" color={imageName ? "success" : "primary"} required>
           {imageName ?? "Choisir une image"}
-          <input type="file" name="image" hidden onChange={(e) => setImageName(e.target.files[0]?.name ?? null)} />
+          <input type="file" accept=".jpg,.jpeg,.png,.webp" name="image" hidden onChange={(e) => setImageName(e.target.files[0]?.name ?? null)} required/>
         </Button>
         <FormControl required>
           <InputLabel>Status</InputLabel>
