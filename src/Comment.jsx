@@ -5,7 +5,7 @@ function addReplyToTree(tree, parentId, newComment) {
     if (comment.id === parentId) {
       return {
         ...comment,
-        children: [...comment.children, newComment],
+        children: [...(comment.children || []), newComment],
       };
     }
 
@@ -20,10 +20,19 @@ function addReplyToTree(tree, parentId, newComment) {
   });
 }
 
-export function Comment({ content, children = [], level, post, filmId, setComments }) {
+export default function Comment({
+  post,
+  content,
+  children = [],
+  level,
+  filmId,
+  setComments,
+}) {
   const [text, setText] = useState("");
 
-  const sendComment = async (parentId) => {
+  const sendReply = async (parentId) => {
+    if (!text.trim()) return;
+
     const res = await fetch(
       "https://rasantacruz.fr/cineclub/posts/protected/create",
       {
@@ -51,33 +60,31 @@ export function Comment({ content, children = [], level, post, filmId, setCommen
   };
 
   return (
-    <>
+    <div>
       <p style={{ marginLeft: `${level * 30}px` }}>{content}</p>
 
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Commenter"
+        placeholder="Répondre..."
         style={{ marginLeft: `${level * 30}px` }}
       />
 
-      <button onClick={() => sendComment(post.id)}>
+      <button onClick={() => sendReply(post.id)}>
         Répondre
       </button>
 
       {children.map((child) => (
         <Comment
           key={child.id}
+          post={child}
           content={child.content}
           children={child.children}
           level={level + 1}
-          post={child}
           filmId={filmId}
           setComments={setComments}
         />
       ))}
-    </>
+    </div>
   );
 }
-
-export default Comment;
