@@ -87,10 +87,6 @@ export default function FilmPage() {
           </p>
         )}
 
-
-        
-        <DeleteMovie id={id} />
-
         <div className="links">
           {film.url_imdb && (
             <a href={film.url_imdb} target="_blank" rel="noreferrer">
