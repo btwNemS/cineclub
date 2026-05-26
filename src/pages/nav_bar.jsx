@@ -22,7 +22,7 @@ function Layout() {
     justifyContent: 'space-between', 
     alignItems: 'center', 
     padding: '1rem 2rem', 
-    backgroundColor: '#1e1e1e',
+    backgroundColor: '#202349',
     borderBottom: '1px solid #333'
   };
 
@@ -49,7 +49,7 @@ function Layout() {
   const espaceButtonStyle = {
     backgroundColor: '#202349', 
     color: 'white', 
-    border: 'none', 
+    border: '1px solid white',
     padding: '0.5rem 1rem', 
     borderRadius: '4px', 
     cursor: 'pointer'
