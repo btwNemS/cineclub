@@ -54,7 +54,8 @@ export default function Home() {
 
   const ButtonStyle = {
     borderRadius: "8px", 
-    textTransform: "none"
+    textTransform: "none",
+    backgroundColor: "#202349",
   };
 
   return (

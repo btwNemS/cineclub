@@ -46,6 +46,15 @@ function Layout() {
     fontWeight: 'bold'
   };
 
+  const espaceButtonStyle = {
+    backgroundColor: '#202349', 
+    color: 'white', 
+    border: 'none', 
+    padding: '0.5rem 1rem', 
+    borderRadius: '4px', 
+    cursor: 'pointer'
+  };
+
   return (
     <>
       <nav style={navStyle}>
@@ -90,7 +99,7 @@ function Layout() {
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={() => setModalOpen(true)}>
+            <Button variant="contained"  color="primary" onClick={() => setModalOpen(true)} style={espaceButtonStyle}>
               Espace Membre
             </Button>
           )}
