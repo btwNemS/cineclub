@@ -6,7 +6,7 @@ const API_URL = "https://rasantacruz.fr/cineclub";
 
 // Fournisseur du contexte d'authentification
 export const AuthProvider = ({ children }) => {
-    // 1. Initialisation de l'état : on regarde d'abord dans le localStorage s'il y a un utilisateur sauvegardé
+    //permet de rester connecté même en refreshant la page
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('cineclub_user');
         if (savedUser) {
