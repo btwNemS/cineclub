@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../Authentification";
 import DeleteMovie from "../Components/deleteMovie";
+import { useAuth } from '../Authentification';
+import Comment from "../Comment";
 import YouTubeEmbed from "./LienYoutube";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -10,6 +12,7 @@ export default function FilmPage() {
   const { id } = useParams();
   const { user } = useAuth();
   const [film, setFilm] = useState(null);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetch(`${API_URL}/films/get/${id}`)
@@ -23,6 +26,10 @@ export default function FilmPage() {
       .then((data) => {
         setFilm(data);
       });
+      fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
+     .then((res) => res.json())
+     .then((data) => setComments(data));
+
   }, [id]);
 
   if (!film) {
@@ -79,6 +86,46 @@ export default function FilmPage() {
           <p>
             <strong>Cinéma :</strong> {film.cinema}
           </p>
+        )}
+
+
+      <h3>Commentaires</h3>
+
+{comments.map((post) => (
+  <Comment
+    key={post.id}
+    content={post.content}
+    children={post.children}
+    level={0}
+    post={post}
+    filmId={id}
+    setComments={setComments}
+  />
+))}
+
+
+        
+        <DeleteMovie id={id} />
+
+        <div className="links">
+          {film.url_imdb && (
+            <a href={film.url_imdb} target="_blank" rel="noreferrer">
+              IMDb
+            </a>
+          )}
+
+          {film.url_allocine && (
+            <a href={film.url_allocine} target="_blank" rel="noreferrer">
+              Allociné
+            </a>
+          )}
+
+          {film.url_youtube && (
+            <YouTubeEmbed url={film.url_youtube} />
+          )}
+        </div>
+        {user && user.role === 'ADMIN' && (
+          <DeleteMovie id={id} />
         )}
 
         {user && user.role === "ADMIN" && <DeleteMovie id={id} />}
