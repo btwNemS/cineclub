@@ -29,7 +29,11 @@ export default function FilmProgrammed() {
           .map((film) => (
             <Link to={`/film/${film.id}`}>
               <div className="card" key={film.id}>
-                <img src={`${API_URL}/${film.url_image}`} alt={film.name} />
+                <img
+                  src={`${API_URL}/${film.url_image}`}
+                  alt={film.name}
+                  class="image"
+                />
                 <div className="card-content">
                   <h2>{film.name}</h2>
 
