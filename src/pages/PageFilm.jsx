@@ -19,6 +19,7 @@ import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
 import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
+import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -240,8 +241,9 @@ export default function FilmPage() {
         </Box>
 
         {user?.role === "ADMIN" && (
-          <Box sx={{ mt: 4 }}>
+          <Box sx={{ mt: 4  }}>
             <DeleteMovie id={id} />
+            <EditMovie id={id} /> 
           </Box>
         )}
       </Paper>
