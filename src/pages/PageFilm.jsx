@@ -121,13 +121,19 @@ export default function FilmPage() {
             {film.name}
           </Typography>
 
-          {film.film_genre && (
-            <Chip
-              label={film.film_genre}
-              color="secondary"
-              variant="outlined"
-            />
-          )}
+          {film.film_genre &&
+            film.film_genre
+              .split(",")
+              .map((g) => g.trim())
+              .filter(Boolean)
+              .map((genre) => (
+                <Chip
+                  key={genre}
+                  label={genre}
+                  color="secondary"
+                  variant="outlined"
+                />
+              ))}
         </Stack>
 
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">

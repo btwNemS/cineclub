@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {
+  Autocomplete,
+  Chip,
   FormControl,
   InputLabel,
   Select,
@@ -18,6 +20,7 @@ export default function AddMovie() {
   const [status, setStatus] = useState("");
   const [imageName, setImageName] = useState(null);
   const [feedback, setFeedback] = useState(null);
+  const [genres, setGenres] = useState([]);
   const navigate = useNavigate();
 
   async function postFilm(e) {
@@ -34,6 +37,7 @@ export default function AddMovie() {
     }
 
     const form = new FormData(e.target);
+    form.set("film_genre", genres.join(","));
 
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
@@ -113,7 +117,32 @@ export default function AddMovie() {
           </Box>
         )}
         <TextField name="author" label="Auteur du film"  />
-        <TextField name="film_genre" label="Genre du film" />
+        <Autocomplete
+          multiple
+          freeSolo
+          options={["Action", "Comédie", "Drame", "Thriller", "Horreur", "Science-Fiction", "Romance", "Animation", "Documentaire", "Aventure"]}
+          value={genres}
+          onChange={(_, newValue) => setGenres(newValue)}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip
+                key={option}
+                label={option}
+                {...getTagProps({ index })}
+                color="secondary"
+                variant="outlined"
+                size="small"
+              />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Genres du film"
+              placeholder={genres.length === 0 ? "Taper et appuyer sur Entrée…" : ""}
+            />
+          )}
+        />
         <TextField name="url_allocine" label="URL Allociné" />
         <TextField name="url_imdb" label="URL IMDb" />
         <TextField name="url_youtube" label="URL YouTube" />

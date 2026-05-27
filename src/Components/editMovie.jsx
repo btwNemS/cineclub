@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Autocomplete,
+  Chip,
   FormControl,
   InputLabel,
   Select,
@@ -25,6 +27,7 @@ export default function EditMovie({ id }) {
   const [open, setOpen] = useState(false);
   const [film, setFilm] = useState(null);
   const [status, setStatus] = useState("");
+  const [genres, setGenres] = useState([]);
   const [imageName, setImageName] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -39,6 +42,11 @@ export default function EditMovie({ id }) {
       .then((data) => {
         setFilm(data);
         setStatus(data.status ?? "");
+        setGenres(
+          data.film_genre
+            ? data.film_genre.split(",").map((g) => g.trim()).filter(Boolean)
+            : []
+        );
       });
   }, [open, id]);
 
@@ -54,6 +62,8 @@ export default function EditMovie({ id }) {
     setFeedback(null);
 
     const form = new FormData(e.target);
+
+    form.set("film_genre", genres.join(","));
 
     // Si aucune nouvelle image n'est sélectionnée, retirer le champ du FormData
     const imageFile = form.get("image");
@@ -202,11 +212,31 @@ export default function EditMovie({ id }) {
                 defaultValue={film.author ?? ""}
                 fullWidth
               />
-              <TextField
-                name="film_genre"
-                label="Genre du film"
-                defaultValue={film.film_genre ?? ""}
-                fullWidth
+              <Autocomplete
+                multiple
+                freeSolo
+                options={["Action", "Comédie", "Drame", "Thriller", "Horreur", "Science-Fiction", "Romance", "Animation", "Documentaire", "Aventure"]}
+                value={genres}
+                onChange={(_, newValue) => setGenres(newValue)}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      key={option}
+                      label={option}
+                      {...getTagProps({ index })}
+                      color="secondary"
+                      variant="outlined"
+                      size="small"
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Genres du film"
+                    placeholder={genres.length === 0 ? "Taper et appuyer sur Entrée…" : ""}
+                  />
+                )}
               />
               <TextField
                 name="url_allocine"
