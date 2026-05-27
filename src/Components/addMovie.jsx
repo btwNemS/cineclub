@@ -66,7 +66,7 @@ export default function AddMovie() {
 
   return (
     <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto", marginBottom: 6 , marginTop: 6}}>
-      <Typography variant="h6">Ajouter un film</Typography>
+      <Typography variant="h3">Ajouter un film</Typography>
       {feedback && (
         <Alert
           severity={feedback.severity}
