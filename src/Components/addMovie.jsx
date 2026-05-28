@@ -116,7 +116,7 @@ export default function AddMovie() {
             <TextField name="cinema" label="Cinéma" fullWidth required />
           </Box>
         )}
-        <TextField name="author" label="Auteur du film"  />
+        <TextField name="author" label="Réalisateur du film"  />
         <Autocomplete
           multiple
           freeSolo
