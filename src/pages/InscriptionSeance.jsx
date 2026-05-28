@@ -1,11 +1,19 @@
 import { Button } from "@mui/material";
 const API_URL = import.meta.env.VITE_API_URL;
 
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { useTheme } from "@mui/material/styles";
+import { useAuth } from "../Authentification";
+
+
 export default function InscriptionSeance() {
   const { id } = useParams();
   const { user } = useAuth();
   const theme = useTheme();
-  const [film, setFilm] = useState(null);
+  const [film, setFilm] = useState(null)
+  ;
 
   useEffect(() => {
     fetch(`${API_URL}/registrations/getRegistrationsByFilmId/${id}`)
