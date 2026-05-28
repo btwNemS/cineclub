@@ -1,6 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+
+import MovieIcon from "@mui/icons-material/Movie";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+
+import { useTheme } from "@mui/material/styles";
+
 import { useAuth } from "../Authentification";
+import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
 import YouTubeEmbed from "./LienYoutube";
 import imdbLogo from "../images/imdb.png";
@@ -10,8 +27,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmPage() {
   const { id } = useParams();
+
   const { user } = useAuth();
+
+  const theme = useTheme();
+
   const [film, setFilm] = useState(null);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetch(`${API_URL}/films/get/${id}`)
@@ -25,69 +47,206 @@ export default function FilmPage() {
       .then((data) => {
         setFilm(data);
       });
+
+    fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
+      .then((res) => res.json())
+      .then((data) => setComments(data));
   }, [id]);
 
   if (!film) {
-    return <p>Chargement...</p>;
+    return (
+      <Box
+        sx={{
+          minHeight: "60vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </Box>
+    );
   }
 
   return (
-    <div className="container2">
+    <Box
+      sx={{
+        maxWidth: "1100px",
+        mx: "auto",
+        px: 3,
+        py: 5,
+      }}
+    >
       {film.url_youtube && (
-        <div className="video">
-          <YouTubeEmbed className="video" url={film.url_youtube} />
-        </div>
+        <Paper
+          elevation={4}
+          sx={{
+            overflow: "hidden",
+            borderRadius: 4,
+            mb: 4,
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <YouTubeEmbed url={film.url_youtube} />
+        </Paper>
       )}
 
-      <div className="links">
-        {film.url_imdb && (
-          <a href={film.url_imdb} target="_blank" rel="noreferrer">
-            <img src={imdbLogo} alt="IMDb" className="imdb-logo" /> 
-            
-          </a>
+      <Paper
+        elevation={4}
+        sx={{
+          p: 4,
+          backgroundColor: "background.paper",
+          border: `1px solid rgba(212,175,55,0.15)`,
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          mb={2}
+          flexWrap="wrap"
+        >
+          <MovieIcon
+            sx={{
+              color: theme.palette.secondary.main,
+              fontSize: 34,
+            }}
+          />
+
+          <Typography
+            variant="h3"
+            sx={{
+              color: "text.primary",
+            }}
+          >
+            {film.name}
+          </Typography>
+
+          {film.film_genre && (
+            <Chip
+              label={film.film_genre}
+              color="secondary"
+              variant="outlined"
+            />
+          )}
+        </Stack>
+
+        <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
+          {film.url_imdb && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              href={film.url_imdb}
+              target="_blank"
+              endIcon={<OpenInNewIcon />}
+            >
+              IMDb
+            </Button>
+          )}
+
+          {film.url_allocine && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              href={film.url_allocine}
+              target="_blank"
+              endIcon={<OpenInNewIcon />}
+            >
+              Allociné
+            </Button>
+          )}
+        </Stack>
+
+        <Stack spacing={2}>
+          {film.author && (
+            <Typography variant="body1">
+              <Box
+                component="span"
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
+              >
+                Réalisateur :
+              </Box>{" "}
+              {film.author}
+            </Typography>
+          )}
+
+          {film.synopsis && (
+            <Typography
+              variant="body1"
+              sx={{
+                lineHeight: 1.9,
+                color: "text.secondary",
+              }}
+            >
+              {film.synopsis}
+            </Typography>
+          )}
+
+          {film.projection_date && (
+            <Typography variant="body1">
+              <Box
+                component="span"
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
+              >
+                Projection :
+              </Box>{" "}
+              {new Date(film.projection_date).toLocaleDateString()}
+            </Typography>
+          )}
+
+          {film.cinema && (
+            <Typography variant="body1">
+              <Box
+                component="span"
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
+              >
+                Cinéma :
+              </Box>{" "}
+              {film.cinema}
+            </Typography>
+          )}
+        </Stack>
+
+        <Box sx={{ mt: 5 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              mb: 3,
+              color: theme.palette.secondary.main,
+              fontWeight: 700,
+            }}
+          >
+            Commentaires
+          </Typography>
+
+          {comments.map((post) => (
+            <Comment
+              key={post.id}
+              content={post.content}
+              children={post.children}
+              level={0}
+              post={post}
+              filmId={id}
+              setComments={setComments}
+            />
+          ))}
+        </Box>
+
+        {user?.role === "ADMIN" && (
+          <Box sx={{ mt: 4 }}>
+            <DeleteMovie id={id} />
+          </Box>
         )}
-
-        {film.url_allocine && (
-          <a href={film.url_allocine} target="_blank" rel="noreferrer">
-            <img src={allocineLogo} alt="AlloCiné" className="allocine-logo" />
-            
-          </a>
-        
-        )}
-      </div>
-
-      <div className="card-content">
-        <h2>{film.name}</h2>
-
-        {film.author && (
-          <p>
-            <strong>Réalisateur :</strong> {film.author}
-          </p>
-        )}
-
-        {film.film_genre && (
-          <p>
-            <strong>Genre :</strong> {film.film_genre}
-          </p>
-        )}
-
-        {film.synopsis && <p>{film.synopsis}</p>}
-
-        {film.projection_date && (
-          <p>
-            <strong>Projection :</strong>{" "}
-            {new Date(film.projection_date).toLocaleDateString()}
-          </p>
-        )}
-
-        {film.cinema && (
-          <p>
-            <strong>Cinéma :</strong> {film.cinema}
-          </p>
-        )}
-
-        {user && user.role === "ADMIN" && <DeleteMovie id={id} />}
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 }

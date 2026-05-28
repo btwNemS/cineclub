@@ -1,21 +1,23 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-// Récupération de l'URL de ton API depuis le fichier .env
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
-  // État pour stocker tous les films de la base de données
   const [films, setFilms] = useState([]);
 
-  // Récupération des films au chargement de la page
+  const theme = useTheme();
+
   useEffect(() => {
     fetch(`${API_URL}/films/getAll`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Erreur lors du chargement des films");
         }
+
         return res.json();
       })
       .then((data) => {
@@ -24,99 +26,112 @@ export default function Home() {
       .catch((err) => console.error(err));
   }, []);
 
-  // --- DÉFINITION DES STYLES (Selon ta méthode) ---
-  const ContainerStyle = {
-    textAlign: "center",
-    marginTop: "5vh",
+  const sectionTitleStyle = {
+    fontWeight: 700,
+    color: theme.palette.secondary.main,
   };
 
-  const DescriptionStyle = {
-    maxWidth: "600px",
-    margin: "0 auto",
-    marginBottom: "40px",
-    color: "#333",
-  };
-
-  const SectionContainerStyle = {
+  const sectionContainerStyle = {
     maxWidth: "1100px",
     margin: "50px auto",
-    textAlign: "left", // Aligne les titres de section à gauche
+    textAlign: "left",
   };
 
-  const HeaderRowStyle = {
+  const headerRowStyle = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+
     marginBottom: "20px",
-    borderBottom: "2px solid #ccc",
+
+    borderBottom: `1px solid ${theme.palette.divider}`,
+
     paddingBottom: "10px",
   };
 
-  const ButtonStyle = {
-    borderRadius: "8px", 
-    textTransform: "none",
-    backgroundColor: "#202349",
-  };
-
   return (
-    <div className="container" style={ContainerStyle}>
-      {/* Titre principal */}
-      <h1 className="title">Bienvenue au CinéClub</h1>
-
-      {/* Description */}
-      <Typography variant="h6" sx={DescriptionStyle}>
-        Envie de regarder des films, avec le CinéClub de l'IUT, on te propose
-        plusieurs créneaux de séances de cinéma à faire entre étudiants.
+    <div className="container">
+      <Typography
+        variant="h2"
+        className="title"
+        sx={{
+          color: "secondary.main",
+          mb: 3,
+        }}
+      >
+        Bienvenue au CinéClub
       </Typography>
 
-      {/* --- SECTION 1 : FILMS PRÉVUS --- */}
-      <Box sx={SectionContainerStyle}>
-        <Box sx={HeaderRowStyle}>
-          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-            Films Prévus
+      <Typography
+        variant="h6"
+        sx={{
+          maxWidth: "700px",
+          margin: "0 auto",
+          marginBottom: "60px",
+
+          color: "text.secondary",
+
+          textAlign: "center",
+          lineHeight: 1.8,
+        }}
+      >
+        Envie de regarder des films avec le CinéClub de l'IUT ? Nous proposons
+        plusieurs séances de cinéma entre étudiants.
+      </Typography>
+
+      {/* FILMS PRÉVUS */}
+
+      <Box sx={sectionContainerStyle}>
+        <Box sx={headerRowStyle}>
+          <Typography variant="h5" sx={sectionTitleStyle}>
+            Films prévus
           </Typography>
+
           <Button
             component={Link}
             to="/filmProgrammed"
             variant="contained"
             color="primary"
-            sx={ButtonStyle}
           >
             Voir plus
           </Button>
         </Box>
 
-        {/* Grille de cartes de films  */}
         <div className="films-grid">
           {films
             .filter((film) => film.status === "programmed")
-            .slice(0, 6) // Affiche uniquement un aperçu de 6 films maximum sur la ligne
+            .slice(0, 6)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
                   <img
                     src={`${API_URL}/${film.url_image}`}
                     alt={film.name}
-                    class="image"
+                    className="image"
                   />
+
                   <div className="card-content">
                     <h2>{film.name}</h2>
+
                     {film.author && (
                       <p>
                         <strong>Réalisateur :</strong> {film.author}
                       </p>
                     )}
+
                     {film.film_genre && (
                       <p>
                         <strong>Genre :</strong> {film.film_genre}
                       </p>
                     )}
+
                     {film.projection_date && (
                       <p>
                         <strong>Projection :</strong>{" "}
                         {new Date(film.projection_date).toLocaleDateString()}
                       </p>
                     )}
+
                     {film.cinema && (
                       <p>
                         <strong>Cinéma :</strong> {film.cinema}
@@ -129,18 +144,19 @@ export default function Home() {
         </div>
       </Box>
 
-      {/* --- SECTION 2 : FILMS SUGGÉRÉS --- */}
-      <Box sx={SectionContainerStyle}>
-        <Box sx={HeaderRowStyle}>
-          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-            Films Suggérés
+      {/* FILMS SUGGÉRÉS */}
+
+      <Box sx={sectionContainerStyle}>
+        <Box sx={headerRowStyle}>
+          <Typography variant="h5" sx={sectionTitleStyle}>
+            Films suggérés
           </Typography>
+
           <Button
             component={Link}
             to="/filmSuggested"
             variant="contained"
             color="primary"
-            sx={ButtonStyle}
           >
             Voir plus
           </Button>
@@ -149,27 +165,31 @@ export default function Home() {
         <div className="films-grid">
           {films
             .filter((film) => film.status === "suggested")
-            .slice(0, 3) // Aperçu de 3 films max
+            .slice(0, 3)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
                   <img
                     src={`${API_URL}/${film.url_image}`}
                     alt={film.name}
-                    class="image"
+                    className="image"
                   />
+
                   <div className="card-content">
                     <h2>{film.name}</h2>
+
                     {film.author && (
                       <p>
                         <strong>Réalisateur :</strong> {film.author}
                       </p>
                     )}
+
                     {film.film_genre && (
                       <p>
                         <strong>Genre :</strong> {film.film_genre}
                       </p>
                     )}
+
                     {film.cinema && (
                       <p>
                         <strong>Cinéma :</strong> {film.cinema}
@@ -182,18 +202,19 @@ export default function Home() {
         </div>
       </Box>
 
-      {/* --- SECTION 3 : FILMS PASSÉS --- */}
-      <Box sx={SectionContainerStyle}>
-        <Box sx={HeaderRowStyle}>
-          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+      {/* FILMS PASSÉS */}
+
+      <Box sx={sectionContainerStyle}>
+        <Box sx={headerRowStyle}>
+          <Typography variant="h5" sx={sectionTitleStyle}>
             Films passés
           </Typography>
+
           <Button
             component={Link}
             to="/filmPassed"
             variant="contained"
             color="primary"
-            sx={ButtonStyle}
           >
             Voir plus
           </Button>
@@ -202,27 +223,31 @@ export default function Home() {
         <div className="films-grid">
           {films
             .filter((film) => film.status === "passed")
-            .slice(0, 3) // Aperçu de 3 films max
+            .slice(0, 3)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <div className="card">
                   <img
                     src={`${API_URL}/${film.url_image}`}
                     alt={film.name}
-                    class="image"
+                    className="image"
                   />
+
                   <div className="card-content">
                     <h2>{film.name}</h2>
+
                     {film.author && (
                       <p>
                         <strong>Réalisateur :</strong> {film.author}
                       </p>
                     )}
+
                     {film.film_genre && (
                       <p>
                         <strong>Genre :</strong> {film.film_genre}
                       </p>
                     )}
+
                     {film.projection_date && (
                       <p>
                         <strong>Projection :</strong>{" "}
