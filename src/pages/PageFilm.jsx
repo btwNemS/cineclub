@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import InscriptionSeance from "./InscriptionSeance";
 
 import {
   Box,
@@ -9,6 +10,7 @@ import {
   Paper,
   Stack,
   Typography,
+  Rating,
 } from "@mui/material";
 
 import MovieIcon from "@mui/icons-material/Movie";
@@ -19,7 +21,12 @@ import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
 import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
+import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
+import imdbLogo from "../images/imdb.png";
+import allocineLogo from "../images/allocine.webp";
+import { CenterFocusStrong } from "@mui/icons-material";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -135,7 +142,26 @@ export default function FilmPage() {
           {film.film_genre && (
             <Chip label={film.film_genre} color="secondary" variant="outlined" />
           )}
+          {film.film_genre &&
+            film.film_genre
+              .split(",")
+              .map((g) => g.trim())
+              .filter(Boolean)
+              .map((genre) => (
+                <Chip
+                  key={genre}
+                  label={genre}
+                  color="secondary"
+                  variant="outlined"
+                />
+              ))}
         </Stack>
+        <Stack>
+          <InscriptionSeance />
+        </Stack>
+
+        <Rating name="vote-film" defaultValue={2.5} precision={0.5} />
+
 
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
           {film.url_imdb && (
@@ -236,8 +262,9 @@ export default function FilmPage() {
         </Box>
 
         {user?.role === "ADMIN" && (
-          <Box sx={{ mt: 4 }}>
+          <Box sx={{ mt: 4  }}>
             <DeleteMovie id={id} />
+            <EditMovie id={id} /> 
           </Box>
         )}
       </Paper>

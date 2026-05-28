@@ -15,6 +15,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function DeleteMovie({ id }) {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function DeleteMovie({ id }) {
 
   return (
     <Box>
-      <Button variant="contained" color="error" onClick={handleClickOpen} data-id={id}>
+      <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={handleClickOpen} data-id={id}>
         Supprimer
       </Button>
       
