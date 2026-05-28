@@ -1,9 +1,7 @@
-import { Button } from "@mui/material";
-const API_URL = import.meta.env.VITE_API_URL;
-
+import BoutonInscription from "./BoutonInscription";
+import ListeInscrits from "./ListeInscrits";    
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
 
@@ -12,28 +10,26 @@ export default function InscriptionSeance() {
   const { id } = useParams();
   const { user } = useAuth();
   const theme = useTheme();
-  const [film, setFilm] = useState(null)
-  ;
+  const [isSuscribed, setisSuscribed] = useState(false);
+   const [liste, setListe] = useState(false);
+ 
 
-  useEffect(() => {
-    fetch(`${API_URL}/registrations/getRegistrationsByFilmId/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Erreur lors du chargement du film");
-        }
+  function handleHover() {
+  	setListe(true);
+  }
 
-        return res.json();
-      })
-      .then((data) => {
-        setFilm(data);
-      });
-  }, [id]);
+  function handleHoverOut() {
+  	setListe(false);
+  }
+  function handleClick() {
+  	console.log("ça marche aussi");
+  }
 
-    return  <Button
-              variant="outlined"
-              color="secondary"
-              target="_blank"
-            >
-              S'inscrire
-            </Button>;
+    return  (
+        <div>
+            <BoutonInscription onMouseEnter={handleHover} onClick={handleClick} onMouseLeave={handleHoverOut}/>
+            {liste && <ListeInscrits/>}
+          </div>
+    )
+    
 }
