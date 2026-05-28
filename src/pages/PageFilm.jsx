@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import InscriptionSeance from "./InscriptionSeance";
 
 import {
   Box,
@@ -21,8 +22,6 @@ import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
 import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
-import imdbLogo from "../images/imdb.png";
-import allocineLogo from "../images/allocine.webp";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -137,7 +136,9 @@ export default function FilmPage() {
                 />
               ))}
         </Stack>
-
+        <Stack>
+          <InscriptionSeance />
+        </Stack>
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
           {film.url_imdb && (
             <Button
