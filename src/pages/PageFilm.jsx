@@ -9,6 +9,7 @@ import {
   Paper,
   Stack,
   Typography,
+  Rating,
 } from "@mui/material";
 
 import MovieIcon from "@mui/icons-material/Movie";
@@ -23,6 +24,7 @@ import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
 import imdbLogo from "../images/imdb.png";
 import allocineLogo from "../images/allocine.webp";
+import { CenterFocusStrong } from "@mui/icons-material";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -137,6 +139,7 @@ export default function FilmPage() {
                 />
               ))}
         </Stack>
+        <Rating name="vote-film" defaultValue={2.5} precision={0.5} />
 
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
           {film.url_imdb && (
