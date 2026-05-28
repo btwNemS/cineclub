@@ -10,6 +10,7 @@ import {
   Paper,
   Stack,
   Typography,
+  Rating,
 } from "@mui/material";
 
 import MovieIcon from "@mui/icons-material/Movie";
@@ -22,6 +23,10 @@ import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
 import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
+import imdbLogo from "../images/imdb.png";
+import allocineLogo from "../images/allocine.webp";
+import { CenterFocusStrong } from "@mui/icons-material";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -34,6 +39,7 @@ export default function FilmPage() {
 
   const [film, setFilm] = useState(null);
   const [comments, setComments] = useState([]);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/films/get/${id}`)
@@ -52,6 +58,33 @@ export default function FilmPage() {
       .then((res) => res.json())
       .then((data) => setComments(data));
   }, [id]);
+
+  const sendComment = async () => {
+    if (!text.trim()) return;
+
+    const res = await fetch(
+      "https://rasantacruz.fr/cineclub/posts/protected/create",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          content: text,
+          film_id: id,
+          answersTo: null,
+        }),
+      }
+    );
+
+    const newComment = await res.json();
+
+    setComments((prev) => [
+      ...prev,
+      { ...newComment, children: [] },
+    ]);
+
+    setText("");
+  };
 
   if (!film) {
     return (
@@ -99,29 +132,16 @@ export default function FilmPage() {
           border: `1px solid rgba(212,175,55,0.15)`,
         }}
       >
-        <Stack
-          direction="row"
-          spacing={2}
-          alignItems="center"
-          mb={2}
-          flexWrap="wrap"
-        >
-          <MovieIcon
-            sx={{
-              color: theme.palette.secondary.main,
-              fontSize: 34,
-            }}
-          />
+        <Stack direction="row" spacing={2} alignItems="center" mb={2} flexWrap="wrap">
+          <MovieIcon sx={{ color: theme.palette.secondary.main, fontSize: 34 }} />
 
-          <Typography
-            variant="h3"
-            sx={{
-              color: "text.primary",
-            }}
-          >
+          <Typography variant="h3" sx={{ color: "text.primary" }}>
             {film.name}
           </Typography>
 
+          {film.film_genre && (
+            <Chip label={film.film_genre} color="secondary" variant="outlined" />
+          )}
           {film.film_genre &&
             film.film_genre
               .split(",")
@@ -139,6 +159,10 @@ export default function FilmPage() {
         <Stack>
           <InscriptionSeance />
         </Stack>
+
+        <Rating name="vote-film" defaultValue={2.5} precision={0.5} />
+
+
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
           {film.url_imdb && (
             <Button
@@ -168,13 +192,7 @@ export default function FilmPage() {
         <Stack spacing={2}>
           {film.author && (
             <Typography variant="body1">
-              <Box
-                component="span"
-                sx={{
-                  color: theme.palette.secondary.main,
-                  fontWeight: 700,
-                }}
-              >
+              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
                 Réalisateur :
               </Box>{" "}
               {film.author}
@@ -182,26 +200,14 @@ export default function FilmPage() {
           )}
 
           {film.synopsis && (
-            <Typography
-              variant="body1"
-              sx={{
-                lineHeight: 1.9,
-                color: "text.secondary",
-              }}
-            >
+            <Typography variant="body1" sx={{ lineHeight: 1.9, color: "text.secondary" }}>
               {film.synopsis}
             </Typography>
           )}
 
           {film.projection_date && (
             <Typography variant="body1">
-              <Box
-                component="span"
-                sx={{
-                  color: theme.palette.secondary.main,
-                  fontWeight: 700,
-                }}
-              >
+              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
                 Projection :
               </Box>{" "}
               {new Date(film.projection_date).toLocaleDateString()}
@@ -210,13 +216,7 @@ export default function FilmPage() {
 
           {film.cinema && (
             <Typography variant="body1">
-              <Box
-                component="span"
-                sx={{
-                  color: theme.palette.secondary.main,
-                  fontWeight: 700,
-                }}
-              >
+              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
                 Cinéma :
               </Box>{" "}
               {film.cinema}
@@ -235,6 +235,18 @@ export default function FilmPage() {
           >
             Commentaires
           </Typography>
+
+          <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+            <input
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Ajouter un commentaire..."
+            />
+
+            <Button variant="contained" onClick={sendComment}>
+              Envoyer
+            </Button>
+          </Stack>
 
           {comments.map((post) => (
             <Comment
