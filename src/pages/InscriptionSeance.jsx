@@ -1,6 +1,6 @@
 import BoutonInscription from "./BoutonInscription";
 import ListeInscrits from "./ListeInscrits";    
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
@@ -22,7 +22,15 @@ export default function InscriptionSeance() {
   	setListe(false);
   }
   function handleClick() {
-  	console.log("ça marche aussi");
+    if (!isSuscribed) {
+         document.getElementById('boutonInscription').textContent = "S'inscrire";
+        setisSuscribed(true);
+    }
+    if (isSuscribed) {
+        document.getElementById('boutonInscription').textContent = 'Se désinscrire';
+        setisSuscribed(false);
+    }
+  	
   }
 
     return  (
