@@ -10,8 +10,8 @@ import {
   Paper,
   Stack,
   Typography,
-  Rating,
 } from "@mui/material";
+import Vote from "./Vote";
 
 import MovieIcon from "@mui/icons-material/Movie";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -53,9 +53,9 @@ export default function FilmPage() {
         setFilm(data);
       });
 
-    fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
-      .then((res) => res.json())
-      .then((data) => setComments(data));
+    // fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
+    //   .then((res) => res.json())
+    //   .then((data) => setComments(data));
   }, [id]);
 
   if (!film) {
@@ -144,8 +144,9 @@ export default function FilmPage() {
         <Stack>
           <InscriptionSeance />
         </Stack>
+        <Vote filmId={id} />
 
-        <Rating name="vote-film" defaultValue={2.5} precision={0.5} />
+        <Stack direction="row" spacing={2} mb={4} flexWrap="wrap"></Stack>
 
 
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
