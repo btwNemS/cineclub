@@ -19,6 +19,7 @@ import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
 import Comment from "../Comment";
 import DeleteMovie from "../Components/deleteMovie";
+import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
 import imdbLogo from "../images/imdb.png";
 import allocineLogo from "../images/allocine.webp";
@@ -122,13 +123,19 @@ export default function FilmPage() {
             {film.name}
           </Typography>
 
-          {film.film_genre && (
-            <Chip
-              label={film.film_genre}
-              color="secondary"
-              variant="outlined"
-            />
-          )}
+          {film.film_genre &&
+            film.film_genre
+              .split(",")
+              .map((g) => g.trim())
+              .filter(Boolean)
+              .map((genre) => (
+                <Chip
+                  key={genre}
+                  label={genre}
+                  color="secondary"
+                  variant="outlined"
+                />
+              ))}
         </Stack>
 
         <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
@@ -242,8 +249,9 @@ export default function FilmPage() {
         </Box>
 
         {user?.role === "ADMIN" && (
-          <Box sx={{ mt: 4 }}>
+          <Box sx={{ mt: 4  }}>
             <DeleteMovie id={id} />
+            <EditMovie id={id} /> 
           </Box>
         )}
       </Paper>

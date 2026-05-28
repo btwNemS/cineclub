@@ -122,7 +122,7 @@ function Layout() {
                     color: theme.palette.text.secondary,
                   }}
                 >
-                  ({user.role})
+                  {user?.role === "ADMIN" && `(Admin)`}
                 </Box>
               </Typography>
 
