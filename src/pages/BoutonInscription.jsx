@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 
-export default function BoutonInscription({ onMouseEnter, onClick, onMouseLeave }) {
+export default function BoutonInscription({ onMouseEnter, onClick, onMouseLeave, textButton }) {
     return (
         <div>
             <Button id='boutonInscription'
@@ -11,7 +11,7 @@ export default function BoutonInscription({ onMouseEnter, onClick, onMouseLeave 
                 onClick={onClick}
                 onMouseLeave={onMouseLeave}
             >
-                S'inscrire
+                {textButton}
             </Button>
 
 

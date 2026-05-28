@@ -11,7 +11,8 @@ export default function InscriptionSeance() {
   const { user } = useAuth();
   const theme = useTheme();
   const [isSuscribed, setisSuscribed] = useState(false);
-   const [liste, setListe] = useState(false);
+  const [liste, setListe] = useState(false);
+  const [buttonText, setButtonText] = useState("S'inscrire");
  
 
   function handleHover() {
@@ -23,19 +24,20 @@ export default function InscriptionSeance() {
   }
   function handleClick() {
     if (!isSuscribed) {
-         document.getElementById('boutonInscription').textContent = "S'inscrire";
-        setisSuscribed(true);
-    }
-    if (isSuscribed) {
-        document.getElementById('boutonInscription').textContent = 'Se désinscrire';
-        setisSuscribed(false);
-    }
+    setButtonText("Se désinscrire");
+    setisSuscribed(true);
+  }
+  if (isSuscribed) {
+    setButtonText("S'inscrire");
+    setisSuscribed(false);
+  }
+
   	
   }
 
     return  (
         <div>
-            <BoutonInscription onMouseEnter={handleHover} onClick={handleClick} onMouseLeave={handleHoverOut}/>
+            <BoutonInscription onMouseEnter={handleHover} onClick={handleClick} onMouseLeave={handleHoverOut} textButton={buttonText}/>
             {liste && <ListeInscrits/>}
           </div>
     )
