@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-
+import MovieCard from "../Components/cardMovie";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,6 +10,9 @@ export default function Home() {
   const [films, setFilms] = useState([]);
 
   const theme = useTheme();
+
+  const date = new Date();
+  const today = Date.now();
 
   useEffect(() => {
     fetch(`${API_URL}/films/getAll`)
@@ -99,46 +102,11 @@ export default function Home() {
 
         <div className="films-grid">
           {films
-            .filter((film) => film.status === "programmed")
+            .filter((film) => new Date(film.projection_date).getTime() > today && film.status && film.status === "programmed")
             .slice(0, 6)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
-                <div className="card">
-                  <img
-                    src={`${API_URL}/${film.url_image}`}
-                    alt={film.name}
-                    className="image"
-                  />
-
-                  <div className="card-content">
-                    <h2>{film.name}</h2>
-
-                    {film.author && (
-                      <p>
-                        <strong>Réalisateur :</strong> {film.author}
-                      </p>
-                    )}
-
-                    {film.film_genre && (
-                      <p>
-                        <strong>Genre :</strong> {film.film_genre}
-                      </p>
-                    )}
-
-                    {film.projection_date && (
-                      <p>
-                        <strong>Projection :</strong>{" "}
-                        {new Date(film.projection_date).toLocaleDateString()}
-                      </p>
-                    )}
-
-                    {film.cinema && (
-                      <p>
-                        <strong>Cinéma :</strong> {film.cinema}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <MovieCard film={film} />
               </Link>
             ))}
         </div>
@@ -168,35 +136,7 @@ export default function Home() {
             .slice(0, 3)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
-                <div className="card">
-                  <img
-                    src={`${API_URL}/${film.url_image}`}
-                    alt={film.name}
-                    className="image"
-                  />
-
-                  <div className="card-content">
-                    <h2>{film.name}</h2>
-
-                    {film.author && (
-                      <p>
-                        <strong>Réalisateur :</strong> {film.author}
-                      </p>
-                    )}
-
-                    {film.film_genre && (
-                      <p>
-                        <strong>Genre :</strong> {film.film_genre}
-                      </p>
-                    )}
-
-                    {film.cinema && (
-                      <p>
-                        <strong>Cinéma :</strong> {film.cinema}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <MovieCard film={film} />
               </Link>
             ))}
         </div>
@@ -222,40 +162,11 @@ export default function Home() {
 
         <div className="films-grid">
           {films
-            .filter((film) => film.status === "passed")
+            .filter((film) => new Date(film.projection_date).getTime() < today && film.status === "programmed")
             .slice(0, 3)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
-                <div className="card">
-                  <img
-                    src={`${API_URL}/${film.url_image}`}
-                    alt={film.name}
-                    className="image"
-                  />
-
-                  <div className="card-content">
-                    <h2>{film.name}</h2>
-
-                    {film.author && (
-                      <p>
-                        <strong>Réalisateur :</strong> {film.author}
-                      </p>
-                    )}
-
-                    {film.film_genre && (
-                      <p>
-                        <strong>Genre :</strong> {film.film_genre}
-                      </p>
-                    )}
-
-                    {film.projection_date && (
-                      <p>
-                        <strong>Projection :</strong>{" "}
-                        {new Date(film.projection_date).toLocaleDateString()}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <MovieCard film={film} />
               </Link>
             ))}
         </div>
