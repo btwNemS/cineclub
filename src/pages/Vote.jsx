@@ -74,7 +74,7 @@ export default function Vote({ filmId }) {
                 mb={2}
                 sx={{ display: 'flex', alignItems: 'center' }} // Assure l'alignement Flexbox
             >
-                <Typography variant="h6" color="text.primary" sx={{ lineHeight: 1 }}>
+                <Typography sx={{ lineHeight: 1 }}>
                     Moyenne :
                 </Typography>
                 
@@ -83,14 +83,14 @@ export default function Vote({ filmId }) {
                     <Rating value={moyenne} precision={0.5} readOnly />
                 </Box>
 
-                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1 }}>
+                <Typography  sx={{ lineHeight: 1 }}>
                     ({moyenne ? parseFloat(moyenne).toFixed(1) : 0} / 5)
                 </Typography>
             </Stack>    
 
             {/* Note de l'utilisateur  */}
             <Stack sx={{ direction: "row", alignItems: "center", spacing: 2 }}>
-                <Typography variant="body1" color="text.primary">
+                <Typography >
                     {user ? "Votre note :" : "Connectez-vous pour noter ce film :"}
                 </Typography>
                 <Rating
