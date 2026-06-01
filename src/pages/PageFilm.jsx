@@ -132,7 +132,7 @@ export default function FilmPage() {
           border: `1px solid rgba(212,175,55,0.15)`,
         }}
       >
-        <Stack direction="row" spacing={2} alignItems="center" mb={2} flexWrap="wrap">
+        <Stack direction="row" spacing={2} mb={2} sx={{ alignItems: "center", flexWrap: "wrap" }}>
           <MovieIcon sx={{ color: theme.palette.secondary.main, fontSize: 34 }} />
 
           <Typography variant="h3" sx={{ color: "text.primary" }}>
@@ -161,10 +161,7 @@ export default function FilmPage() {
         </Stack>
         <Vote filmId={id} />
 
-        <Stack direction="row" spacing={2} mb={4} flexWrap="wrap"></Stack>
-
-
-        <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
+        <Stack direction="row" spacing={2} mb={4} sx={{ flexWrap: "wrap" }}>
           {film.url_imdb && (
             <Button
               variant="outlined"

@@ -91,7 +91,7 @@ export default function AuthModal({ open, handleClose }) {
 
           {/* Champ pseudo, toujours affiché */}
           <TextField
-            label="Pseudo"
+            label="Prenom"
             variant="outlined"
             fullWidth
             required
