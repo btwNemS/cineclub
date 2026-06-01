@@ -67,13 +67,26 @@ export default function Vote({ filmId }) {
     return (
         <Box sx={{ margin: 3, padding: 2, border: "1px solid", borderColor: "divider", borderRadius: 2 }}>
             {/* Note globale (Lecture seule) */}
-            <Stack direction="row" alignItems="center" spacing={1} mb={2}>
-                <Typography variant="h6" color="text.primary">Moyenne :</Typography>
-                <Rating value={moyenne} precision={0.5} readOnly />
-                <Typography variant="body2" color="text.secondary">
+            <Stack 
+                direction="row" 
+                alignItems="center" 
+                spacing={1} 
+                mb={2}
+                sx={{ display: 'flex', alignItems: 'center' }} // Assure l'alignement Flexbox
+            >
+                <Typography variant="h6" color="text.primary" sx={{ lineHeight: 1 }}>
+                    Moyenne :
+                </Typography>
+                
+                {/* On enveloppe le Rating pour neutraliser les éventuels comportements CSS block */}
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <Rating value={moyenne} precision={0.5} readOnly />
+                </Box>
+
+                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1 }}>
                     ({moyenne ? parseFloat(moyenne).toFixed(1) : 0} / 5)
                 </Typography>
-            </Stack>
+            </Stack>    
 
             {/* Note de l'utilisateur  */}
             <Stack direction="row" alignItems="center" spacing={2}>
