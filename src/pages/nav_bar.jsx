@@ -63,6 +63,7 @@ function Layout() {
             { to: "/filmPassed", label: "Films passés" },
             { to: "/filmProgrammed", label: "Films prévus" },
             { to: "/filmSuggested", label: "Films suggérés" },
+            { to: "/Concours", label: "Concours" },
           ].map((item) => (
             <Box component="li" key={item.to}>
               <Link to={item.to} style={navLinkStyle}>
