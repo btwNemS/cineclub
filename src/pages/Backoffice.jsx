@@ -10,7 +10,6 @@ export default function Backoffice() {
   // 'view' contrôle l'affichage de la zone : "menu", "addMovie", ou "competition"
   const [view, setView] = useState("menu");
 
-  // true -> "Modifier une compet" | false -> "Créer une compétition"
   const [hasCompetition, setHasCompetition] = useState(false);
 
   return (
@@ -31,16 +30,14 @@ export default function Backoffice() {
       {user?.role === "ADMIN" && (
         <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* Titre affiché uniquement lorsqu'on est sur le menu des boutons */}
           {view === "menu" && (
             <Typography variant="h4" mb={6} sx={{ fontWeight: 'bold', color: 'text.primary' }}>
               Panneau Administration
             </Typography>
           )}
 
-          {/* RENDU DES DEUX GROS BOUTONS STYLISÉS */}
           {view === "menu" && (
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={4} justifyContent="center" alignItems="center">
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={4} sx={{ justifyContent: "center", alignItems: "center" }}>
               
               {/* Bouton 1 : Ajouter un film */}
               <Button
