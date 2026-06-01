@@ -67,20 +67,6 @@ export default function AddMovie() {
   return (
     <Box sx={{ display: "flex", width: "80%", justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 4, margin: "auto", marginBottom: 6 , marginTop: 6}}>
       <Typography variant="h3">Ajouter un film</Typography>
-      {feedback && (
-        <Alert
-          severity={feedback.severity}
-          onClose={() => setFeedback(null)}
-          sx={{ width: "70%" }}
-        >
-          <AlertTitle>
-            {feedback.severity === "success" && "Succès"}
-            {feedback.severity === "error" && "Erreur"}
-            {feedback.severity === "warning" && "Attention"}
-          </AlertTitle>
-          {feedback.message}
-        </Alert>
-      )}
       <Box
         component="form"
         onSubmit={postFilm}
@@ -150,6 +136,20 @@ export default function AddMovie() {
           Ajouter
         </Button>
       </Box>
+      {feedback && (
+        <Alert
+          severity={feedback.severity}
+          onClose={() => setFeedback(null)}
+          sx={{ width: "70%" }}
+        >
+          <AlertTitle>
+            {feedback.severity === "success" && "Succès"}
+            {feedback.severity === "error" && "Erreur"}
+            {feedback.severity === "warning" && "Attention"}
+          </AlertTitle>
+          {feedback.message}
+        </Alert>
+      )}
     </Box>
   );
 }
