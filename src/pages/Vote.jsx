@@ -65,9 +65,9 @@ export default function Vote({ filmId }) {
     }
 
     return (
-        <Box sx={{ margin: 3, padding: 2, border: "1px solid", borderColor: "divider", borderRadius: 2 }}>
+        <Box sx={{ margin: 3, padding: 2, border: "1px solid", borderColor: "divider", borderRadius: 2, display: "flex", flexDirection: "row", alignItems: "center", spacing: 1, mb: 2 }}>
             {/* Note globale (Lecture seule) */}
-            <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+            <Stack >
                 <Typography variant="h6" color="text.primary">Moyenne :</Typography>
                 <Rating value={moyenne} precision={0.5} readOnly />
                 <Typography variant="body2" color="text.secondary">
@@ -76,7 +76,7 @@ export default function Vote({ filmId }) {
             </Stack>
 
             {/* Note de l'utilisateur  */}
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack sx={{ direction: "row", alignItems: "center", spacing: 2 }}>
                 <Typography variant="body1" color="text.primary">
                     {user ? "Votre note :" : "Connectez-vous pour noter ce film :"}
                 </Typography>
