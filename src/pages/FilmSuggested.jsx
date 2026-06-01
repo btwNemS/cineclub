@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import CardMovie from "../Components/cardMovie";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmSuggested() {
   const [films, setFilms] = useState([]);
 
-  useEffect(() => {
+  const refreshFilms = () => {
     fetch(`${API_URL}/films/getAll`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Erreur lors du chargement des films");
-        }
-
+        if (!res.ok) throw new Error("Erreur de chargement");
         return res.json();
       })
-      .then((data) => {
-        setFilms(data);
-      });
+      .then((data) => setFilms(data))
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    refreshFilms();
   }, []);
 
   return (
@@ -28,44 +28,12 @@ export default function FilmSuggested() {
         {films
           .filter((film) => film.status === "suggested")
           .map((film) => (
-            <Link to={`/film/${film.id}`} key={film.id}>
-              <div className="card">
-                <img
-                  src={`${API_URL}/${film.url_image}`}
-                  alt={film.name}
-                  className="image"
-                />
-
-                <div className="card-content">
-                  <h2>{film.name}</h2>
-
-                  {film.author && (
-                    <p>
-                      <strong>Réalisateur :</strong> {film.author}
-                    </p>
-                  )}
-
-                  {film.film_genre && (
-                    <p>
-                      <strong>Genre :</strong> {film.film_genre}
-                    </p>
-                  )}
-
-                  {film.projection_date && (
-                    <p>
-                      <strong>Projection :</strong>{" "}
-                      {new Date(film.projection_date).toLocaleDateString()}
-                    </p>
-                  )}
-
-                  {film.cinema && (
-                    <p>
-                      <strong>Cinéma :</strong> {film.cinema}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </Link>
+            // Plus de composant <Link> encombrant ici ! C'est CardMovie qui gère ses zones.
+            <CardMovie 
+              key={film.id} 
+              film={film} 
+              onVoteSuccess={refreshFilms} 
+            />
           ))}
       </div>
     </div>
