@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import InscriptionSeance from "./InscriptionSeance";
+import InscriptionSeance from "../Components/InscriptionSeance";
 
 import {
   Box,
