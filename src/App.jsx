@@ -6,6 +6,7 @@ import theme from "./utils/theme";
 
 import Comment from "./Comment";
 import Backoffice from "./pages/Backoffice";
+import Concours from "./pages/Concours";
 import FilmPassed from "./pages/FilmPassed";
 import FilmProgrammed from "./pages/FilmProgrammed";
 import FilmSuggested from "./pages/FilmSuggested";
@@ -26,6 +27,7 @@ function App() {
             <Route path="filmPassed" element={<FilmPassed />} />
             <Route path="filmProgrammed" element={<FilmProgrammed />} />
             <Route path="filmSuggested" element={<FilmSuggested />} />
+            <Route path="Concours" element={<Concours />} />
             <Route path="*" element={<NoPage />} />
             <Route path="backoffice" element={<Backoffice />} />
             <Route path="testComment" element={<Comment />} />
