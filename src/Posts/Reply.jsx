@@ -18,6 +18,7 @@ export default function Reply({ filmId, postId, getRenderData }) {
             body: JSON.stringify({ content: content, film_id: filmId, answersTo: postId })
         });
 
+        getRenderData();
         setContent("");
 
     };
@@ -32,7 +33,7 @@ export default function Reply({ filmId, postId, getRenderData }) {
             />
 
             <Button
-                size="small" variant="outline" color="primary"
+                size="small" color="primary"
                 sx={{
                     transition: "0.2s",
                     "&:hover": {

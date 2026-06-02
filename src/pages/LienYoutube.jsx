@@ -46,20 +46,6 @@ export default function YouTubeEmbed({ url }) {
         style={{ width: "100%", height: "100%", border: 0, display: "block" }}
         title="YouTube video"
       />
-
-      <button
-        onClick={() => setMuted((m) => !m)}
-        style={{
-          position: "absolute",
-          bottom: 20,
-          right: 20,
-          padding: "10px 15px",
-          zIndex: 10,
-          cursor: "pointer",
-        }}
-      >
-        {muted ? "🔊 Activer le son" : "🔇 Couper le son"}
-      </button>
     </div>
   );
 }

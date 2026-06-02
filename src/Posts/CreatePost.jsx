@@ -20,6 +20,7 @@ export default function CreatePost({ filmId, getRenderData }) {
                 answersTo: null 
             })
         });
+        getRenderData();
 
         setContent("");
     };
@@ -34,7 +35,7 @@ export default function CreatePost({ filmId, getRenderData }) {
             />
 
             <Button
-                size="small" variant="outline" color="primary"
+                size="small" color="primary"
                 sx={{
                     transition: "0.2s",
                     "&:hover": {

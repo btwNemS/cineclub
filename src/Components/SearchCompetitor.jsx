@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// On met une Majuscule ici : SearchCompetitor
-export default function SearchCompetitor() {
+export default function SearchCompetitor({ onSelect }) {
   const [films, setFilms] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
   const [selectedFilm, setSelectedFilm] = useState(null);
@@ -17,6 +16,15 @@ export default function SearchCompetitor() {
       })
       .catch(console.error);
   }, []);
+
+  const handleSelect = (film) => {
+    setSelectedFilm(film);
+    setOpenSearch(false);
+
+    if (onSelect) {
+      onSelect(film);
+    }
+  };
 
   return (
     <Box
@@ -38,13 +46,10 @@ export default function SearchCompetitor() {
           getOptionLabel={(option) => option.name}
           onChange={(_, value) => {
             if (value) {
-              setSelectedFilm(value);
-              setOpenSearch(false);
+              handleSelect(value);
             }
           }}
-          sx={{
-            width: 250,
-          }}
+          sx={{ width: 250 }}
           renderInput={(params) => (
             <TextField {...params} placeholder="Choisir un film..." autoFocus />
           )}
