@@ -4,7 +4,8 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import Rating from "@mui/material/Rating";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-
+import { Typography } from "@mui/material";
+import DynamicText from "../Components/dymanicText";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const StyledRating = styled(Rating)(({ theme }) => ({
@@ -66,7 +67,21 @@ export default function Concours() {
 
   return (
     <div className="container">
-      <h1 className="title">Films du concours</h1>
+      <Typography
+        variant="h6"
+        sx={{
+          maxWidth: "700px",
+          margin: "0 auto",
+          marginBottom: "60px",
+
+          color: "text.secondary",
+
+          textAlign: "center",
+          lineHeight: 1.8,
+        }}
+      >
+        <DynamicText role="competition_intro" />
+      </Typography>
 
       <div className="films-grid">
         {films.map((film) => (
@@ -77,7 +92,7 @@ export default function Concours() {
               className="film-image"
             />
 
-            <h3>{film.name}</h3>
+            <Typography variant="h3">{film.name}</Typography>
 
             <RadioGroupRating />
           </div>

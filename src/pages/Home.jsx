@@ -63,7 +63,7 @@ export default function Home() {
           mb: 3,
         }}
       >
-       "Bienvenue au CinéClub de l'IUT !"
+       Bienvenue au CinéClub de l'IUT !
       </Typography>
 
       <Typography
