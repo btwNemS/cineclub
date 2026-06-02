@@ -45,8 +45,8 @@ export default function Backoffice() {
                 color="primary"
                 onClick={() => setView("addMovie")}
                 sx={{
-                  width: "280px",
-                  height: "140px",
+                  width: "360px",
+                  height: "280px",
                   fontSize: "1.2rem",
                   fontWeight: "bold",
                   borderRadius: "16px",
@@ -63,8 +63,8 @@ export default function Backoffice() {
                 color="secondary"
                 onClick={() => setView("competition")}
                 sx={{
-                  width: "280px",
-                  height: "140px",
+                  width: "360px",
+                  height: "280px",
                   fontSize: "1.2rem",
                   fontWeight: "bold",
                   borderRadius: "16px",
