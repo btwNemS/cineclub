@@ -19,7 +19,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "@mui/material/styles";
 
 import { useAuth } from "../Authentification";
-import Comment from "../Comment";
+import Posts from "../Posts/Posts";
 import DeleteMovie from "../Components/deleteMovie";
 import EditMovie from "../Components/editMovie";
 import YouTubeEmbed from "./LienYoutube";
@@ -58,33 +58,6 @@ export default function FilmPage() {
     //   .then((res) => res.json())
     //   .then((data) => setComments(data));
   }, [id]);
-
-  const sendComment = async () => {
-    if (!text.trim()) return;
-
-    const res = await fetch(
-      "https://rasantacruz.fr/cineclub/posts/protected/create",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          content: text,
-          film_id: id,
-          answersTo: null,
-        }),
-      }
-    );
-
-    const newComment = await res.json();
-
-    setComments((prev) => [
-      ...prev,
-      { ...newComment, children: [] },
-    ]);
-
-    setText("");
-  };
 
   if (!film) {
     return (
@@ -236,29 +209,8 @@ export default function FilmPage() {
             Commentaires
           </Typography>
 
-          <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-            <input
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Ajouter un commentaire..."
-            />
-
-            <Button variant="contained" onClick={sendComment}>
-              Envoyer
-            </Button>
-          </Stack>
-
-          {comments.map((post) => (
-            <Comment
-              key={post.id}
-              content={post.content}
-              children={post.children}
-              level={0}
-              post={post}
-              filmId={id}
-              setComments={setComments}
-            />
-          ))}
+         <Posts filmId={id} />
+         
         </Box>
 
         {user?.role === "ADMIN" && (
