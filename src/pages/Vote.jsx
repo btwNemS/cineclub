@@ -69,7 +69,6 @@ export default function Vote({ filmId }) {
             {/* Note globale (Lecture seule) */}
             <Stack 
                 direction="row" 
-                alignItems="center" 
                 spacing={1} 
                 mb={2}
                 sx={{ display: 'flex', alignItems: 'center' }} // Assure l'alignement Flexbox
@@ -89,7 +88,7 @@ export default function Vote({ filmId }) {
             </Stack>    
 
             {/* Note de l'utilisateur  */}
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack direction="row" sx={{ alignItems: "center" }} spacing={2}>
                 <Typography variant="body1" color="text.primary">
                     {user ? "Votre note :" : "Connectez-vous pour noter ce film :"}
                 </Typography>
