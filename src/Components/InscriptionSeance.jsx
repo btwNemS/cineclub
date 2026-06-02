@@ -10,11 +10,9 @@ export default function InscriptionSeance() {
   const { id } = useParams();
   const { user } = useAuth();
   console.log(user);
-  const theme = useTheme();
   const [isSuscribed, setisSuscribed] = useState(false);
   const [liste, setListe] = useState(false);
-  const [hovered, setHovered] = useState(false); 
-  const [buttonText, setButtonText] = useState("S'inscrire");
+  const [hovered, setHovered] = useState(false);
 
   const refreshListe = async () => {
     try {
@@ -45,8 +43,7 @@ export default function InscriptionSeance() {
   return (
     <div>
       <BoutonInscription
-        setHovered={setHovered} 
-        textButton={buttonText}
+        setHovered={setHovered}
         isSuscribed={isSuscribed}
         refreshListe={refreshListe}
         id={id}
