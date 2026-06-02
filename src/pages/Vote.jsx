@@ -90,7 +90,7 @@ export default function Vote({ filmId }) {
 
             {/* Note de l'utilisateur  */}
             <Stack sx={{ direction: "row", alignItems: "center", spacing: 2 }}>
-                <Typography variant="body1" color="text.primary">
+                <Typography >
                     {user ? "Votre note :" : "Connectez-vous pour noter ce film :"}
                 </Typography>
                 <Rating
