@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TextField, Box, Button } from "@mui/material";
 
-export default function Reply({ filmId, postId, getRenderData, onClose }) {
+export default function Reply({ filmId, postId, getRenderData }) {
 
     const [content, setContent] = useState("");
 
@@ -44,7 +44,6 @@ export default function Reply({ filmId, postId, getRenderData, onClose }) {
                 onClick={async () => {
                     await addReply();
                     getRenderData();
-                    onClose();
                 }}
                 disabled={!content.trim()}
             >

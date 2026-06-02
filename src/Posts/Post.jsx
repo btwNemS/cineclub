@@ -48,7 +48,6 @@ export default function Post({ content, children, level = 1, filmId, postId, get
                             filmId={filmId}
                             postId={postId}
                             getRenderData={getRenderData}
-                            onClose={() => setShowInput(false)}
                         />
                     </CardContent>
                 )}
