@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TextField, Box, Button } from "@mui/material";
 
-export default function Reply({ filmId, postId, getRenderData }) {
+export default function Reply({ filmId, postId, getRenderData, onClose }) {
 
     const [content, setContent] = useState("");
 
@@ -32,7 +32,7 @@ export default function Reply({ filmId, postId, getRenderData }) {
             />
 
             <Button
-                size="small" variant="outline" color="primary"
+                size="small" color="primary"
                 sx={{
                     transition: "0.2s",
                     "&:hover": {
@@ -44,6 +44,7 @@ export default function Reply({ filmId, postId, getRenderData }) {
                 onClick={async () => {
                     await addReply();
                     getRenderData();
+                    onClose();
                 }}
                 disabled={!content.trim()}
             >
