@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Typography, Box, Button, Stack } from '@mui/material';
+import React, { useState } from "react";
+import { Typography, Box, Button, Stack } from "@mui/material";
 import AddMovie from "../Components/addMovie";
 // import AddCompetition from "../Components/AddCompetition"; // Ton composant concours page blanche
 import { useAuth } from "../Authentification";
@@ -28,17 +28,30 @@ export default function Backoffice() {
 
       {/* Si l'utilisateur connecté est ADMIN */}
       {user?.role === "ADMIN" && (
-        <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          
+        <Box
+          sx={{
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           {view === "menu" && (
-            <Typography variant="h4" mb={6} sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+            <Typography
+              variant="h4"
+              mb={6}
+              sx={{ fontWeight: "bold", color: "text.primary" }}
+            >
               Panneau Administration
             </Typography>
           )}
 
           {view === "menu" && (
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={4} sx={{ justifyContent: "center", alignItems: "center" }}>
-              
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={4}
+              sx={{ justifyContent: "center", alignItems: "center" }}
+            >
               {/* Bouton 1 : Ajouter un film */}
               <Button
                 variant="contained"
@@ -51,7 +64,7 @@ export default function Backoffice() {
                   fontWeight: "bold",
                   borderRadius: "16px",
                   textTransform: "none",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.15)"
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
                 }}
               >
                 Ajouter un film
@@ -69,19 +82,43 @@ export default function Backoffice() {
                   fontWeight: "bold",
                   borderRadius: "16px",
                   textTransform: "none",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.15)"
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
                 }}
               >
-                {hasCompetition ? "Modifier une compet" : "Créer une compétition"}
+                {hasCompetition
+                  ? "Modifier une compétition"
+                  : "Créer une compétition"}
               </Button>
 
+              {/*Modifier les textes du site*/}
+
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setView("Textes")}
+                sx={{
+                  width: "360px",
+                  height: "280px",
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                  borderRadius: "16px",
+                  textTransform: "none",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+                }}
+              >
+                Modifier les textes du site
+              </Button>
             </Stack>
           )}
 
           {/* VUE 1 : Affichage du composant d'ajout de film */}
           {view === "addMovie" && (
             <Box sx={{ width: "100%" }}>
-              <Button variant="outlined" onClick={() => setView("menu")} sx={{ mb: 3 }}>
+              <Button
+                variant="outlined"
+                onClick={() => setView("menu")}
+                sx={{ mb: 3 }}
+              >
                 ← Retour au menu admin
               </Button>
               <AddMovie />
@@ -92,7 +129,19 @@ export default function Backoffice() {
           {view === "competition" && (
             <AddCompetition onBack={() => setView("menu")} />
           )}
-
+          {/* VUE 3 : Affichage du composant de modification des textes (Page blanche) */}
+          {view === "Textes" && (
+            <Box sx={{ width: "100%" }}>
+              <Button
+                variant="outlined"
+                onClick={() => setView("menu")}
+                sx={{ mb: 3 }}
+              >
+                ← Retour au menu admin
+              </Button>
+              <ModifyTexts />
+            </Box>
+          )}
         </Box>
       )}
     </>
