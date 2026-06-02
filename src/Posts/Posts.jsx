@@ -1,9 +1,48 @@
-export default function Posts({filmId}) {
-    async function getPosts() {
-        const url = import.meta.env.VITE_API_URL+'/posts/getPostsTreeByFilmId/'+filmId;
-        console.log(url);
-    }
+import { useState, useEffect } from "react";
+import Post from "./Post";
+import CreatePost from "./CreatePost";
+
+export default function Posts({ filmId }) {
+    const [posts, setPosts] = useState([]);
+
+    const getRenderData = async () => {
+        const response = await fetch(import.meta.env.VITE_API_URL + "/posts/getPostsTreeByFilmId/" + filmId);
+
+        const data = await response.json();
+        setPosts(data);
+    };
+
+    useEffect(() => {
+        const getPosts = async function getPosts() {
+            const url = import.meta.env.VITE_API_URL + "/posts/getPostsTreeByFilmId/" + filmId;
+
+            console.log(url);
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            console.log(data);
+            setPosts(data);
+        }
+
+        getPosts();
+    }, [filmId]);
+
     return (
-        <p>Test</p>
-    )
+        <>
+            <CreatePost
+                filmId={filmId}
+                getRenderData={getRenderData}
+            />
+            {posts.map((post) => (
+                <Post
+                    key={post.id}
+                    content={post.content}
+                    children={post.children}
+                    filmId={filmId}
+                    postId={post.id}
+                    getRenderData={getRenderData} />
+            ))}
+        </>
+    );
 }
