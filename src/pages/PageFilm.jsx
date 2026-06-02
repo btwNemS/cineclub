@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import InscriptionSeance from "./InscriptionSeance";
+import InscriptionSeance from "../Components/InscriptionSeance";
 
 import {
   Box,
@@ -132,7 +132,7 @@ export default function FilmPage() {
           border: `1px solid rgba(212,175,55,0.15)`,
         }}
       >
-        <Stack direction="row" spacing={2} alignItems="center" mb={2} flexWrap="wrap">
+        <Stack direction="row" spacing={2} sx= {{alignItems:"center", mb:2, flexWrap:"wrap"}}>
           <MovieIcon sx={{ color: theme.palette.secondary.main, fontSize: 34 }} />
 
           <Typography variant="h3" sx={{ color: "text.primary" }}>
