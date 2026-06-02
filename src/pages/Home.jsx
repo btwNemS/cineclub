@@ -3,6 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import MovieCard from "../Components/cardMovie";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DynamicText from "../Components/dymanicText";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -28,7 +29,7 @@ export default function Home() {
       })
       .catch((err) => console.error(err));
   }, []);
-
+  
   const sectionTitleStyle = {
     fontWeight: 700,
     color: theme.palette.secondary.main,
@@ -62,7 +63,7 @@ export default function Home() {
           mb: 3,
         }}
       >
-        Bienvenue au CinéClub
+       Bienvenue au CinéClub de l'IUT !
       </Typography>
 
       <Typography
@@ -78,8 +79,7 @@ export default function Home() {
           lineHeight: 1.8,
         }}
       >
-        Envie de regarder des films avec le CinéClub de l'IUT ? Nous proposons
-        plusieurs séances de cinéma entre étudiants.
+        <DynamicText role="home_intro" />
       </Typography>
 
       {/* FILMS PRÉVUS */}

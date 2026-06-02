@@ -1,32 +1,34 @@
 import { useState } from "react";
 import { TextField, Box, Button } from "@mui/material";
 
-export default function Reply({ filmId, postId, getRenderData }) {
+export default function CreatePost({ filmId, getRenderData }) {
 
     const [content, setContent] = useState("");
 
-    const addReply = async () => {
+    const addPost = async () => {
         if (!content.trim()) return;
 
         const url = import.meta.env.VITE_API_URL + "/posts/protected/create";
-        console.log({ content: content, film_id: filmId, answersTo: postId });
 
         const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: JSON.stringify({ content: content, film_id: filmId, answersTo: postId })
+            body: JSON.stringify({
+                content: content,
+                film_id: filmId,
+                answersTo: null 
+            })
         });
 
         setContent("");
-
     };
 
     return (
-        <Box >
+        <Box sx={{ mb: 2 }}>
             <TextField
                 size="small"
-                placeholder="Votre réponse..."
+                placeholder="Commenter..."
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
             />
@@ -42,7 +44,7 @@ export default function Reply({ filmId, postId, getRenderData }) {
                     },
                 }}
                 onClick={async () => {
-                    await addReply();
+                    await addPost();
                     getRenderData();
                 }}
                 disabled={!content.trim()}
@@ -50,6 +52,5 @@ export default function Reply({ filmId, postId, getRenderData }) {
                 Envoyer
             </Button>
         </Box>
-
-    )
+    );
 }
