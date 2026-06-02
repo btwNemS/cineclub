@@ -19,14 +19,10 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "@mui/material/styles";
 
 import { useAuth } from "../Authentification";
-import Posts from "../Posts/Posts";
 import DeleteMovie from "../Components/deleteMovie";
 import EditMovie from "../Components/editMovie";
+import Posts from "../Posts/Posts";
 import YouTubeEmbed from "./LienYoutube";
-import imdbLogo from "../images/imdb.png";
-import allocineLogo from "../images/allocine.webp";
-import { CenterFocusStrong } from "@mui/icons-material";
-
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -105,23 +101,26 @@ export default function FilmPage() {
           border: `1px solid rgba(212,175,55,0.15)`,
         }}
       >
-
-        <Stack direction="row" spacing={2} mb={2} sx={{ alignItems: "center", flexWrap: "wrap" }}>
-
-          <MovieIcon sx={{ color: theme.palette.secondary.main, fontSize: 34 }} />
+        <Stack
+          direction="row"
+          spacing={2}
+          mb={2}
+          sx={{ alignItems: "center", flexWrap: "wrap" }}
+        >
+          <MovieIcon
+            sx={{ color: theme.palette.secondary.main, fontSize: 34 }}
+          />
 
           <Typography variant="h3" sx={{ color: "text.primary" }}>
             {film.name}
           </Typography>
 
-          {film.film_genre && (
-            <Chip label={film.film_genre} color="secondary" variant="outlined" />
-          )}
           {film.film_genre &&
             film.film_genre
               .split(",")
               .map((g) => g.trim())
               .filter(Boolean)
+              .filter((genre) => genre !== "concours")
               .map((genre) => (
                 <Chip
                   key={genre}
@@ -165,7 +164,10 @@ export default function FilmPage() {
         <Stack spacing={2}>
           {film.author && (
             <Typography variant="body1">
-              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
+              <Box
+                component="span"
+                sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}
+              >
                 Réalisateur :
               </Box>{" "}
               {film.author}
@@ -173,14 +175,20 @@ export default function FilmPage() {
           )}
 
           {film.synopsis && (
-            <Typography variant="body1" sx={{ lineHeight: 1.9, color: "text.secondary" }}>
+            <Typography
+              variant="body1"
+              sx={{ lineHeight: 1.9, color: "text.secondary" }}
+            >
               {film.synopsis}
             </Typography>
           )}
 
           {film.projection_date && (
             <Typography variant="body1">
-              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
+              <Box
+                component="span"
+                sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}
+              >
                 Projection :
               </Box>{" "}
               {new Date(film.projection_date).toLocaleDateString()}
@@ -189,7 +197,10 @@ export default function FilmPage() {
 
           {film.cinema && (
             <Typography variant="body1">
-              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
+              <Box
+                component="span"
+                sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}
+              >
                 Cinéma :
               </Box>{" "}
               {film.cinema}
@@ -209,14 +220,13 @@ export default function FilmPage() {
             Commentaires
           </Typography>
 
-         <Posts filmId={id} />
-         
+          <Posts filmId={id} />
         </Box>
 
         {user?.role === "ADMIN" && (
-          <Box sx={{ mt: 4  }}>
+          <Box sx={{ mt: 4 }}>
             <DeleteMovie id={id} />
-            <EditMovie id={id} /> 
+            <EditMovie id={id} />
           </Box>
         )}
       </Paper>
