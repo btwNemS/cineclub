@@ -44,5 +44,14 @@ function RadioGroupRating() {
 }
 
 export default function Concours() {
-  return <RadioGroupRating />;
+  return (
+    <div className="container">
+      <h1 className="title">Films prévus</h1>
+      <div className="films-grid">
+        <RadioGroupRating />
+        <RadioGroupRating />
+        <RadioGroupRating />
+      </div>{" "}
+    </div>
+  );
 }
