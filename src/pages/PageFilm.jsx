@@ -132,11 +132,9 @@ export default function FilmPage() {
           border: `1px solid rgba(212,175,55,0.15)`,
         }}
       >
-<<<<<<< HEAD
-        <Stack direction="row" spacing={2} sx= {{alignItems:"center", mb:2, flexWrap:"wrap"}}>
-=======
+
         <Stack direction="row" spacing={2} mb={2} sx={{ alignItems: "center", flexWrap: "wrap" }}>
->>>>>>> b90cc76d0866593e0369edacbc359a10087e649d
+
           <MovieIcon sx={{ color: theme.palette.secondary.main, fontSize: 34 }} />
 
           <Typography variant="h3" sx={{ color: "text.primary" }}>
