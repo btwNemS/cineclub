@@ -1,14 +1,10 @@
-import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import { useAuth } from "../Authentification";
 import Divider from '@mui/material/Divider';
 
-export default function ListeInscrits({liste, hovered}) {
-  const { id } = useParams();
-  const { user } = useAuth();
+export default function ListeInscrits({ liste, hovered }) {
   const theme = useTheme();
   const opacity = hovered ? 1 : 0;
-  
+
   const style = {
     backgroundColor: theme.palette.background.paper,
     opacity: opacity,

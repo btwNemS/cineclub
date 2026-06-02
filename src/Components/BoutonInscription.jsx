@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import { useEffect } from "react";
 
 export default function BoutonInscription({
   refreshListe,
@@ -29,15 +28,11 @@ export default function BoutonInscription({
   };
 
   function handleHover() {
-
     setHovered(true);
-
   }
 
   function handleHoverOut() {
-
     setHovered(false);
-
   }
 
   return (
