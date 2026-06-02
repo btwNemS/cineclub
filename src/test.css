@@ -189,3 +189,13 @@ a {
 
   display: block;
 }
+
+
+#listeInscrits{
+  position: absolute;
+}
+
+#inscriptionParent{
+  position: relative;
+}
+

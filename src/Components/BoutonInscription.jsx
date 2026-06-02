@@ -6,6 +6,7 @@ export default function BoutonInscription({
   isSuscribed,
   id,
   API_URL,
+  setHovered,
 }) {
   const handleClick = async () => {
     try {
@@ -27,18 +28,27 @@ export default function BoutonInscription({
     }
   };
 
-  // useEffect(() => {
-  //   handleClick();
-  // }, [isSuscribed]);
+  function handleHover() {
+
+    setHovered(true);
+
+  }
+
+  function handleHoverOut() {
+
+    setHovered(false);
+
+  }
 
   return (
     <div>
       <Button
         id="boutonInscription"
         variant="outlined"
-        color="secondary"        
+        color="secondary"
         onClick={handleClick}
-        
+        onMouseEnter={handleHover}
+        onMouseLeave={handleHoverOut}
       >
         {isSuscribed ? "Se désinscrire" : "S'inscrire"}
       </Button>

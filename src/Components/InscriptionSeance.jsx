@@ -13,8 +13,9 @@ export default function InscriptionSeance() {
   const theme = useTheme();
   const [isSuscribed, setisSuscribed] = useState(false);
   const [liste, setListe] = useState(false);
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState(false); 
   const [buttonText, setButtonText] = useState("S'inscrire");
+
   const refreshListe = async () => {
     try {
       const response = await fetch(
@@ -27,7 +28,6 @@ export default function InscriptionSeance() {
       const pseudoList = data.map((inscrit) => inscrit.pseudo);
       console.log(pseudoList);
       if (pseudoList.includes(user.pseudo)) {
-        // setButtonText("Se désinscrire");
         setisSuscribed(true);
       }
       else {
@@ -42,30 +42,18 @@ export default function InscriptionSeance() {
     refreshListe();
   }, []);
 
-  function handleHover() {
-    setHovered(true);
-  }
-
-  function handleHoverOut() {
-    setHovered(false);
-  }
-
-
   return (
     <div>
       <BoutonInscription
-        onMouseEnter={handleHover}
-
-        onMouseLeave={handleHoverOut}
+        setHovered={setHovered} 
         textButton={buttonText}
         isSuscribed={isSuscribed}
         refreshListe={refreshListe}
         id={id}
         API_URL={API_URL}
-
       />
       {liste && (
-        <ListeInscrits liste={liste}  hovered={hovered} />
+        <ListeInscrits liste={liste} hovered={hovered} />
       )}
     </div>
   );
