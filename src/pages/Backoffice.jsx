@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Typography, Box, Button, Stack } from "@mui/material";
 import AddMovie from "../Components/addMovie";
-// import AddCompetition from "../Components/AddCompetition"; // Ton composant concours page blanche
+import AddCompetition from "../Components/addCompetition";
+import ModifyText from "../Components/modifyTexts";
 import { useAuth } from "../Authentification";
 
 export default function Backoffice() {
