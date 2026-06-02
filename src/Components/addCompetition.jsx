@@ -1,4 +1,6 @@
 import { useState } from 'react';
+// IMPORT CORRIGÉ : Pas d'accolades car c'est un "export default", et Majuscule
+import SearchCompetitor from './searchCompetitor'; 
 import { Typography, Box, Button, Stack, Paper } from '@mui/material';
 
 export default function AddCompetition() {
@@ -9,33 +11,29 @@ export default function AddCompetition() {
       </Typography>
       
       <Stack spacing={4}>
-        
         <Stack direction="row" spacing={2}>
-          {/* On crée un tableau de 5 éléments pour éviter de copier/coller 5 fois le même code */}
           {[...Array(5)].map((_, index) => (
             <Paper
               key={index}
-              elevation={2} // Ajoute une légère ombre
+              elevation={2}
               sx={{
                 width: 300,
-                aspectRatio: 9 / 16,
+                aspectRatio: '9/16', // J'ai mis 9/16 entre guillemets, c'est plus sûr en CSS in JS
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '2rem',    // Taille du "+"
-                cursor: 'pointer',   // Curseur cliquable
                 transition: '0.2s',
                 '&:hover': {
-                  backgroundColor: '#f5f5f5', // Effet au survol
+                  backgroundColor: '#f5f5f5',
                 }
               }}
             >
-              <Button>+</Button>
+              {/* UTILISATION CORRIGÉE : Majuscule et balise auto-fermante */}
+              <SearchCompetitor />
             </Paper>
           ))}
         </Stack>
 
-        {/* Bouton Enregistrer */}
         <Box>
           <Button variant="contained" color="primary">
             Enregistrer

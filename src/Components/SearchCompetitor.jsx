@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function ConcoursFilmSelector() {
+// On met une Majuscule ici : SearchCompetitor
+export default function SearchCompetitor() {
   const [films, setFilms] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
   const [selectedFilm, setSelectedFilm] = useState(null);
@@ -45,7 +46,7 @@ export default function ConcoursFilmSelector() {
             width: 250,
           }}
           renderInput={(params) => (
-            <TextField {...params} placeholder="Choisir un film..." />
+            <TextField {...params} placeholder="Choisir un film..." autoFocus />
           )}
         />
       ) : (
