@@ -23,6 +23,10 @@ const ROLES = [
   { role: "competition_intro", label: "Présentation de la page compétition" },
 ];
 
+// Vrai si le HTML ne contient aucun texte visible (ex. "" ou "<p><br></p>").
+const isBlankHtml = (html) =>
+  !html || html.replace(/<[^>]*>/g, "").replace(/\s| /g, "") === "";
+
 const ModifyText = () => {
   const [texts, setTexts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,22 +78,33 @@ const ModifyText = () => {
   };
 
   const save = async () => {
+    if (isBlankHtml(draft)) {
+      setFeedback({
+        severity: "error",
+        message: "Le contenu ne peut pas être vide.",
+      });
+      return;
+    }
     try {
       setSaving(true);
-      const res = await fetch(
-        `${API_URL}/site_texts/protected/upsert/${selected.role}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ content: draft }),
-        }
-      );
+      const res = await fetch(`${API_URL}/site_texts/protected/upsert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ role: selected.role, content: draft }),
+      });
       if (res.status === 401 || res.status === 403) {
         setFeedback({
           severity: "error",
           message:
             "Accès refusé : session expirée ou droits insuffisants. Reconnectez-vous en tant qu'administrateur.",
+        });
+        return;
+      }
+      if (res.status === 400) {
+        setFeedback({
+          severity: "error",
+          message: "Contenu manquant ou invalide : le texte n'a pas été enregistré.",
         });
         return;
       }

@@ -2,7 +2,7 @@ import { createContext, useState, useContext } from 'react';
 
 // Création d'un contexte d'authentification pour partager l'état utilisateur dans l'app
 const AuthContext = createContext();
-const API_URL = "https://rasantacruz.fr/cineclub";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Fournisseur du contexte d'authentification
 export const AuthProvider = ({ children }) => {

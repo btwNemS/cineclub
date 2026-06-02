@@ -73,12 +73,12 @@ function Toolbar() {
     <Stack
       direction="row"
       spacing={0.5}
-      alignItems="center"
       sx={{
         p: 1,
         borderBottom: "1px solid",
         borderColor: "divider",
         flexWrap: "wrap",
+        alignItems: "center",
       }}
     >
       <ToggleButton value="bold" size="small" onClick={() => formatText("bold")}>
