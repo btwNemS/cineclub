@@ -1,35 +1,69 @@
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function ConcoursSelector() {
+export default function ConcoursFilmSelector() {
   const [films, setFilms] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
+  const [selectedFilm, setSelectedFilm] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/films/getAll`)
       .then((res) => res.json())
-      .then((data) =>
-        setFilms(data.filter((film) => film.status === "suggested")),
-      )
+      .then((data) => {
+        setFilms(data.filter((film) => film.status === "suggested"));
+      })
       .catch(console.error);
   }, []);
 
   return (
-    <div className="concours-selector">
-      <button className="plus-button" onClick={() => setOpen(!open)}>
-        +
-      </button>
-
-      {open && (
-        <div className="film-list">
-          {films.map((film) => (
-            <div key={film.id} className="film-item">
-              {film.name}
-            </div>
-          ))}
-        </div>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: 40,
+      }}
+    >
+      {selectedFilm ? (
+        <Button variant="contained" color="secondary">
+          {selectedFilm.name}
+        </Button>
+      ) : openSearch ? (
+        <Autocomplete
+          size="small"
+          options={films}
+          getOptionLabel={(option) => option.name}
+          onChange={(_, value) => {
+            if (value) {
+              setSelectedFilm(value);
+              setOpenSearch(false);
+            }
+          }}
+          sx={{
+            width: 250,
+          }}
+          renderInput={(params) => (
+            <TextField {...params} placeholder="Choisir un film..." />
+          )}
+        />
+      ) : (
+        <Button
+          variant="contained"
+          onClick={() => setOpenSearch(true)}
+          sx={{
+            minWidth: 40,
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            fontSize: 24,
+            p: 0,
+          }}
+        >
+          +
+        </Button>
       )}
-    </div>
+    </Box>
   );
 }
