@@ -15,13 +15,13 @@ export default function Post({ content, children, level = 1, filmId, postId, get
             <Card variant="outlined" sx={{
                 mb: 1,
                 ml: level * 2,
-                p: 1,
+                
                 borderRadius: 2,
                 backgroundColor: answer ? "background.default" : "background.paper",
                 borderLeft: "2px solid",
                 borderLeftColor: answer ? "secondary.main" : "primary.main",
             }} >
-                <CardContent style={{ marginLeft: `${level * 30}px`, p: 1 }}>
+                <CardContent >
                     <Typography variant="body2"
                         sx={{
                             fontSize: "0.9rem",

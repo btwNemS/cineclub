@@ -20,6 +20,7 @@ export default function CreatePost({ filmId, getRenderData }) {
                 answersTo: null 
             })
         });
+        getRenderData();
 
         setContent("");
     };

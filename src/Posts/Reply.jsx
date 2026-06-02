@@ -18,6 +18,7 @@ export default function Reply({ filmId, postId, getRenderData }) {
             body: JSON.stringify({ content: content, film_id: filmId, answersTo: postId })
         });
 
+        getRenderData();
         setContent("");
 
     };
