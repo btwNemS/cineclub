@@ -2,9 +2,7 @@ import { Button } from "@mui/material";
 import { useEffect } from "react";
 
 export default function BoutonInscription({
-  onMouseEnter,
-  onClick,
-  onMouseLeave,
+  refreshListe,
   isSuscribed,
   id,
   API_URL,
@@ -16,11 +14,13 @@ export default function BoutonInscription({
           method: "POST",
           credentials: "include",
         });
+        refreshListe();
       } else {
         await fetch(`${API_URL}/registrations/protected/delete/${id}`, {
           method: "POST",
           credentials: "include",
         });
+        refreshListe();
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour de l'inscription:", error);
@@ -36,10 +36,9 @@ export default function BoutonInscription({
       <Button
         id="boutonInscription"
         variant="outlined"
-        color="secondary"
-        onMouseEnter={onMouseEnter}
+        color="secondary"        
         onClick={handleClick}
-        onMouseLeave={onMouseLeave}
+        
       >
         {isSuscribed ? "Se désinscrire" : "S'inscrire"}
       </Button>
