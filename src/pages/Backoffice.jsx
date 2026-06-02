@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Typography, Box, Button, Stack } from "@mui/material";
-import AddMovie from "../Components/addMovie";
-import AddCompetition from "../Components/addCompetition";
-import ModifyText from "../Components/modifyTexts";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import { useAuth } from "../Authentification";
+import AddCompetition from "../Components/addCompetition";
+import AddMovie from "../Components/addMovie";
+import ModifyTexts from "../Components/modifyTexts";
 
 export default function Backoffice() {
   const { user } = useAuth();
