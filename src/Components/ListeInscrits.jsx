@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
 
 
-export default function ListeInscrits({liste, getListe, hovered}) {
+export default function ListeInscrits({liste,  hovered}) {
   const { id } = useParams();
   const { user } = useAuth();
   const theme = useTheme();

@@ -5,6 +5,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./utils/theme";
 
 import Comment from "./Comment";
+import TESTATTENTIONPASTOUCHER from "./Components/TESTATTENTIONPASTOUCHER";
 import Backoffice from "./pages/Backoffice";
 import Concours from "./pages/Concours";
 import FilmPassed from "./pages/FilmPassed";
@@ -32,6 +33,10 @@ function App() {
             <Route path="backoffice" element={<Backoffice />} />
             <Route path="testComment" element={<Comment />} />
             <Route path="/film/:id" element={<PageFilm />} />
+            <Route
+              path="TESTATTENTIONPASTOUCHER"
+              element={<TESTATTENTIONPASTOUCHER />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
