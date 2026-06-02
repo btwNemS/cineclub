@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import InscriptionSeance from "./InscriptionSeance";
+import InscriptionSeance from "../Components/InscriptionSeance";
 
 import {
   Box,
@@ -10,8 +10,8 @@ import {
   Paper,
   Stack,
   Typography,
-  Rating,
 } from "@mui/material";
+import Vote from "./Vote";
 
 import MovieIcon from "@mui/icons-material/Movie";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -54,9 +54,9 @@ export default function FilmPage() {
         setFilm(data);
       });
 
-    fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
-      .then((res) => res.json())
-      .then((data) => setComments(data));
+    // fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
+    //   .then((res) => res.json())
+    //   .then((data) => setComments(data));
   }, [id]);
 
   const sendComment = async () => {
@@ -132,7 +132,9 @@ export default function FilmPage() {
           border: `1px solid rgba(212,175,55,0.15)`,
         }}
       >
-        <Stack direction="row" spacing={2} alignItems="center" mb={2} flexWrap="wrap">
+
+        <Stack direction="row" spacing={2} mb={2} sx={{ alignItems: "center", flexWrap: "wrap" }}>
+
           <MovieIcon sx={{ color: theme.palette.secondary.main, fontSize: 34 }} />
 
           <Typography variant="h3" sx={{ color: "text.primary" }}>
@@ -159,11 +161,9 @@ export default function FilmPage() {
         <Stack>
           <InscriptionSeance />
         </Stack>
+        <Vote filmId={id} />
 
-        <Rating name="vote-film" defaultValue={2.5} precision={0.5} />
-
-
-        <Stack direction="row" spacing={2} mb={4} flexWrap="wrap">
+        <Stack direction="row" spacing={2} mb={4} sx={{ flexWrap: "wrap" }}>
           {film.url_imdb && (
             <Button
               variant="outlined"

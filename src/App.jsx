@@ -6,8 +6,7 @@ import theme from "./utils/theme";
 
 import Comment from "./Comment";
 import Backoffice from "./pages/Backoffice";
-import Blogs from "./pages/Blogs";
-import Contact from "./pages/Contact";
+import Concours from "./pages/Concours";
 import FilmPassed from "./pages/FilmPassed";
 import FilmProgrammed from "./pages/FilmProgrammed";
 import FilmSuggested from "./pages/FilmSuggested";
@@ -25,15 +24,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="blogs" element={<Blogs />} />
-            <Route path="contact" element={<Contact />} />
             <Route path="filmPassed" element={<FilmPassed />} />
             <Route path="filmProgrammed" element={<FilmProgrammed />} />
             <Route path="filmSuggested" element={<FilmSuggested />} />
+            <Route path="Concours" element={<Concours />} />
             <Route path="*" element={<NoPage />} />
             <Route path="backoffice" element={<Backoffice />} />
             <Route path="testComment" element={<Comment />} />
             <Route path="/film/:id" element={<PageFilm />} />
+
           </Route>
         </Routes>
       </BrowserRouter>
