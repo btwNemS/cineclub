@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(git rm *)",
-      "PowerShell(npm run build 2>&1 | Select-String -Pattern \"built in|error|Error\" | Select-Object -Last 4; \"exit: $LASTEXITCODE\")"
+      "PowerShell(npm run build 2>&1 | Select-String -Pattern \"built in|error|Error\" | Select-Object -Last 4; \"exit: $LASTEXITCODE\")",
+      "Bash(npx eslint *)",
+      "Bash(echo \"EXIT $?\")"
     ]
   }
 }
