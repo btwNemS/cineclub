@@ -30,13 +30,13 @@ export default function Post({ content, children, level = 1, filmId, postId, get
                         }} >{content}</Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" color="primary"
+                    <Button size="small" color="primary" variant="outline" 
                         sx={{
                             transition: "0.2s",
                             "&:hover": {
                                 transform: "translateY(-2px)",
                                 backgroundColor: "#5F647A",
-                                color: "#FFFFFF"
+                                color: "#FFFFFF",
                             },
                         }}
                         onClick={() => setShowInput(!showInput)} >Répondre</Button>
