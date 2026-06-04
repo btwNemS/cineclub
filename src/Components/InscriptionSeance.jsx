@@ -38,7 +38,7 @@ export default function InscriptionSeance() {
 
   useEffect(() => {
     refreshListe();
-  }, []);
+  }, [user]);
 
   return (
     <div>

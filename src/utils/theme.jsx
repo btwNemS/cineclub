@@ -31,6 +31,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: `"Inter", "Roboto", sans-serif`,
+
     h1: {
       fontWeight: 700,
       letterSpacing: "-0.03em",
@@ -52,6 +53,7 @@ const theme = createTheme({
   shape: {
     borderRadius: 14,
   },
+
   components: {
     MuiAppBar: {
       styleOverrides: {
