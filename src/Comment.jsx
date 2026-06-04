@@ -1,6 +1,7 @@
-import Posts from './Posts/Posts'
+import LikePosts from "./Components/Like";
 
-
-export default function Comments() {
-    return <Posts filmId={6}/>
+function App() {
+  return <LikePosts postId={345} />;
 }
+
+export default App;
