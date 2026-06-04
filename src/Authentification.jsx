@@ -1,77 +1,85 @@
 import { createContext, useState, useContext } from 'react';
 
-// Création d'un contexte d'authentification pour partager l'état utilisateur dans l'app
+// Création d'un contexte d'authentification pour partager l'état utilisateur dans toute l'application
 const AuthContext = createContext();
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // Récupération de l'URL de l'API depuis les variables d'environnement
 
 // Fournisseur du contexte d'authentification
 export const AuthProvider = ({ children }) => {
-    //permet de rester connecté même en refreshant la page
+    // Initialisation de l'état utilisateur avec les données du localStorage (permet de rester connecté après un rafraîchissement de la page)
     const [user, setUser] = useState(() => {
-        const savedUser = localStorage.getItem('cineclub_user');
+        const savedUser = localStorage.getItem('cineclub_user'); // Récupération de l'utilisateur sauvegardé
         if (savedUser) {
-            return JSON.parse(savedUser);
+            return JSON.parse(savedUser); // Conversion des données JSON en objet
         }
-        return null;
+        return null; // Si aucun utilisateur n'est sauvegardé, on retourne null
     });
 
     // 1. Inscription (Sign In)
     const signin = async (email, pseudo, password) => {
+        // Envoi d'une requête POST à l'API pour inscrire un nouvel utilisateur
         const res = await fetch(`${API_URL}/users/signin`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, pseudo, password })
+            headers: { "Content-Type": "application/json" }, // Spécification du type de contenu
+            body: JSON.stringify({ email, pseudo, password }) // Envoi des données utilisateur
         });
         if (!res.ok) {
+            // Gestion des erreurs si la requête échoue
             const errData = await res.json().catch(() => ({}));
             throw new Error(errData.message || "Erreur lors de l'inscription");
         }
-        return await res.json();
+        return await res.json(); // Retourne les données de réponse
     };
 
     // 2. Connexion (Login)
     const login = async (pseudo, password) => {
+        // Envoi d'une requête POST à l'API pour connecter un utilisateur
         const res = await fetch(`${API_URL}/users/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include", 
-            body: JSON.stringify({ pseudo, password })
+            headers: { "Content-Type": "application/json" }, // Spécification du type de contenu
+            credentials: "include", // Inclure les cookies pour la session
+            body: JSON.stringify({ pseudo, password }) // Envoi des données utilisateur
         });
 
         if (!res.ok) {
+            // Gestion des erreurs si la connexion échoue
             throw new Error("Pseudo ou mot de passe incorrect");
         }
 
-        const data = await res.json();
-        
-        // 2. On met à jour le state ET on sauvegarde l'utilisateur dans le localStorage
+        const data = await res.json(); // Récupération des données utilisateur
+
+        // Mise à jour de l'état utilisateur et sauvegarde dans le localStorage
         setUser(data.user); 
         localStorage.setItem('cineclub_user', JSON.stringify(data.user)); 
         
-        return data.user;
+        return data.user; // Retourne les données utilisateur
     };
 
     // 3. Déconnexion (Logout)
     const logout = async () => {
         try {
+            // Envoi d'une requête POST à l'API pour déconnecter l'utilisateur
             await fetch(`${API_URL}/users/logout`, {
                 method: "POST",
-                credentials: "include"
+                credentials: "include" // Inclure les cookies pour la session
             });
         } catch (err) {
+            // Gestion des erreurs lors de la déconnexion
             console.error("Erreur logout backend", err);
         }
         
-        // 3. On déconnecte l'utilisateur côté front et on nettoie le localStorage
+        // Réinitialisation de l'état utilisateur et nettoyage du localStorage
         setUser(null); 
         localStorage.removeItem('cineclub_user');
     };
 
     return (
+        // Fourniture des données et fonctions d'authentification aux composants enfants
         <AuthContext.Provider value={{ user, login, signin, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
+// Hook personnalisé pour accéder facilement au contexte d'authentification
 export const useAuth = () => useContext(AuthContext);
