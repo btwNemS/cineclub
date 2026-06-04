@@ -1,12 +1,21 @@
-import { Box, Button, Paper, Stack, Typography, CircularProgress } from "@mui/material";
-import { useState, useEffect } from "react";
-import SearchCompetitor from "./searchCompetitor";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import SearchCompetitor from "./searchCompetitor";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function EditCompetition({ onSaveSuccess }) {
-  const [listCompetitor, setListCompetitor] = useState([...Array(5)].map(() => null));
+  const [listCompetitor, setListCompetitor] = useState(
+    [...Array(5)].map(() => null),
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,7 +41,10 @@ export default function EditCompetition({ onSaveSuccess }) {
           });
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération de la compétition :", error);
+        console.error(
+          "Erreur lors de la récupération de la compétition :",
+          error,
+        );
       } finally {
         setLoading(false);
       }
@@ -51,25 +63,35 @@ export default function EditCompetition({ onSaveSuccess }) {
   const handleRemoveCompetitor = (index) => {
     setListCompetitor((prev) => {
       const updated = [...prev];
-      updated[index] = { ...updated[index], _removed: true }; 
+      updated[index] = { ...updated[index], _removed: true };
       return updated;
     });
   };
 
   const handleSave = async () => {
     try {
-      const removedFilms = listCompetitor.filter(film => film && film._removed && film.id);
+      const removedFilms = listCompetitor.filter(
+        (film) => film && film._removed && film.id,
+      );
       for (const film of removedFilms) {
         const genres = film.film_genre
-          ? film.film_genre.split(",").map((g) => g.trim()).filter((g) => g.toLowerCase() !== "concours" && g !== "")
+          ? film.film_genre
+              .split(",")
+              .map((g) => g.trim())
+              .filter((g) => g.toLowerCase() !== "concours" && g !== "")
           : [];
         await saveFilmGenres(film, genres.join(","));
       }
 
-      const activeCompetitors = listCompetitor.filter(film => film && !film._removed);
+      const activeCompetitors = listCompetitor.filter(
+        (film) => film && !film._removed,
+      );
       for (const film of activeCompetitors) {
         const genres = film.film_genre
-          ? film.film_genre.split(",").map((g) => g.trim()).filter(Boolean)
+          ? film.film_genre
+              .split(",")
+              .map((g) => g.trim())
+              .filter(Boolean)
           : [];
         if (!genres.includes("concours")) {
           genres.push("concours");
@@ -97,13 +119,17 @@ export default function EditCompetition({ onSaveSuccess }) {
     form.append("url_imdb", film.url_imdb ?? "");
     form.append("url_youtube", film.url_youtube ?? "");
     if (film.cinema) form.append("cinema", film.cinema);
-    if (film.projection_date) form.append("projection_date", film.projection_date);
+    if (film.projection_date)
+      form.append("projection_date", film.projection_date);
 
-    const response = await fetch(`${API_URL}/films/protected/update/${film.id}`, {
-      method: "PUT",
-      credentials: "include",
-      body: form,
-    });
+    const response = await fetch(
+      `${API_URL}/films/protected/update/${film.id}`,
+      {
+        method: "PUT",
+        credentials: "include",
+        body: form,
+      },
+    );
     return response.ok;
   };
 
@@ -148,19 +174,38 @@ export default function EditCompetition({ onSaveSuccess }) {
                     size="small"
                     startIcon={<DeleteIcon />}
                     onClick={() => handleRemoveCompetitor(index)}
-                    sx={{ position: "absolute", top: 10, right: 10, minWidth: "auto" }}
+                    sx={{
+                      position: "absolute",
+                      top: 10,
+                      right: 10,
+                      minWidth: "auto",
+                    }}
                   >
                     Retirer
                   </Button>
                 )}
 
                 {isFilmActive ? (
-                  <Typography variant="h6" textAlign="center" color="text.primary">
-                    {film.name}
-                  </Typography>
+                  <box>
+                    {" "}
+                    <img
+                      src={`${API_URL}/${film.url_image}`}
+                      alt={film.name}
+                      class="image"
+                    />
+                    <Typography
+                      variant="h6"
+                      textAlign="center"
+                      color="text.primary"
+                    >
+                      {film.name}
+                    </Typography>
+                  </box>
                 ) : (
                   <SearchCompetitor
-                    onSelect={(selectedFilm) => handleSelectCompetitor(index, selectedFilm)}
+                    onSelect={(selectedFilm) =>
+                      handleSelectCompetitor(index, selectedFilm)
+                    }
                   />
                 )}
               </Paper>
