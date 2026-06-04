@@ -89,6 +89,10 @@ body {
   width: 90%;
 }
 
+.film-card {
+  width: 50%;
+}
+
 /* Content */
 
 .card-content {
@@ -119,8 +123,6 @@ body {
   margin-bottom: 24px;
 }
 
-
-
 .links a {
   color: #d4af37;
 
@@ -128,7 +130,6 @@ body {
   font-weight: 700;
 
   transition: opacity 0.2s ease;
-
 }
 
 .links a:hover {
@@ -190,12 +191,10 @@ a {
   display: block;
 }
 
-
-#listeInscrits{
+#listeInscrits {
   position: absolute;
 }
 
-#inscriptionParent{
+#inscriptionParent {
   position: relative;
 }
-
