@@ -1,4 +1,5 @@
 import { CircularProgress, Typography } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../Authentification";
 import DynamicText from "../Components/dymanicText";
@@ -18,6 +19,8 @@ const SCORES = [
 ];
 
 function RatingButton({ score, selected, onClick, disabled }) {
+  const theme = useTheme();
+
   return (
     <button
       onClick={() => !disabled && onClick(score.value)}
@@ -26,11 +29,15 @@ function RatingButton({ score, selected, onClick, disabled }) {
         flex: 1,
         padding: "7px 10px",
         border: selected
-          ? "1.5px solid #d4af37"
-          : "1.5px solid rgba(255,255,255,0.1)",
+          ? `1.5px solid ${theme.palette.secondary.main}`
+          : `1.5px solid ${alpha(theme.palette.text.primary, 0.1)}`,
         borderRadius: "6px",
-        background: selected ? "rgba(212,175,55,0.12)" : "transparent",
-        color: selected ? "#d4af37" : "#374151",
+        background: selected
+          ? alpha(theme.palette.secondary.main, 0.12)
+          : "transparent",
+        color: selected
+          ? theme.palette.secondary.main
+          : theme.palette.text.secondary,
         fontSize: "0.8rem",
         fontWeight: selected ? 600 : 400,
         cursor: disabled ? "default" : "pointer",
@@ -45,6 +52,8 @@ function RatingButton({ score, selected, onClick, disabled }) {
 
 function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
   const moyenne = Number(film.moyenne || film.average_score || 0);
+
+  const theme = useTheme();
 
   const percent =
     totalMoyennes > 0 ? Math.round((moyenne / totalMoyennes) * 100) : 0;
@@ -61,11 +70,11 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         padding: isFirst ? "20px 24px" : "14px 20px",
         borderRadius: "12px",
         border: `1.5px solid ${
-          medal ? medal.color + "55" : "rgba(255,255,255,0.08)"
+          medal ? medal.color + "55" : alpha(theme.palette.text.primary, 0.08)
         }`,
         background: isFirst
-          ? "rgba(212,175,55,0.05)"
-          : "rgba(255,255,255,0.02)",
+          ? alpha(theme.palette.secondary.main, 0.05)
+          : alpha(theme.palette.background.paper, 0.5),
       }}
     >
       <div
@@ -100,7 +109,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
           style={{
             fontSize: isFirst ? "1.05rem" : "0.92rem",
             fontWeight: isFirst ? 700 : 500,
-            color: "#111827",
+            color: theme.palette.text.primary,
             marginBottom: "6px",
           }}
         >
@@ -110,7 +119,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         <div
           style={{
             fontSize: "0.82rem",
-            color: "#4b5563",
+            color: theme.palette.text.secondary,
             marginBottom: "8px",
           }}
         ></div>
@@ -121,7 +130,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
               flex: 1,
               height: "4px",
               borderRadius: "3px",
-              background: "rgba(255,255,255,0.08)",
+              background: alpha(theme.palette.text.primary, 0.08),
               overflow: "hidden",
             }}
           >
@@ -370,7 +379,7 @@ export default function Concours() {
           style={{
             textAlign: "center",
             marginBottom: "28px",
-            color: "#6b7280",
+            color: theme.palette.text.secondary,
           }}
         >
           Connectez-vous pour voter.

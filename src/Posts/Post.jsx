@@ -73,9 +73,9 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                             height: "100%",
                             borderLeft: "2px solid",
                             borderBottom: "2px solid",
-                            borderColor: "text.primary", // 🔥 PLUS VISIBLE
+                            borderColor: "text.primary", // PLUS VISIBLE
                             borderBottomLeftRadius: 8,
-                            opacity: 0.6, // 👌 adoucit sans rendre invisible
+                            opacity: 0.6, // adoucit sans rendre invisible
                         }}
                     />
                 </Box>
