@@ -214,7 +214,9 @@ const ModifyText = () => {
                 <ListItemText
                   primary={text.label}
                   secondary={
-                    text.content ? text.role : `${text.role} — (vide)`
+                    text.content
+                      ? text.content.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() || "Contenu non défini"
+                      : "Contenu non défini"
                   }
                 />
                 <EditIcon color="action" />

@@ -32,10 +32,7 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                             color: "text.primary",
                         }} >{content}</Typography>
                 </CardContent>
-                <CardActions>
-                    {((user && user.id === userId) || user?.role === "ADMIN") ? (
-                        <DeletePost postId={postId} />
-                    ) : null}
+                <CardActions sx={{ justifyContent: "space-between" }}>
                     <Button size="small" color="primary" variant="outline" 
                         sx={{
                             transition: "0.2s",
@@ -46,6 +43,9 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                             },
                         }}
                         onClick={() => setShowInput(!showInput)} >Répondre</Button>
+                        {((user && user.id === userId) || user?.role === "ADMIN") ? (
+                        <DeletePost postId={postId} />
+                    ) : null}
                 </CardActions>
 
                 {showInput && (

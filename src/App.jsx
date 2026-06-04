@@ -42,7 +42,7 @@ function App() {
         <Suspense
           fallback={
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
-              <CircularProgress color="secondary" />
+              <CircularProgress color="#ffffff" />
             </Box>
           }
         >
