@@ -207,6 +207,12 @@ export default function FilmPage() {
             </Typography>
           )}
         </Stack>
+                {user?.role === "ADMIN" && (
+          <Box sx={{ mt: 4 }}>
+            <DeleteMovie id={id} />
+            <EditMovie id={id} />
+          </Box>
+        )}
 
         <Box sx={{ mt: 5 }}>
           <Typography
@@ -223,12 +229,7 @@ export default function FilmPage() {
           <Posts filmId={id} />
         </Box>
 
-        {user?.role === "ADMIN" && (
-          <Box sx={{ mt: 4 }}>
-            <DeleteMovie id={id} />
-            <EditMovie id={id} />
-          </Box>
-        )}
+
       </Paper>
     </Box>
   );
