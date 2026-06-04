@@ -177,6 +177,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
 
 export default function Concours() {
   const { user } = useAuth();
+  const theme = useTheme();
 
   const [films, setFilms] = useState([]);
   const [voteCounts, setVoteCounts] = useState({});
