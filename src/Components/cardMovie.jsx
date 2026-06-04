@@ -129,6 +129,7 @@ export default function CardMovie({ film, onVoteSuccess }) {
               justifyContent: "space-between",
               width: "100%",
               mt: 1,
+              flexDirection: "column-reverse",
             }}
           >
             <span
