@@ -55,7 +55,9 @@ function Layout() {
             display: "flex",
             alignItems: "center",
             gap: 3,
-
+            fontSize: "20px",
+            fontFamily: '"EB Garamond", sans-serif', 
+            fontWeight: 800, 
             listStyle: "none",
 
             m: 0,
