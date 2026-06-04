@@ -1,134 +1,132 @@
-// Importation des hooks React et du contexte d'authentification personnalisé
-import { useState } from 'react';
-import { useAuth } from './Authentification';
-// Importation des composants Material UI utilisés dans la modale
-import { 
-  Button, 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  TextField, 
-  DialogActions, 
-  Typography,
-  Box 
-} from '@mui/material';
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { useAuth } from "./Authentification";
 
-
-const buttonStyle = {
-  backgroundColor: '#202349',
-  color: 'white'
-}
-
-// Déclaration du composant AuthModal, recevant les props open et handleClose
 export default function AuthModal({ open, handleClose }) {
-  // Récupération des fonctions login et signin depuis le contexte d'authentification
   const { login, signin } = useAuth();
-  
-  // État pour savoir si on est en mode connexion (true) ou inscription (false)
   const [isLogin, setIsLogin] = useState(true);
-  
-  // États pour stocker les valeurs des champs du formulaire
-  const [pseudo, setPseudo] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // État pour afficher un message d'erreur ou de succès
-  const [message, setMessage] = useState({ text: '', type: '' });
 
-  // Fonction appelée lors de la soumission du formulaire
+  // Champs de saisie
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
-    setMessage({ text: '', type: '' }); // Réinitialise le message
-
-    try {
-      if (isLogin) {
-        // Si mode connexion, appelle login avec pseudo et mot de passe
-        await login(pseudo, password);
-        setPseudo(''); // Réinitialise le champ pseudo
-        setPassword(''); // Réinitialise le champ mot de passe
-        handleClose(); // Ferme la modale si la connexion réussit
-      } else {
-        // Si mode inscription, appelle signin avec email, pseudo et mot de passe
-        await signin(email, pseudo, password);
-        setIsLogin(true); // Passe en mode connexion après inscription
-        setEmail(''); // Réinitialise le champ email
-        setPassword(''); // Réinitialise le champ mot de passe
-        setMessage({ text: 'Compte créé avec succès ! Connectez-vous.', type: 'success' }); // Affiche un message de succès
-      }
-    } catch (err) {
-      setMessage({ text: err.message, type: 'error' }); // Affiche le message d'erreur
+    e.preventDefault();
+    if (isLogin) {
+      await login(pseudo, password);
+    } else {
+      await signin(email, pseudo, password);
     }
+    handleClose(); // Ferme la modale après action
   };
 
-  // Rendu du composant
   return (
-    <Dialog open={open} onClose={handleClose}> {/* Affiche la modale si open est true */}
-      <DialogTitle sx={{ fontWeight: 'bold', textAlign: 'center', pt: 3 }}>
-        {isLogin ? 'CONNEXION' : 'INSCRIPTION'} {/* Titre selon le mode */}
-      </DialogTitle>
-      
-      <form onSubmit={handleSubmit}> {/* Formulaire avec gestion de la soumission */}
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: '320px', pt: 1 }}>
-          
-          {/* Affiche un message d'erreur ou de succès si présent */}
-          {message.text && (
-            <Typography variant="body2" color={message.type === 'success' ? 'success.main' : 'error.main'} sx={{ textAlign: 'center' }}>
-              {message.text}
-            </Typography>
-          )}
+    <Modal open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 2,
+        }}
+      >
+        <Typography variant="h5" component="h2" mb={2} textAlign="center">
+          {isLogin ? "Connexion" : "Inscription"}
+        </Typography>
 
-          {/* Champ email affiché seulement en mode inscription */}
+        <form onSubmit={handleSubmit}>
           {!isLogin && (
             <TextField
-              label="Email"
+              label="Email *"
               type="email"
               variant="outlined"
               fullWidth
-              required
+              margin="normal"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": { color: "#ffffff" },
+                "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "transparent",
+                  "& fieldset": { borderColor: "rgba(255, 255, 255, 0.23)" },
+                  "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
+                  "&.Mui-focused fieldset": { borderColor: "#ffffff", borderWidth: "1px" },
+                },
+              }}
             />
           )}
 
-          {/* Champ pseudo, toujours affiché */}
           <TextField
-            label="Pseudo"
+            label="Pseudo *"
             variant="outlined"
             fullWidth
-            required
+            margin="normal"
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
+            sx={{
+              "& .MuiInputBase-input": { color: "#ffffff" },
+              "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "transparent",
+                "& fieldset": { borderColor: "rgba(255, 255, 255, 0.23)" },
+                "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
+                "&.Mui-focused fieldset": { borderColor: "#ffffff", borderWidth: "1px" },
+              },
+            }}
           />
 
-          {/* Champ mot de passe, toujours affiché */}
           <TextField
-            label="Mot de passe"
+            label="Mot de passe *"
             type="password"
             variant="outlined"
             fullWidth
-            required
+            margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            sx={{
+              "& .MuiInputBase-input": { color: "#ffffff" },
+              "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "transparent",
+                "& fieldset": { borderColor: "rgba(255, 255, 255, 0.23)" },
+                "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
+                "&.Mui-focused fieldset": { borderColor: "#ffffff", borderWidth: "1px" },
+              },
+            }}
           />
 
-          {/* Lien pour changer de mode (connexion <-> inscription) */}
-          <Box 
-            sx={{ textDecoration: 'underline', cursor: 'pointer', mt: 1, textAlign: 'center' }} 
-            onClick={() => { setIsLogin(!isLogin); setMessage({ text: '', type: '' }); }}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 3, mb: 2 }}
           >
-            <Typography variant="body2" color="primary">
-              {isLogin ? "Pas encore de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
-            </Typography>
-          </Box>
-        </DialogContent>
-
-        {/* Boutons d'action en bas de la modale */}
-        <DialogActions sx={{ px: 3, pb: 3 }}>
-          <Button onClick={handleClose} color="inherit">ANNULER</Button>
-          <Button type="submit" variant="contained" color="primary" style={buttonStyle} >
-            {isLogin ? 'SE CONNECTER' : "S'INSCRIRE"}
+            {isLogin ? "Se connecter" : "S'inscrire"}
           </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+        </form>
+
+        <Box textAlign="center" sx={{ mt: 1 }}>
+          <Typography
+            variant="body2"
+            color="primary"
+            onClick={() => setIsLogin(!isLogin)}
+            sx={{ color: "#ffffff !important", cursor: "pointer" }}
+          >
+            {isLogin ? "Pas encore de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
+          </Typography>
+        </Box>
+      </Box>
+    </Modal>
   );
 }
