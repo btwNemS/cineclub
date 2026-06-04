@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
-
-import theme from "./utils/theme";
+import { lightTheme, darkTheme } from "./utils/theme";
 
 import Comment from "./Comment";
 import Backoffice from "./pages/Backoffice";
@@ -16,13 +16,39 @@ import NoPage from "./pages/NoPage";
 import PageFilm from "./pages/PageFilm";
 
 function App() {
+  // 1. Détecte si le navigateur de l'utilisateur est configuré en mode sombre
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  
+  // 2. Initialise l'état avec la préférence du navigateur
+  const [isDarkMode, setIsDarkMode] = useState(prefersDarkMode);
+
+  // Synchronise le thème si l'utilisateur change la préférence de son système pendant qu'il navigue
+  useEffect(() => {
+    setIsDarkMode(prefersDarkMode);
+  }, [prefersDarkMode]);
+
+  // Fonction pour inverser le thème (appelée par la nav bar)
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
+  };
+
   return (
-    <ThemeProvider theme={theme}>
+    // On applique le thème choisi dynamiquement
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
 
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          {/* On passe l'état actuel et la fonction toggle au Layout via le contexte ou des attributs de fenêtre simples */}
+          <Route 
+            path="/" 
+            element={
+              <Layout 
+                isDarkMode={isDarkMode} 
+                toggleTheme={toggleTheme} 
+              />
+            }
+          >
             <Route index element={<Home />} />
             <Route path="filmPassed" element={<FilmPassed />} />
             <Route path="filmProgrammed" element={<FilmProgrammed />} />
@@ -32,7 +58,6 @@ function App() {
             <Route path="backoffice" element={<Backoffice />} />
             <Route path="testComment" element={<Comment />} />
             <Route path="/film/:id" element={<PageFilm />} />
-
           </Route>
         </Routes>
       </BrowserRouter>
