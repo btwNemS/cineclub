@@ -71,7 +71,7 @@ function Layout() {
                   src={LogoCine}
                   alt="Home Logo"
                   sx={{
-                    height: "500px",      
+                    height: "70px",      
                     width: "auto",      
                     display: "block",
                     transition: "transform 0.2s",
