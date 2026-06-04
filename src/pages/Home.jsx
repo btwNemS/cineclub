@@ -103,7 +103,7 @@ export default function Home() {
         <div className="films-grid">
           {films
             .filter((film) => new Date(film.projection_date).getTime() > today && film.status && film.status === "programmed")
-            .slice(0, 6)
+            .slice(0, 3)
             .map((film) => (
               <Link to={`/film/${film.id}`} key={film.id}>
                 <MovieCard film={film} />
