@@ -4,6 +4,8 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { Box, Button, Typography } from "@mui/material";
 
+import LogoCine  from "../images/logocineclub.png";
+
 import { useAuth } from "../Authentification";
 import AuthModal from "../AuthModal";
 
@@ -24,6 +26,8 @@ function Layout() {
     textDecoration: "none",
     fontWeight: 600,
     transition: "0.2s ease",
+    display: "flex",
+    alignItems: "center",
   };
 
   return (
@@ -59,13 +63,31 @@ function Layout() {
           }}
         >
           {[
-            { to: "/", label: "Home" },
+            { 
+              to: "/", 
+              label: (
+                <Box
+                  component="img"
+                  src={LogoCine}
+                  alt="Home Logo"
+                  sx={{
+                    height: "70px",      
+                    width: "auto",      
+                    display: "block",
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "scale(1.05)", 
+                    }
+                  }}
+                />
+              ) 
+            },
             { to: "/filmPassed", label: "Films passés" },
             { to: "/filmProgrammed", label: "Films prévus" },
             { to: "/filmSuggested", label: "Films suggérés" },
             { to: "/Concours", label: "Concours" },
           ].map((item) => (
-            <Box component="li" key={item.to}>
+            <Box component="li" key={item.to} sx={{ display: "flex", alignItems: "center" }}>
               <Link to={item.to} style={navLinkStyle}>
                 {item.label}
               </Link>
