@@ -2,13 +2,16 @@
 import { Card, CardContent, Typography, CardActions, Button, TextField, Box } from "@mui/material";
 import { useState } from "react";
 import Reply from "./Reply";
+import DeletePost from "../Components/deletePost";
+import { useAuth } from "../Authentification";
+import { useNavigate } from "react-router-dom";
 
 
-
-export default function Post({ content, children, level = 1, filmId, postId, getRenderData,  }) {
+export default function Post({ content, children, level = 1, filmId, postId, userId, getRenderData }) {
 
     const answer = level > 1;
     const [showInput, setShowInput] = useState(false);
+    const { user } = useAuth();
 
     return (
         <>
@@ -30,6 +33,9 @@ export default function Post({ content, children, level = 1, filmId, postId, get
                         }} >{content}</Typography>
                 </CardContent>
                 <CardActions>
+                    {((user && user.id === userId) || user?.role === "ADMIN") ? (
+                        <DeletePost postId={postId} />
+                    ) : null}
                     <Button size="small" color="primary" variant="outline" 
                         sx={{
                             transition: "0.2s",
@@ -83,6 +89,7 @@ export default function Post({ content, children, level = 1, filmId, postId, get
                         level={level + 1}
                         filmId={filmId}
                         postId={child.id}
+                        userId={child.userId}
                         getRenderData={getRenderData}
                     />
                 ))

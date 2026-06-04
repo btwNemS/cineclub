@@ -41,7 +41,9 @@ export default function Posts({ filmId }) {
                     children={post.children}
                     filmId={filmId}
                     postId={post.id}
-                    getRenderData={getRenderData} />
+                    userId={post.userId}
+                    getRenderData={getRenderData}
+                />
             ))}
         </>
     );
