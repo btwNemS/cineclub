@@ -1,5 +1,5 @@
 // utils/theme.jsx
-
+// 
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -38,7 +38,7 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: `"Inter", "Roboto", sans-serif`,
+    fontFamily: `"Inter", "EB Garamond", sans-serif`,
 
     h1: {
       fontWeight: 700,
@@ -65,6 +65,8 @@ const theme = createTheme({
   shape: {
     borderRadius: 14,
   },
+
+  
 
   components: {
     MuiAppBar: {
