@@ -652,16 +652,13 @@ function InitialHtmlPlugin({ initialHtml }) {
   useEffect(() => {
     if (!initialHtml) return;
     editor.update(() => {
-      const root = $getRoot();
-      if (root.getFirstChild() !== null) return;
       const parser = new DOMParser();
       const dom = parser.parseFromString(initialHtml, "text/html");
       const nodes = $generateNodesFromDOM(editor, dom);
-      root.clear();
+      $getRoot().clear();
       $getRoot().select();
       $insertNodes(nodes);
     });
-    // On ne charge le HTML qu'au premier rendu.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
   return null;
