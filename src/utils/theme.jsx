@@ -1,5 +1,5 @@
 // utils/theme.jsx
-
+// 
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -39,7 +39,7 @@ const theme = createTheme({
 
   typography: {
     fontFamily: `"Inter", "EB Garamond", sans-serif`,
-    
+
     h1: {
       fontWeight: 700,
       letterSpacing: "-0.03em",
