@@ -58,6 +58,8 @@ function Layout({ isDarkMode, toggleTheme }) {
             alignItems: "center",
             gap: 3,
             listStyle: "none",
+            fontFamily: "marcellus",
+            fontSize: "20px",
             m: 0,
             p: 0,
           }}
