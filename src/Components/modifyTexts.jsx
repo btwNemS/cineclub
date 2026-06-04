@@ -163,14 +163,15 @@ const ModifyText = () => {
         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
           {selected.label}
         </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Rôle : {selected.role}
-        </Typography>
-
+       
         <Editor
           key={selected.role}
           initialHtml={selected.content}
           onChange={setDraft}
+          placeholder={
+            selected.content.replace(/<[^>]*>/g, "").trim() ||
+            `Saisissez le contenu pour le rôle "${selected.role}" (${selected.label})...`
+          }
         />
 
         <Button

@@ -1,18 +1,14 @@
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-
 import { Box, Button, Typography } from "@mui/material";
-
 import LogoCine  from "../images/logocineclub.png";
-
 import { useAuth } from "../Authentification";
 import AuthModal from "../AuthModal";
 
 function Layout() {
   const { user, logout } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
-
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -22,7 +18,7 @@ function Layout() {
   };
 
   const navLinkStyle = {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary, // Utilise maintenant le blanc crème du thème
     textDecoration: "none",
     fontWeight: 600,
     transition: "0.2s ease",
@@ -38,14 +34,10 @@ function Layout() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-
           px: 4,
           py: 2,
-
-          backgroundColor: theme.palette.background.paper,
-
-          borderBottom: `1px solid ${theme.palette.divider}`,
-
+          backgroundColor: theme.palette.background.paper, // Fond bleu nuit de la maquette
+          borderBottom: `1px solid ${theme.palette.divider}`, // Petit filet discret doré
           boxShadow: theme.shadows[4],
         }}
       >
@@ -55,33 +47,35 @@ function Layout() {
             display: "flex",
             alignItems: "center",
             gap: 3,
-
+            fontSize: "20px",
+            fontFamily: '"EB Garamond", sans-serif', 
+            fontWeight: 800, 
             listStyle: "none",
-
             m: 0,
             p: 0,
           }}
         >
           {[
-            { 
-              to: "/", 
-              label: (
-                <Box
-                  component="img"
-                  src={LogoCine}
-                  alt="Home Logo"
-                  sx={{
-                    height: "70px",      
-                    width: "auto",      
-                    display: "block",
-                    transition: "transform 0.2s",
-                    "&:hover": {
-                      transform: "scale(1.05)", 
-                    }
-                  }}
-                />
-              ) 
-            },
+            {
+               to: "/",
+               label: (
+                 <Box
+                   component="img"
+                   src={LogoCine}
+                   alt="Home Logo"
+                   sx={{
+                     height: "70px",
+                     width: "auto",
+                     display: "block",
+                     filter: 'invert(100)',
+                     transition: "transform 0.2s",
+                     "&:hover": {
+                       transform: "scale(1.05)",
+                     }
+                   }}
+                 />
+               )
+             },
             { to: "/filmPassed", label: "Films passés" },
             { to: "/filmProgrammed", label: "Films prévus" },
             { to: "/filmSuggested", label: "Films suggérés" },
@@ -93,7 +87,6 @@ function Layout() {
               </Link>
             </Box>
           ))}
-
           {user?.role === "ADMIN" && (
             <Box component="li">
               <Link
@@ -104,12 +97,11 @@ function Layout() {
                   fontWeight: 700,
                 }}
               >
-                ⚙️ Panneau Admin
+                  Panneau Admin
               </Link>
             </Box>
           )}
         </Box>
-
         <Box
           sx={{
             display: "flex",
@@ -146,7 +138,6 @@ function Layout() {
                   {user?.role === "ADMIN" && `(Admin)`}
                 </Box>
               </Typography>
-
               <Button
                 variant="outlined"
                 color="secondary"
@@ -159,17 +150,16 @@ function Layout() {
           ) : (
             <Button
               variant="contained"
-              color="primary"
+              color="secondary" // Passe en jaune doré automatiquement grâce au thème
               onClick={() => setModalOpen(true)}
+              sx={{ color: "#111424", fontWeight: 700 }} // Texte foncé lisible sur le bouton doré
             >
               Espace Membre
             </Button>
           )}
         </Box>
       </Box>
-
       <AuthModal open={modalOpen} handleClose={() => setModalOpen(false)} />
-
       <Box sx={{ p: 0 }}>
         <Outlet />
       </Box>
