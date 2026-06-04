@@ -75,7 +75,7 @@ function Layout({ isDarkMode, toggleTheme }) {
                     width: "auto",      
                     display: "block",
                     transition: "transform 0.2s, filter 0.2s",
-                    // 🎯 Applique l'inversion de couleur à 100% uniquement si le thème dark est actif
+                    // Applique l'inversion de couleur à 100% uniquement si le thème dark est actif
                     filter: isDarkMode ? "invert(100%)" : "none",
                     "&:hover": {
                       transform: "scale(1.05)", 
