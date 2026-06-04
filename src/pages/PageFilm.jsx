@@ -105,7 +105,7 @@ export default function FilmPage() {
           direction="row"
           spacing={2}
           mb={2}
-          sx={{ alignItems: "center", flexWrap: "wrap" }}
+          sx={{ alignItems: "center", flexWrap: "wrap" , marginBottom: 4}}
         >
           <MovieIcon
             sx={{ color: theme.palette.secondary.main, fontSize: 34 }}
