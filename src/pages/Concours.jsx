@@ -113,9 +113,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
             color: "#4b5563",
             marginBottom: "8px",
           }}
-        >
-          Moyenne : {parseFloat(moyenne || 0).toFixed(1)} / 5
-        </div>
+        ></div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div
