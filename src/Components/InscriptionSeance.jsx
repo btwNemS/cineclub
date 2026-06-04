@@ -25,7 +25,7 @@ export default function InscriptionSeance() {
 
       const pseudoList = data.map((inscrit) => inscrit.pseudo);
       console.log(pseudoList);
-      if (pseudoList.includes(user.pseudo)) {
+      if (user && pseudoList.includes(user.pseudo)) {
         setisSuscribed(true);
       }
       else {
@@ -38,7 +38,7 @@ export default function InscriptionSeance() {
 
   useEffect(() => {
     refreshListe();
-  }, []);
+  }, [user]);
 
   return (
     <div>
