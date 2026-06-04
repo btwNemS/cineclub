@@ -49,10 +49,6 @@ export default function FilmPage() {
       .then((data) => {
         setFilm(data);
       });
-
-    // fetch(`https://rasantacruz.fr/cineclub/posts/get/${id}`)
-    //   .then((res) => res.json())
-    //   .then((data) => setComments(data));
   }, [id]);
 
   if (!film) {
@@ -69,6 +65,11 @@ export default function FilmPage() {
       </Box>
     );
   }
+
+  const isConcours = film?.film_genre
+    ?.split(",")
+    .map((g) => g.trim().toLowerCase())
+    .includes("concours");
 
   return (
     <Box
@@ -105,7 +106,11 @@ export default function FilmPage() {
           direction="row"
           spacing={2}
           mb={2}
-          sx={{ alignItems: "center", flexWrap: "wrap" , marginBottom: 4}}
+          sx={{
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginBottom: 4,
+          }}
         >
           <MovieIcon
             sx={{ color: theme.palette.secondary.main, fontSize: 34 }}
@@ -120,7 +125,7 @@ export default function FilmPage() {
               .split(",")
               .map((g) => g.trim())
               .filter(Boolean)
-              .filter((genre) => genre !== "concours")
+              .filter((genre) => genre.toLowerCase() !== "concours")
               .map((genre) => (
                 <Chip
                   key={genre}
@@ -130,10 +135,25 @@ export default function FilmPage() {
                 />
               ))}
         </Stack>
+
         <Stack>
           <InscriptionSeance />
         </Stack>
-        <Vote filmId={id} />
+
+        {isConcours ? (
+          <Box sx={{ my: 3 }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              href="/concours"
+              endIcon={<OpenInNewIcon />}
+            >
+              Participer au concours
+            </Button>
+          </Box>
+        ) : (
+          <Vote filmId={id} />
+        )}
 
         <Stack direction="row" spacing={2} mb={4} sx={{ flexWrap: "wrap" }}>
           {film.url_imdb && (
@@ -142,6 +162,7 @@ export default function FilmPage() {
               color="secondary"
               href={film.url_imdb}
               target="_blank"
+              rel="noopener noreferrer"
               endIcon={<OpenInNewIcon />}
             >
               IMDb
@@ -154,6 +175,7 @@ export default function FilmPage() {
               color="secondary"
               href={film.url_allocine}
               target="_blank"
+              rel="noopener noreferrer"
               endIcon={<OpenInNewIcon />}
             >
               Allociné
@@ -166,7 +188,10 @@ export default function FilmPage() {
             <Typography variant="body1">
               <Box
                 component="span"
-                sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
               >
                 Réalisateur :
               </Box>{" "}
@@ -177,7 +202,10 @@ export default function FilmPage() {
           {film.synopsis && (
             <Typography
               variant="body1"
-              sx={{ lineHeight: 1.9, color: "text.secondary" }}
+              sx={{
+                lineHeight: 1.9,
+                color: "text.secondary",
+              }}
             >
               {film.synopsis}
             </Typography>
@@ -187,7 +215,10 @@ export default function FilmPage() {
             <Typography variant="body1">
               <Box
                 component="span"
-                sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
               >
                 Projection :
               </Box>{" "}
@@ -199,7 +230,10 @@ export default function FilmPage() {
             <Typography variant="body1">
               <Box
                 component="span"
-                sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 700,
+                }}
               >
                 Cinéma :
               </Box>{" "}
@@ -207,7 +241,8 @@ export default function FilmPage() {
             </Typography>
           )}
         </Stack>
-                {user?.role === "ADMIN" && (
+
+        {user?.role === "ADMIN" && (
           <Box sx={{ mt: 4 }}>
             <DeleteMovie id={id} />
             <EditMovie id={id} />
@@ -228,8 +263,6 @@ export default function FilmPage() {
 
           <Posts filmId={id} />
         </Box>
-
-
       </Paper>
     </Box>
   );
