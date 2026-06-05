@@ -39,6 +39,11 @@ function Layout({ isDarkMode, toggleTheme }) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          zIndex: 1001,
           px: 4,
           py: 2,
           backgroundColor: theme.palette.background.paper,
@@ -53,6 +58,8 @@ function Layout({ isDarkMode, toggleTheme }) {
             alignItems: "center",
             gap: 3,
             listStyle: "none",
+            fontFamily: "marcellus",
+            fontSize: "20px",
             m: 0,
             p: 0,
           }}
@@ -70,7 +77,7 @@ function Layout({ isDarkMode, toggleTheme }) {
                     width: "auto",      
                     display: "block",
                     transition: "transform 0.2s, filter 0.2s",
-                    // 🎯 Applique l'inversion de couleur à 100% uniquement si le thème dark est actif
+                    // Applique l'inversion de couleur à 100% uniquement si le thème dark est actif
                     filter: isDarkMode ? "invert(100%)" : "none",
                     "&:hover": {
                       transform: "scale(1.05)", 

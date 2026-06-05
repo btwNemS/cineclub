@@ -9,7 +9,6 @@ export default function InscriptionSeance() {
   const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const { user } = useAuth();
-  console.log(user);
   const [isSuscribed, setisSuscribed] = useState(false);
   const [liste, setListe] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -20,11 +19,9 @@ export default function InscriptionSeance() {
         `${API_URL}/registrations/getRegistrationsByFilmId/${id}`,
       );
       const data = await response.json();
-      console.log(data);
       setListe(data);
 
       const pseudoList = data.map((inscrit) => inscrit.pseudo);
-      console.log(pseudoList);
       if (user && pseudoList.includes(user.pseudo)) {
         setisSuscribed(true);
       }

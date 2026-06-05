@@ -8,6 +8,7 @@ body {
   background: #121212;
   color: #f5f1e8;
   font-family: "Inter", Arial, Helvetica, sans-serif;
+  margin-top: 100px !important; 
 }
 
 /* Layout général */

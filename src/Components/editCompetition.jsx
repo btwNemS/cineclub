@@ -186,21 +186,21 @@ export default function EditCompetition({ onSaveSuccess }) {
                 )}
 
                 {isFilmActive ? (
-                  <box>
+                  <Box>
                     {" "}
                     <img
                       src={`${API_URL}/${film.url_image}`}
                       alt={film.name}
-                      class="image"
+                      className="image"
                     />
                     <Typography
                       variant="h6"
-                      textAlign="center"
                       color="text.primary"
+                      sx={{ textAlign: "center" }}
                     >
                       {film.name}
                     </Typography>
-                  </box>
+                  </Box>
                 ) : (
                   <SearchCompetitor
                     onSelect={(selectedFilm) =>

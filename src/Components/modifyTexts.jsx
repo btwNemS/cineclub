@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -12,7 +12,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import Editor from "./dependancies/Editor";
+
+const Editor = lazy(() => import("./dependancies/Editor"));
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -164,15 +165,17 @@ const ModifyText = () => {
           {selected.label}
         </Typography>
        
-        <Editor
-          key={selected.role}
-          initialHtml={selected.content}
-          onChange={setDraft}
-          placeholder={
-            selected.content.replace(/<[^>]*>/g, "").trim() ||
-            `Saisissez le contenu pour le rôle "${selected.role}" (${selected.label})...`
-          }
-        />
+        <Suspense fallback={<Box sx={{ display: "flex", justifyContent: "center", p: 4 }}><CircularProgress /></Box>}>
+          <Editor
+            key={selected.role}
+            initialHtml={selected.content}
+            onChange={setDraft}
+            placeholder={
+              selected.content.replace(/<[^>]*>/g, "").trim() ||
+              `Saisissez le contenu pour le rôle "${selected.role}" (${selected.label})...`
+            }
+          />
+        </Suspense>
 
         <Button
           variant="contained"
@@ -211,7 +214,9 @@ const ModifyText = () => {
                 <ListItemText
                   primary={text.label}
                   secondary={
-                    text.content ? text.role : `${text.role} — (vide)`
+                    text.content
+                      ? text.content.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() || "Contenu non défini"
+                      : "Contenu non défini"
                   }
                 />
                 <EditIcon color="action" />

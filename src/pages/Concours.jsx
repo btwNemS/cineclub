@@ -69,6 +69,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         gap: "20px",
         padding: isFirst ? "20px 24px" : "14px 20px",
         borderRadius: "12px",
+        marginBottom: "25px",
         border: `1.5px solid ${
           medal ? medal.color + "55" : alpha(theme.palette.text.primary, 0.08)
         }`,
@@ -177,6 +178,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
 
 export default function Concours() {
   const { user } = useAuth();
+  const theme = useTheme();
 
   const [films, setFilms] = useState([]);
   const [voteCounts, setVoteCounts] = useState({});

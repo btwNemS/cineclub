@@ -1,19 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { Box, CircularProgress, CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 
 import { lightTheme, darkTheme } from "./utils/theme";
 
-import Comment from "./Comment";
-import Backoffice from "./pages/Backoffice";
-import Concours from "./pages/Concours";
-import FilmPassed from "./pages/FilmPassed";
-import FilmProgrammed from "./pages/FilmProgrammed";
-import FilmSuggested from "./pages/FilmSuggested";
-import Home from "./pages/Home";
 import Layout from "./pages/nav_bar";
-import NoPage from "./pages/NoPage";
-import PageFilm from "./pages/PageFilm";
+
+const Comment = lazy(() => import("./Comment"));
+const Backoffice = lazy(() => import("./pages/Backoffice"));
+const Concours = lazy(() => import("./pages/Concours"));
+const FilmPassed = lazy(() => import("./pages/FilmPassed"));
+const FilmProgrammed = lazy(() => import("./pages/FilmProgrammed"));
+const FilmSuggested = lazy(() => import("./pages/FilmSuggested"));
+const Home = lazy(() => import("./pages/Home"));
+const NoPage = lazy(() => import("./pages/NoPage"));
+const PageFilm = lazy(() => import("./pages/PageFilm"));
 
 function App() {
   // 1. Détecte si le navigateur de l'utilisateur est configuré en mode sombre
@@ -38,6 +39,13 @@ function App() {
       <CssBaseline />
 
       <BrowserRouter>
+        <Suspense
+          fallback={
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+              <CircularProgress color="#ffffff" />
+            </Box>
+          }
+        >
         <Routes>
           {/* On passe l'état actuel et la fonction toggle au Layout via le contexte ou des attributs de fenêtre simples */}
           <Route 
@@ -60,6 +68,7 @@ function App() {
             <Route path="/film/:id" element={<PageFilm />} />
           </Route>
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );
