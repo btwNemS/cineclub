@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function LikePosts({postId}){
 

@@ -62,7 +62,7 @@ export default function CardMovie({ film, onVoteSuccess }) {
     <div className="card">
       <div
         onClick={() => navigate(`/film/${film.id}`)}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer", flex: 1 }}
       >
         <img
           src={`${API_URL}/${film.url_image}`}
