@@ -41,7 +41,7 @@ export default function Posts({ filmId }) {
                     children={post.children}
                     filmId={filmId}
                     postId={post.id}
-                    userId={post.userId}
+                    userId={post.user_id}
                     getRenderData={getRenderData}
                 />
             ))}

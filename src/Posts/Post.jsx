@@ -89,7 +89,7 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                         level={level + 1}
                         filmId={filmId}
                         postId={child.id}
-                        userId={child.userId}
+                        userId={child.user_id}
                         getRenderData={getRenderData}
                     />
                 ))
