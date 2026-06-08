@@ -1,6 +1,7 @@
 import { CircularProgress, Typography } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentification";
 import DynamicText from "../Components/dymanicText";
 
@@ -23,7 +24,11 @@ function RatingButton({ score, selected, onClick, disabled }) {
 
   return (
     <button
-      onClick={() => !disabled && onClick(score.value)}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Évite absolument de déclencher la redirection vers la page du film
+        if (!disabled) onClick(score.value);
+      }}
       disabled={disabled}
       style={{
         flex: 1,
@@ -43,6 +48,7 @@ function RatingButton({ score, selected, onClick, disabled }) {
         cursor: disabled ? "default" : "pointer",
         transition: "all 0.15s ease",
         whiteSpace: "nowrap",
+        zIndex: 10,
       }}
     >
       {score.label}
@@ -50,10 +56,10 @@ function RatingButton({ score, selected, onClick, disabled }) {
   );
 }
 
-function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
+function FilmRow({ film, rank, totalMoyennes, currentScore, onVote, disabled }) {
   const moyenne = Number(film.moyenne || film.average_score || 0);
-
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const percent =
     totalMoyennes > 0 ? Math.round((moyenne / totalMoyennes) * 100) : 0;
@@ -63,6 +69,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
 
   return (
     <div
+      onClick={() => navigate(`/film/${film.id}`)}
       style={{
         display: "flex",
         alignItems: "center",
@@ -76,6 +83,16 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         background: isFirst
           ? alpha(theme.palette.secondary.main, 0.05)
           : alpha(theme.palette.background.paper, 0.5),
+        cursor: "pointer",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-2px)";
+        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
       }}
     >
       <div
@@ -116,14 +133,6 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         >
           {film.name}
         </div>
-
-        <div
-          style={{
-            fontSize: "0.82rem",
-            color: theme.palette.text.secondary,
-            marginBottom: "8px",
-          }}
-        ></div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div
@@ -166,8 +175,8 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
           <RatingButton
             key={score.value}
             score={score}
-            selected={userScore === score.value}
-            onClick={onVote}
+            selected={currentScore === score.value}
+            onClick={(val) => onVote(val)}
             disabled={disabled}
           />
         ))}
@@ -181,32 +190,12 @@ export default function Concours() {
   const theme = useTheme();
 
   const [films, setFilms] = useState([]);
-  const [voteCounts, setVoteCounts] = useState({});
   const [userScores, setUserScores] = useState({});
   const [loading, setLoading] = useState(true);
-
-  const fetchVoteCounts = useCallback(async (filmsList) => {
-    const counts = {};
-
-    await Promise.all(
-      filmsList.map(async (film) => {
-        try {
-          const res = await fetch(`${API_URL}/votes/count/${film.id}`);
-          const data = await res.json();
-          counts[film.id] = data.count || 0;
-        } catch {
-          counts[film.id] = 0;
-        }
-      }),
-    );
-
-    setVoteCounts(counts);
-  }, []);
 
   const fetchUserScores = useCallback(
     async (filmsList) => {
       if (!user) return;
-
       const scores = {};
 
       await Promise.all(
@@ -216,24 +205,21 @@ export default function Concours() {
               `${API_URL}/scores/protected/getUserScoreForFilm`,
               {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({
-                  filmId: parseInt(film.id),
-                }),
+                body: JSON.stringify({ filmId: parseInt(film.id) }),
               },
             );
 
             if (res.ok) {
               const data = await res.json();
-
               if (data?.score != null) {
                 scores[film.id] = data.score;
               }
             }
-          } catch {}
+          } catch (e) {
+            console.error("Erreur récupération vote pour le film : " + film.id, e);
+          }
         }),
       );
 
@@ -242,95 +228,64 @@ export default function Concours() {
     [user],
   );
 
-  useEffect(() => {
-    setLoading(true);
-
+  const loadData = useCallback(() => {
     fetch(`${API_URL}/films/getAll`)
       .then((r) => r.json())
       .then(async (data) => {
-        const concoursFilms = data.filter(
-          (f) =>
-            f.film_genre && f.film_genre.toLowerCase().includes("concours"),
-        );
-
-        setFilms(concoursFilms);
-
-        await Promise.all([
-          fetchVoteCounts(concoursFilms),
-          fetchUserScores(concoursFilms),
-        ]);
+        const suggestedFilms = data.filter((f) => f.status === "suggested");
+        setFilms(suggestedFilms);
+        await fetchUserScores(suggestedFilms);
       })
+      .catch((err) => console.error("Erreur chargement films", err))
       .finally(() => setLoading(false));
-  }, [fetchVoteCounts, fetchUserScores]);
+  }, [fetchUserScores]);
+
+  useEffect(() => {
+    setLoading(true);
+    loadData();
+  }, [loadData]);
 
   const handleVote = async (filmId, score) => {
     if (!user) return;
 
-    const oldScore = userScores[filmId];
+    // Sauvegarde de l'ancien état au cas où l'API échouerait (Rollback)
+    const previousScore = userScores[filmId];
 
+    // Étape 1 : Changement d'état visuel instantané et fluide (Optimistic Update)
     setUserScores((prev) => ({
       ...prev,
       [filmId]: score,
     }));
 
     try {
+      // Étape 2 : Envoi STRICT et séquentiel au serveur avec await pour éviter le chevauchement
       await fetch(`${API_URL}/scores/protected/create`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          filmId: parseInt(filmId),
-          score,
-        }),
+        body: JSON.stringify({ filmId: parseInt(filmId), score }),
       });
 
       await fetch(`${API_URL}/votes/protected/vote`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          filmId: parseInt(filmId),
-        }),
+        body: JSON.stringify({ filmId: parseInt(filmId) }),
       });
 
-      const response = await fetch(`${API_URL}/films/get/${filmId}`);
-
+      // Étape 3 : Une fois l'écriture confirmée sur le serveur, on récupère les nouvelles moyennes calculées
+      const response = await fetch(`${API_URL}/films/getAll`);
       if (response.ok) {
-        const updatedFilm = await response.json();
-
-        setFilms((prev) =>
-          prev.map((film) =>
-            film.id === filmId ? { ...film, ...updatedFilm } : film,
-          ),
-        );
+        const data = await response.json();
+        setFilms(data.filter((f) => f.status === "suggested"));
       }
-
-      fetchVoteCounts(films);
     } catch (err) {
-      console.error(err);
-
+      console.error("Erreur lors de la soumission du vote", err);
+      // En cas de coupure ou d'erreur réseau, on remet l'ancienne note pour ne pas fausser l'UI
       setUserScores((prev) => ({
         ...prev,
-        [filmId]: oldScore,
+        [filmId]: previousScore,
       }));
-      setFilms((prev) =>
-        prev.map((film) => {
-          if (film.id !== filmId) return film;
-
-          const ancienneMoyenne = Number(
-            film.moyenne || film.average_score || 0,
-          );
-
-          return {
-            ...film,
-            moyenne: (ancienneMoyenne + score) / 2,
-          };
-        }),
-      );
     }
   };
 
@@ -394,7 +349,7 @@ export default function Concours() {
           film={film}
           rank={index}
           totalMoyennes={totalMoyennes}
-          userScore={userScores[film.id]}
+          currentScore={userScores[film.id]}
           onVote={(score) => handleVote(film.id, score)}
           disabled={!user}
         />

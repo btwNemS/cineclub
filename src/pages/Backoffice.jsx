@@ -1,43 +1,12 @@
-import { Box, Button, Stack, Typography, CircularProgress } from "@mui/material";
-import { useState, useEffect, useCallback } from "react";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import { useAuth } from "../Authentification";
-import AddCompetition from "../Components/addCompetition";
-import EditCompetition from "../Components/editCompetition";
 import AddMovie from "../Components/addMovie";
 import ModifyTexts from "../Components/modifyTexts";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Backoffice() {
   const { user } = useAuth();
   const [view, setView] = useState("menu");
-  const [hasCompetition, setHasCompetition] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const checkCompetition = useCallback(async () => {
-    try {
-      const response = await fetch(`${API_URL}/films/getAll`);
-      if (response.ok) {
-        const films = await response.json();
-        const isCompetitionActive = films.some((film) => {
-          if (!film.film_genre) return false;
-          return film.film_genre
-            .split(",")
-            .map((g) => g.trim().toLowerCase())
-            .includes("concours");
-        });
-        setHasCompetition(isCompetitionActive);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la vérification de la compétition :", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    checkCompetition();
-  }, [checkCompetition]);
 
   return (
     <>
@@ -72,24 +41,7 @@ export default function Backoffice() {
                 Ajouter un film
               </Button>
 
-              {/* Bouton 2 : Créer ou Modifier une compétition */}
-              <Button
-                variant="contained"
-                color="secondary"
-                disabled={loading}
-                onClick={() => setView("competition")}
-                sx={{ width: "360px", height: "280px", fontSize: "1.2rem", fontWeight: "bold", borderRadius: "16px", textTransform: "none", boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
-              >
-                {loading ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : hasCompetition ? (
-                  "Modifier une compétition"
-                ) : (
-                  "Créer une compétition"
-                )}
-              </Button>
-
-              {/* Bouton 3 : Modifier les textes du site */}
+              {/* Bouton 2 : Modifier les textes du site */}
               <Button
                 variant="contained"
                 color="secondary"
@@ -111,21 +63,7 @@ export default function Backoffice() {
             </Box>
           )}
 
-          {/* VUE 2 : Affichage dynamique du bon composant concours */}
-          {view === "competition" && (
-             <Box sx={{ width: "100%" }}>
-              <Button variant="outlined" onClick={() => setView("menu")} sx={{ mb: 3 }}>
-                ← Retour au menu admin
-              </Button>
-              {hasCompetition ? (
-                <EditCompetition onSaveSuccess={checkCompetition} />
-              ) : (
-                <AddCompetition onSaveSuccess={checkCompetition} />
-              )}
-            </Box>
-          )}
-
-          {/* VUE 3 : Affichage du composant de modification des textes */}
+          {/* VUE 2 : Affichage du composant de modification des textes */}
           {view === "Textes" && (
             <Box sx={{ width: "100%" }}>
               <Button variant="outlined" onClick={() => setView("menu")} sx={{ mb: 3 }}>
