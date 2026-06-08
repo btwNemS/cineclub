@@ -30,14 +30,23 @@ export default function AuthModal({ open, handleClose }) {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 400,
-          bgcolor: "background.paper",
+          bgcolor: "background.paper", // S'adapte dynamiquement (Blanc en clair, Bleu nuit en sombre)
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
         }}
       >
-        <Typography variant="h5" component="h2" mb={2} textAlign="center">
-          {isLogin ? "Connexion" : "Inscription"}
+        <Typography 
+          variant="h5" 
+          component="h2" 
+          mb={3} 
+          textAlign="center"
+          sx={{ 
+            fontWeight: "bold",
+            color: "text.primary" // Noir/bleu en clair, blanc crème en sombre
+          }}
+        >
+          {isLogin ? "CONNEXION" : "INSCRIPTION"}
         </Typography>
 
         <form onSubmit={handleSubmit}>
@@ -51,14 +60,14 @@ export default function AuthModal({ open, handleClose }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               sx={{
-                "& .MuiInputBase-input": { color: "#ffffff" },
-                "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-                "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+                "& .MuiInputBase-input": { color: "text.primary" }, 
+                "& .MuiInputLabel-root": { color: "text.secondary" },
+                // L'animation MUI décale le label en haut; on lui donne la couleur secondaire (dorée) lors du focus
+                "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" }, 
                 "& .MuiOutlinedInput-root": {
-                  backgroundColor: "transparent",
-                  "& fieldset": { borderColor: "rgba(255, 255, 255, 0.23)" },
-                  "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
-                  "&.Mui-focused fieldset": { borderColor: "#ffffff", borderWidth: "1px" },
+                  "& fieldset": { borderColor: "divider" }, 
+                  "&:hover fieldset": { borderColor: "text.secondary" },
+                  "&.Mui-focused fieldset": { borderColor: "secondary.main", borderWidth: "2px" },
                 },
               }}
             />
@@ -72,14 +81,13 @@ export default function AuthModal({ open, handleClose }) {
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
             sx={{
-              "& .MuiInputBase-input": { color: "#ffffff" },
-              "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-              "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+              "& .MuiInputBase-input": { color: "text.primary" }, 
+              "& .MuiInputLabel-root": { color: "text.secondary" },
+              "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" },
               "& .MuiOutlinedInput-root": {
-                backgroundColor: "transparent",
-                "& fieldset": { borderColor: "rgba(255, 255, 255, 0.23)" },
-                "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
-                "&.Mui-focused fieldset": { borderColor: "#ffffff", borderWidth: "1px" },
+                "& fieldset": { borderColor: "divider" },
+                "&:hover fieldset": { borderColor: "text.secondary" },
+                "&.Mui-focused fieldset": { borderColor: "secondary.main", borderWidth: "2px" },
               },
             }}
           />
@@ -93,14 +101,13 @@ export default function AuthModal({ open, handleClose }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             sx={{
-              "& .MuiInputBase-input": { color: "#ffffff" },
-              "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-              "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+              "& .MuiInputBase-input": { color: "text.primary" }, 
+              "& .MuiInputLabel-root": { color: "text.secondary" },
+              "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" },
               "& .MuiOutlinedInput-root": {
-                backgroundColor: "transparent",
-                "& fieldset": { borderColor: "rgba(255, 255, 255, 0.23)" },
-                "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
-                "&.Mui-focused fieldset": { borderColor: "#ffffff", borderWidth: "1px" },
+                "& fieldset": { borderColor: "divider" },
+                "&:hover fieldset": { borderColor: "text.secondary" },
+                "&.Mui-focused fieldset": { borderColor: "secondary.main", borderWidth: "2px" },
               },
             }}
           />
@@ -108,20 +115,25 @@ export default function AuthModal({ open, handleClose }) {
           <Button
             type="submit"
             variant="contained"
-            color="primary"
+            color="secondary" // Utilise le bouton jaune/doré du thème
             fullWidth
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, fontWeight: "bold" }}
           >
             {isLogin ? "Se connecter" : "S'inscrire"}
           </Button>
         </form>
 
-        <Box textAlign="center" sx={{ mt: 1 }}>
+        <Box textAlign="center" sx={{ mt: 2 }}>
           <Typography
             variant="body2"
-            color="primary"
             onClick={() => setIsLogin(!isLogin)}
-            sx={{ color: "#ffffff !important", cursor: "pointer" }}
+            sx={{ 
+              color: "text.secondary", 
+              cursor: "pointer",
+              textDecoration: "underline",
+              "&:hover": { color: "secondary.main" }, 
+              transition: "color 0.2s"
+            }}
           >
             {isLogin ? "Pas encore de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
           </Typography>
