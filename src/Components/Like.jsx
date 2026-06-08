@@ -11,7 +11,7 @@ export default function Liker() {
   console.log(user);
   const [liste, setListe] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [hasLiked, setisHasLiked] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
 
   const refreshListe = async () => {
     try {
@@ -25,10 +25,10 @@ export default function Liker() {
       const pseudoList = data.map((inscrit) => inscrit.pseudo);
       console.log(pseudoList);
       if (user && pseudoList.includes(user.pseudo)) {
-        setisHasLiked(true);
+        setHasLiked(true);
       }
       else {
-        setisHasLiked(false);
+        setHasLiked(false);
       }
     } catch (error) {
       console.error("Erreur lors du chargement des inscrits:", error);
