@@ -1,6 +1,7 @@
 import { CircularProgress, Typography } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentification";
 import DynamicText from "../Components/dymanicText";
 
@@ -23,7 +24,10 @@ function RatingButton({ score, selected, onClick, disabled }) {
 
   return (
     <button
-      onClick={() => !disabled && onClick(score.value)}
+      onClick={(e) => {
+        e.stopPropagation(); // Empêche de rediriger vers la page du film lors du clic sur le vote
+        if (!disabled) onClick(score.value);
+      }}
       disabled={disabled}
       style={{
         flex: 1,
@@ -43,6 +47,7 @@ function RatingButton({ score, selected, onClick, disabled }) {
         cursor: disabled ? "default" : "pointer",
         transition: "all 0.15s ease",
         whiteSpace: "nowrap",
+        zIndex: 2,
       }}
     >
       {score.label}
@@ -50,10 +55,10 @@ function RatingButton({ score, selected, onClick, disabled }) {
   );
 }
 
-function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
+function FilmRow({ film, rank, totalMoyennes, userScores, onVote, disabled }) {
   const moyenne = Number(film.moyenne || film.average_score || 0);
-
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const percent =
     totalMoyennes > 0 ? Math.round((moyenne / totalMoyennes) * 100) : 0;
@@ -63,6 +68,7 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
 
   return (
     <div
+      onClick={() => navigate(`/film/${film.id}`)}
       style={{
         display: "flex",
         alignItems: "center",
@@ -76,6 +82,16 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         background: isFirst
           ? alpha(theme.palette.secondary.main, 0.05)
           : alpha(theme.palette.background.paper, 0.5),
+        cursor: "pointer",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-2px)";
+        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
       }}
     >
       <div
@@ -116,14 +132,6 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
         >
           {film.name}
         </div>
-
-        <div
-          style={{
-            fontSize: "0.82rem",
-            color: theme.palette.text.secondary,
-            marginBottom: "8px",
-          }}
-        ></div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div
@@ -166,9 +174,9 @@ function FilmRow({ film, rank, totalMoyennes, userScore, onVote, disabled }) {
           <RatingButton
             key={score.value}
             score={score}
-            selected={userScore === score.value}
-            onClick={onVote}
-            disabled={disabled}
+            selected={userScores[film.id] === score.value}
+            onClick={(val) => onVote(film.id, val)}
+            disabled={disabled} // Utilise la propriété disabled passée par le parent au lieu de !user
           />
         ))}
       </div>
@@ -248,16 +256,13 @@ export default function Concours() {
     fetch(`${API_URL}/films/getAll`)
       .then((r) => r.json())
       .then(async (data) => {
-        const concoursFilms = data.filter(
-          (f) =>
-            f.film_genre && f.film_genre.toLowerCase().includes("concours"),
-        );
+        const suggestedFilms = data.filter((f) => f.status === "suggested");
 
-        setFilms(concoursFilms);
+        setFilms(suggestedFilms);
 
         await Promise.all([
-          fetchVoteCounts(concoursFilms),
-          fetchUserScores(concoursFilms),
+          fetchVoteCounts(suggestedFilms),
+          fetchUserScores(suggestedFilms),
         ]);
       })
       .finally(() => setLoading(false));
@@ -394,9 +399,9 @@ export default function Concours() {
           film={film}
           rank={index}
           totalMoyennes={totalMoyennes}
-          userScore={userScores[film.id]}
+          userScores={userScores}
           onVote={(score) => handleVote(film.id, score)}
-          disabled={!user}
+          disabled={!user} // Cette valeur est passée à la prop "disabled" de FilmRow
         />
       ))}
     </div>
