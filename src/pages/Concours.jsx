@@ -230,13 +230,18 @@ export default function Concours() {
 
   const loadData = useCallback(() => {
     fetch(`${API_URL}/films/getAll`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) {
+          throw new Error(`Erreur serveur : ${r.status}`);
+        }
+        return r.json();
+      })
       .then(async (data) => {
         const suggestedFilms = data.filter((f) => f.status === "suggested");
         setFilms(suggestedFilms);
         await fetchUserScores(suggestedFilms);
       })
-      .catch((err) => console.error("Erreur chargement films", err))
+      .catch((err) => console.error("Erreur chargement films :", err.message))
       .finally(() => setLoading(false));
   }, [fetchUserScores]);
 
@@ -248,17 +253,17 @@ export default function Concours() {
   const handleVote = async (filmId, score) => {
     if (!user) return;
 
-    // Sauvegarde de l'ancien état au cas où l'API échouerait (Rollback)
+    // Sauvegarde de l'ancien état local en cas d'échec réseau (Rollback)
     const previousScore = userScores[filmId];
 
-    // Étape 1 : Changement d'état visuel instantané et fluide (Optimistic Update)
+    // Étape 1 : Changement visuel instantané (Mise à jour optimiste)
     setUserScores((prev) => ({
       ...prev,
       [filmId]: score,
     }));
 
     try {
-      // Étape 2 : Envoi STRICT et séquentiel au serveur avec await pour éviter le chevauchement
+      // Étape 2 : Enregistrement du score (Attente de la validation serveur)
       await fetch(`${API_URL}/scores/protected/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -266,6 +271,7 @@ export default function Concours() {
         body: JSON.stringify({ filmId: parseInt(filmId), score }),
       });
 
+      // Étape 3 : Enregistrement du jeton d'activité de vote
       await fetch(`${API_URL}/votes/protected/vote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -273,15 +279,15 @@ export default function Concours() {
         body: JSON.stringify({ filmId: parseInt(filmId) }),
       });
 
-      // Étape 3 : Une fois l'écriture confirmée sur le serveur, on récupère les nouvelles moyennes calculées
+      // Étape 4 : Récupération des moyennes recalculées côté serveur
       const response = await fetch(`${API_URL}/films/getAll`);
       if (response.ok) {
         const data = await response.json();
         setFilms(data.filter((f) => f.status === "suggested"));
       }
     } catch (err) {
-      console.error("Erreur lors de la soumission du vote", err);
-      // En cas de coupure ou d'erreur réseau, on remet l'ancienne note pour ne pas fausser l'UI
+      console.error("Erreur lors de la soumission du vote :", err);
+      // Remise en place de l'ancienne note si l'API a expiré ou planté
       setUserScores((prev) => ({
         ...prev,
         [filmId]: previousScore,
