@@ -5,6 +5,7 @@ import Reply from "./Reply";
 import DeletePost from "../Components/deletePost";
 import { useAuth } from "../Authentification";
 import { useNavigate } from "react-router-dom";
+import Like from "../Components/Like";
 
 
 export default function Post({ content, children, level = 1, filmId, postId, userId, getRenderData }) {
@@ -47,6 +48,7 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                         <DeletePost postId={postId} />
                     ) : null}
                 </CardActions>
+                <Like/>
 
                 {showInput && (
                     <CardContent>
