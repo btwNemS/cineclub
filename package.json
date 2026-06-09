@@ -21,7 +21,7 @@
     "@lexical/rich-text": "^0.45.0",
     "@lexical/selection": "^0.45.0",
     "@lexical/utils": "^0.45.0",
-    "@mui/icons-material": "^9.0.1",
+    "@mui/icons-material": "^9.1.0",
     "@mui/material": "^9.0.1",
     "lexical": "^0.45.0",
     "react": "^19.2.6",

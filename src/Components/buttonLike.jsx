@@ -1,4 +1,5 @@
 import {
+    IconButton,
     Button,
     Dialog,
     DialogTitle,
@@ -8,6 +9,9 @@ import {
 } from "@mui/material";
 import { useAuth } from "../Authentification";
 import { useState } from "react";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+
+
 
 
 export default function BoutonLike({
@@ -51,16 +55,16 @@ export default function BoutonLike({
 
     return (
         <div>
-            <Button
+            <IconButton
                 id="boutonInscription"
                 variant="outlined"
-                color="secondary"
                 onClick={handleClick}
                 onMouseEnter={handleHover}
                 onMouseLeave={handleHoverOut}
+                color={hasLiked ? "secondary" : "default"}
             >
-                {hasLiked ? "J'aime pas" : "J'aime"}
-            </Button>
+                <ThumbUpIcon />
+            </IconButton>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Veuillez vous connecter</DialogTitle>
                 <DialogContent>
