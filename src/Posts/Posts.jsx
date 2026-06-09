@@ -42,6 +42,7 @@ export default function Posts({ filmId }) {
                     filmId={filmId}
                     postId={post.id}
                     userId={post.user_id}
+                    author={post.author}
                     getRenderData={getRenderData}
                 />
             ))}

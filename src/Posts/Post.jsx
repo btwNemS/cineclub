@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Like from "../Components/Like";
 
 
-export default function Post({ content, children, level = 1, filmId, postId, userId, getRenderData }) {
+export default function Post({ content, children, level = 1, filmId, postId, userId, author, getRenderData }) {
 
     const answer = level > 1;
     const [showInput, setShowInput] = useState(false);
@@ -26,6 +26,12 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                 borderLeftColor: answer ? "secondary.main" : "primary.main",
             }} >
                 <CardContent >
+                    <Typography variant="subtitle2"
+                        sx={{
+                            fontWeight: 600,
+                            color: "primary.main",
+                            mb: 0.5,
+                        }} >{author ?? "Utilisateur supprimé"}</Typography>
                     <Typography variant="body2"
                         sx={{
                             fontSize: "0.9rem",
@@ -92,6 +98,7 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                         filmId={filmId}
                         postId={child.id}
                         userId={child.user_id}
+                        author={child.author}
                         getRenderData={getRenderData}
                     />
                 ))
