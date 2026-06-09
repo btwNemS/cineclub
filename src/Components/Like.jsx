@@ -1,22 +1,20 @@
 import BoutonLike from "./buttonLike";
 import ListeLikes from "./listeLikes";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useAuth } from "../Authentification";
 
-export default function Liker() {
+export default function Liker({postId}) { //pour avoir l'id du post et pas du film
   const API_URL = import.meta.env.VITE_API_URL;
-  const { id } = useParams();
   const { user } = useAuth();
   console.log(user);
-  const [liste, setListe] = useState(false);
+  const [liste, setListe] = useState([]);
   const [hovered, setHovered] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
 
   const refreshListe = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/likes/getlikesByPostId/${id}`,
+        `${API_URL}/likes/getlikesByPostId/${postId}`,
       );
       const data = await response.json();
       console.log(data);
@@ -36,16 +34,18 @@ export default function Liker() {
   };
 
   useEffect(() => {
-    refreshListe();
-    console.log("liste mise à jour :", liste);
-  }, [user]);
+    if (postId) {
+        refreshListe();
+    }
+  }, [user, postId]);//si on met pas postId ça peut faire des erreurs avec réponses aux commentaires
+  //si on met pas user et qu'on se déconnecte après avoir liké , ça refresh pas 
 
   return (
     <div>
       <BoutonLike
         setHovered={setHovered}
         refreshListe={refreshListe}
-        id={id}
+        id={postId}
         API_URL={API_URL}
         hasLiked={hasLiked}
       />

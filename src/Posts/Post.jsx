@@ -19,19 +19,27 @@ export default function Post({ content, children, level = 1, filmId, postId, use
             <Card variant="outlined" sx={{
                 mb: 1,
                 ml: level * 2,
-                
+
                 borderRadius: 2,
                 backgroundColor: answer ? "background.default" : "background.paper",
                 borderLeft: "2px solid",
                 borderLeftColor: answer ? "secondary.main" : "primary.main",
             }} >
                 <CardContent >
-                    <Typography variant="subtitle2"
-                        sx={{
-                            fontWeight: 600,
-                            color: "primary.main",
-                            mb: 0.5,
-                        }} >{author ?? "Utilisateur supprimé"}</Typography>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        mb: 0.5
+                    }}>
+                        <Typography variant="subtitle2"
+                            sx={{
+                                fontWeight: 600,
+                                color: "primary.main",
+                                mb: 0.5,
+                            }} >{author ?? "Utilisateur supprimé"}</Typography>
+                        <Like postId={postId}/>
+                    </Box>
                     <Typography variant="body2"
                         sx={{
                             fontSize: "0.9rem",
@@ -40,7 +48,7 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                         }} >{content}</Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "space-between" }}>
-                    <Button size="small" color="primary" variant="outline" 
+                    <Button size="small" color="primary" variant="outline"
                         sx={{
                             transition: "0.2s",
                             "&:hover": {
@@ -50,11 +58,11 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                             },
                         }}
                         onClick={() => setShowInput(!showInput)} >Répondre</Button>
-                        {((user && user.id === userId) || user?.role === "ADMIN") ? (
+                    {((user && user.id === userId) || user?.role === "ADMIN") ? (
                         <DeletePost postId={postId} />
                     ) : null}
                 </CardActions>
-                <Like/>
+
 
                 {showInput && (
                     <CardContent>

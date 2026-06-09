@@ -10,7 +10,7 @@ export default function InscriptionSeance() {
   const { id } = useParams();
   const { user } = useAuth();
   const [isSuscribed, setisSuscribed] = useState(false);
-  const [liste, setListe] = useState(false);
+  const [liste, setListe] = useState([]);
   const [hovered, setHovered] = useState(false);
 
   const refreshListe = async () => {
@@ -34,8 +34,10 @@ export default function InscriptionSeance() {
   };
 
   useEffect(() => {
-    refreshListe();
-  }, [user]);
+    if (id) {
+        refreshListe();
+    }
+  }, [user]);//si on met pas user et qu'on se déconnecte après s'être inscrit , ça refresh pas 
 
   return (
     <div>
@@ -46,9 +48,7 @@ export default function InscriptionSeance() {
         id={id}
         API_URL={API_URL}
       />
-      {liste && (
         <ListeInscrits liste={liste} hovered={hovered} />
-      )}
     </div>
   );
 }
