@@ -40,7 +40,7 @@ export default function InscriptionSeance() {
   }, [user]);//si on met pas user et qu'on se déconnecte après s'être inscrit , ça refresh pas 
 
   return (
-    <div>
+    <div sx={{ position: "relative" }}>
       <BoutonInscription
         setHovered={setHovered}
         isSuscribed={isSuscribed}

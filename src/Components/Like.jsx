@@ -41,7 +41,7 @@ export default function Liker({postId}) { //pour avoir l'id du post et pas du fi
   //si on met pas user et qu'on se déconnecte après avoir liké , ça refresh pas 
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <BoutonLike
         setHovered={setHovered}
         refreshListe={refreshListe}

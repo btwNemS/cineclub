@@ -13,6 +13,7 @@ export default function ListeLikes({ liste, hovered }) {
     pointerEvents: "none",
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
     zIndex: "1",
+    position: "absolute"
   };
 
   const style2 = {
@@ -20,7 +21,7 @@ export default function ListeLikes({ liste, hovered }) {
   };
 
   return (
-    <div id="listeInscrits" style={style}>
+    <div id="listeLikes" style={style}>
       {liste.map((inscrit, index) => (
         <div key={inscrit.id || index}>
           <div style={style2}>
