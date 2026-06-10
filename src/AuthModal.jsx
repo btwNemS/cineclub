@@ -40,10 +40,10 @@ export default function AuthModal({ open, handleClose }) {
           variant="h5" 
           component="h2" 
           mb={3} 
-          textAlign="center"
           sx={{ 
             fontWeight: "bold",
-            color: "text.primary" // Noir/bleu en clair, blanc crème en sombre
+            color: "text.primary", // Noir/bleu en clair, blanc crème en sombre
+            textAlign:"center"
           }}
         >
           {isLogin ? "CONNEXION" : "INSCRIPTION"}
@@ -123,7 +123,7 @@ export default function AuthModal({ open, handleClose }) {
           </Button>
         </form>
 
-        <Box textAlign="center" sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2, textAlign:"center" }}>
           <Typography
             variant="body2"
             onClick={() => setIsLogin(!isLogin)}
