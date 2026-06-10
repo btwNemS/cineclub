@@ -88,7 +88,6 @@ function Layout({ isDarkMode, toggleTheme }) {
             },
             { to: "/filmPassed", label: "Films passés" },
             { to: "/filmProgrammed", label: "Films prévus" },
-            { to: "/filmSuggested", label: "Films suggérés" },
             { to: "/Concours", label: "Concours" },
           ].map((item) => (
             <Box component="li" key={item.to} sx={{ display: "flex", alignItems: "center" }}>
