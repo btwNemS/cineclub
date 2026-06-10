@@ -56,7 +56,7 @@ export default function Backoffice() {
           {/* VUE 1 : Affichage du composant d'ajout de film */}
           {view === "addMovie" && (
             <Box sx={{ width: "100%" }}>
-              <Button variant="outlined" onClick={() => setView("menu")} sx={{ mb: 3 }}>
+              <Button variant="outlined" onClick={() => setView("menu")}>
                 ← Retour au menu admin
               </Button>
               <AddMovie />
@@ -66,7 +66,7 @@ export default function Backoffice() {
           {/* VUE 2 : Affichage du composant de modification des textes */}
           {view === "Textes" && (
             <Box sx={{ width: "100%" }}>
-              <Button variant="outlined" onClick={() => setView("menu")} sx={{ mb: 3 }}>
+              <Button variant="outlined" color="primary" onClick={() => setView("menu")} sx={{ mb: 3 }}>
                 ← Retour au menu admin
               </Button>
               <ModifyTexts />

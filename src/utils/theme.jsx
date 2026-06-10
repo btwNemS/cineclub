@@ -158,20 +158,32 @@ export const darkTheme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        containedPrimary: {
-          background: "#111424",
-          color: "#FFFFFF",
-          "&:hover": { background: "#1A1F36" },
-        },
-        containedSecondary: {
-          background: "#D4AF37",
-          color: "#111424",
-          "&:hover": { background: "#E6C65C" },
-        },
-        outlinedPrimary: {
-          borderColor: "#D4AF37",
-          color: "#D4AF37",
-          "&:hover": { background: "rgba(212, 175, 55, 0.04)" },
+        // Depuis MUI v6+, les couleurs par variante (containedPrimary, outlinedPrimary, ...)
+        // se pilotent via des variables CSS (--variant-...) plutôt que des clés de styleOverrides dédiées.
+        root: {
+          variants: [
+            {
+              props: { variant: "contained", color: "primary" },
+              style: {
+                "--variant-containedBg": "#343A73",
+                "--variant-containedColor": "#FFFFFF",
+                "&:hover": {
+                  "--variant-containedBg": "#454C8C",
+                },
+              },
+            },
+            {
+              props: { variant: "outlined", color: "primary" },
+              style: {
+                "--variant-outlinedBorder": "#F5F1E8",
+                "--variant-outlinedColor": "#F5F1E8",
+                "&:hover": {
+                  "--variant-outlinedBorder": "#F5F1E8",
+                  "--variant-outlinedBg": "rgba(245, 241, 232, 0.08)",
+                },
+              },
+            },
+          ],
         },
       },
     },

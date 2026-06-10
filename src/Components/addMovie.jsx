@@ -74,7 +74,7 @@ export default function AddMovie() {
       >
         <TextField name="name" label="Titre du film" required />
         <TextField name="synopsis" label="Synopsis du film" required />
-        <Button variant="outlined" component="label" color={imageName ? "success" : "primary"} required>
+        <Button component="label" color={imageName ? "success" : "white"} required variant="outlined">
           {imageName ?? "Choisir une image"}
           <input type="file" accept=".jpg,.jpeg,.png,.webp" name="image" hidden onChange={(e) => setImageName(e.target.files[0]?.name ?? null)} required/>
         </Button>
