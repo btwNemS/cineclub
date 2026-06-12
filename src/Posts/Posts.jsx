@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
+import apiFetch from "../Components/tokencheck";
 
 export default function Posts({ filmId }) {
     const [posts, setPosts] = useState([]);
 
     const getRenderData = async () => {
-        const response = await fetch(import.meta.env.VITE_API_URL + "/posts/getPostsTreeByFilmId/" + filmId);
+        const response = await apiFetch(import.meta.env.VITE_API_URL + "/posts/getPostsTreeByFilmId/" + filmId);
 
         const data = await response.json();
         setPosts(data);
@@ -18,7 +19,7 @@ export default function Posts({ filmId }) {
 
             console.log(url);
 
-            const response = await fetch(url);
+            const response = await apiFetch(url);
             const data = await response.json();
 
             console.log(data);

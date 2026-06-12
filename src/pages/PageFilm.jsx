@@ -23,6 +23,7 @@ import DeleteMovie from "../Components/deleteMovie";
 import EditMovie from "../Components/editMovie";
 import Posts from "../Posts/Posts";
 import YouTubeEmbed from "./LienYoutube";
+import apiFetch from "../Components/tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -38,7 +39,7 @@ export default function FilmPage() {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    fetch(`${API_URL}/films/get/${id}`)
+    apiFetch(`${API_URL}/films/get/${id}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Erreur lors du chargement du film");

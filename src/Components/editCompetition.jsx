@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SearchCompetitor from "./searchCompetitor";
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -21,7 +22,7 @@ export default function EditCompetition({ onSaveSuccess }) {
   useEffect(() => {
     async function fetchCompetitionFilms() {
       try {
-        const response = await fetch(`${API_URL}/films/getAll`);
+        const response = await apiFetch(`${API_URL}/films/getAll`);
         if (response.ok) {
           const films = await response.json();
           const competitionFilms = films.filter((film) => {
@@ -122,7 +123,7 @@ export default function EditCompetition({ onSaveSuccess }) {
     if (film.projection_date)
       form.append("projection_date", film.projection_date);
 
-    const response = await fetch(
+    const response = await apiFetch(
       `${API_URL}/films/protected/update/${film.id}`,
       {
         method: "PUT",

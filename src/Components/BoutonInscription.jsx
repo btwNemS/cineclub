@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useAuth } from "../Authentification";
 import { useState } from "react";
+import apiFetch from "./tokencheck";
 export default function BoutonInscription({
   refreshListe,
   isSuscribed,
@@ -29,13 +30,13 @@ export default function BoutonInscription({
     else {
       try {
         if (!isSuscribed) {
-          await fetch(`${API_URL}/registrations/protected/create/${id}`, {
+          await apiFetch(`${API_URL}/registrations/protected/create/${id}`, {
             method: "POST",
             credentials: "include",
           });
           refreshListe();
         } else {
-          await fetch(`${API_URL}/registrations/protected/delete/${id}`, {
+          await apiFetch(`${API_URL}/registrations/protected/delete/${id}`, {
             method: "POST",
             credentials: "include",
           });

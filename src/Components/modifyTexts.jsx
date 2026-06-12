@@ -12,6 +12,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import apiFetch from "./tokencheck";
 
 const Editor = lazy(() => import("./dependancies/Editor"));
 
@@ -45,7 +46,7 @@ const ModifyText = () => {
       const results = await Promise.all(
         ROLES.map(async ({ role, label }) => {
           try {
-            const res = await fetch(`${API_URL}/site_texts/getByRole/${role}`);
+            const res = await apiFetch(`${API_URL}/site_texts/getByRole/${role}`);
             if (res.ok) {
               const data = await res.json();
               return { role, label, content: data.content || "" };
@@ -88,7 +89,7 @@ const ModifyText = () => {
     }
     try {
       setSaving(true);
-      const res = await fetch(`${API_URL}/site_texts/protected/upsert`, {
+      const res = await apiFetch(`${API_URL}/site_texts/protected/upsert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

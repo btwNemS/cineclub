@@ -1,9 +1,9 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useAuth } from "./Authentification";
 
 export default function AuthModal({ open, handleClose }) {
-  const { login, signin } = useAuth();
+  const { login, signin, authModalMessage } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
 
   // Champs de saisie
@@ -39,15 +39,21 @@ export default function AuthModal({ open, handleClose }) {
         <Typography 
           variant="h5" 
           component="h2" 
-          mb={3} 
-          textAlign="center"
           sx={{ 
             fontWeight: "bold",
-            color: "text.primary" // Noir/bleu en clair, blanc crème en sombre
+            color: "text.primary", // Noir/bleu en clair, blanc crème en sombre
+            textAlign: "center",
+            mb: 3,
           }}
         >
           {isLogin ? "CONNEXION" : "INSCRIPTION"}
         </Typography>
+
+        {authModalMessage && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {authModalMessage}
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
@@ -123,7 +129,7 @@ export default function AuthModal({ open, handleClose }) {
           </Button>
         </form>
 
-        <Box textAlign="center" sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2, textAlign: "center" }}>
           <Typography
             variant="body2"
             onClick={() => setIsLogin(!isLogin)}

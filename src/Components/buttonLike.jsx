@@ -10,6 +10,7 @@ import {
 import { useAuth } from "../Authentification";
 import { useState } from "react";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import apiFetch from "./tokencheck";
 
 
 
@@ -34,7 +35,7 @@ export default function BoutonLike({
         }
         else {
             try {
-                await fetch(`${API_URL}/likes/protected/toggle/${id}`, {
+                await apiFetch(`${API_URL}/likes/protected/toggle/${id}`, {
                     method: "POST",
                     credentials: "include"
                 });

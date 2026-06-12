@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CardMovie from "../Components/cardMovie";
+import apiFetch from "../Components/tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,7 +12,7 @@ export default function FilmProgrammed() {
   const today = Date.now();
   
   useEffect(() => {
-    fetch(`${API_URL}/films/getAll`)
+    apiFetch(`${API_URL}/films/getAll`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Erreur lors du chargement des films");

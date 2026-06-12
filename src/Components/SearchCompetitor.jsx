@@ -1,5 +1,6 @@
 import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -9,7 +10,7 @@ export default function SearchCompetitor({ onSelect }) {
   const [selectedFilm, setSelectedFilm] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/films/getAll`)
+    apiFetch(`${API_URL}/films/getAll`)
       .then((res) => res.json())
       .then((data) => {
         setFilms(data.filter((film) => film.status === "suggested"));

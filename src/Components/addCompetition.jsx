@@ -1,6 +1,7 @@
-import { Box, Button, Paper, Stack, Typography } from "@mui/material"; 
-import { useState } from "react"; 
-import SearchCompetitor from "./searchCompetitor"; 
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import SearchCompetitor from "./searchCompetitor";
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL; 
 
@@ -54,7 +55,7 @@ export default function AddCompetition({ onSaveSuccess }) {
           form.append("projection_date", film.projection_date);         
         }         
         
-        const response = await fetch(           
+        const response = await apiFetch(
           `${API_URL}/films/protected/update/${film.id}`,           
           {             
             method: "PUT",             

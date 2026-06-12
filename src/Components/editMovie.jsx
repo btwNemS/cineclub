@@ -19,6 +19,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -37,7 +38,7 @@ export default function EditMovie({ id }) {
     if (!open) return;
     setFeedback(null);
     setImageName(null);
-    fetch(`${API_URL}/films/get/${id}`)
+    apiFetch(`${API_URL}/films/get/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setFilm(data);
@@ -72,7 +73,7 @@ export default function EditMovie({ id }) {
     }
 
     try {
-      const response = await fetch(`${API_URL}/films/protected/update/${id}`, {
+      const response = await apiFetch(`${API_URL}/films/protected/update/${id}`, {
         method: "PUT",
         credentials: "include",
         body: form,
@@ -218,17 +219,20 @@ export default function EditMovie({ id }) {
                 options={["Action", "Comédie", "Drame", "Thriller", "Horreur", "Science-Fiction", "Romance", "Animation", "Documentaire", "Aventure"]}
                 value={genres}
                 onChange={(_, newValue) => setGenres(newValue)}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      key={option}
-                      label={option}
-                      {...getTagProps({ index })}
-                      color="secondary"
-                      variant="outlined"
-                      size="small"
-                    />
-                  ))
+                renderValue={(value, getItemProps) =>
+                  value.map((option, index) => {
+                    const { key, ...itemProps } = getItemProps({ index });
+                    return (
+                      <Chip
+                        key={key}
+                        label={option}
+                        {...itemProps}
+                        color="secondary"
+                        variant="outlined"
+                        size="small"
+                      />
+                    );
+                  })
                 }
                 renderInput={(params) => (
                   <TextField

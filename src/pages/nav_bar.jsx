@@ -1,5 +1,4 @@
 import { useTheme } from "@mui/material/styles";
-import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { Box, Button, Typography } from "@mui/material";
@@ -11,8 +10,7 @@ import AuthModal from "../AuthModal";
 
 // On récupère proprement les props envoyées par App.jsx
 function Layout({ isDarkMode, toggleTheme }) {
-  const { user, logout } = useAuth();
-  const [modalOpen, setModalOpen] = useState(false);
+  const { user, logout, authModalOpen, openAuthModal, closeAuthModal } = useAuth();
 
   const navigate = useNavigate();
   const theme = useTheme();
@@ -171,7 +169,7 @@ function Layout({ isDarkMode, toggleTheme }) {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => setModalOpen(true)}
+              onClick={() => openAuthModal()}
               sx={{
                 // Assure un contraste parfait du texte du bouton selon la couleur de fond générée par le thème
                 color: theme.palette.secondary.contrastText,
@@ -184,7 +182,7 @@ function Layout({ isDarkMode, toggleTheme }) {
         </Box>
       </Box>
 
-      <AuthModal open={modalOpen} handleClose={() => setModalOpen(false)} />
+      <AuthModal open={authModalOpen} handleClose={closeAuthModal} />
 
       <Box sx={{ p: 0 }}>
         <Outlet />

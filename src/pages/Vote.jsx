@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Rating, Typography, Stack } from "@mui/material";
 import { useAuth } from "../Authentification";
+import apiFetch from "../Components/tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,7 +17,7 @@ export default function Vote({ filmId }) {
         }
 
         const url = `${API_URL}/scores/protected/getUserScoreForFilm`;
-        const response = await fetch(url, {
+        const response = await apiFetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -35,7 +36,7 @@ export default function Vote({ filmId }) {
 
     async function getMoyenne() {
         const url = `${API_URL}/films/get/${filmId}`;
-        const response = await fetch(url);
+        const response = await apiFetch(url);
         
         if (response.ok) {
             const data = await response.json();
@@ -54,7 +55,7 @@ export default function Vote({ filmId }) {
         setNoteUtilisateur(newValue);
 
         const url = `${API_URL}/scores/protected/create`;
-        await fetch(url, {
+        await apiFetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

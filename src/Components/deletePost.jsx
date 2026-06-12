@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,7 +33,7 @@ export default function DeletePost({ postId }) {
   };
 
   async function deletePost() {
-    await fetch(`${API_URL}/posts/protected/delete/${postId}`, {
+    await apiFetch(`${API_URL}/posts/protected/delete/${postId}`, {
       method: "POST",
       credentials: "include",
     });

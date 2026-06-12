@@ -2,6 +2,7 @@ import { Box, Button, Rating, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentification";
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -31,7 +32,7 @@ export default function CardMovie({ film, onVoteSuccess }) {
       }
 
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_URL}/scores/protected/getUserScoreForFilm`,
           {
             method: "POST",
@@ -147,7 +148,7 @@ export default function CardMovie({ film, onVoteSuccess }) {
                   if (newValue !== null) {
                     setNoteUtilisateur(newValue);
 
-                    fetch(`${API_URL}/scores/protected/create`, {
+                    apiFetch(`${API_URL}/scores/protected/create`, {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       credentials: "include",

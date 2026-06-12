@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,7 +11,7 @@ const DynamicText = ({ role, fallback = "Chargement..." }) => {
     const fetchText = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${API_URL}/site_texts/getByRole/${role}`);
+        const res = await apiFetch(`${API_URL}/site_texts/getByRole/${role}`);
         
         if (res.ok) {
           const data = await res.json();

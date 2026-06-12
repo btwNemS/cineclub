@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useAuth } from "../Authentification";
+import apiFetch from "./tokencheck";
 
 export default function InscriptionSeance() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -15,7 +16,7 @@ export default function InscriptionSeance() {
 
   const refreshListe = async () => {
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_URL}/registrations/getRegistrationsByFilmId/${id}`,
       );
       const data = await response.json();

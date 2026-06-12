@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TextField, Box, Button } from "@mui/material";
+import apiFetch from "../Components/tokencheck";
 
 export default function CreatePost({ filmId, getRenderData }) {
 
@@ -10,7 +11,7 @@ export default function CreatePost({ filmId, getRenderData }) {
 
         const url = import.meta.env.VITE_API_URL + "/posts/protected/create";
 
-        const response = await fetch(url, {
+        const response = await apiFetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

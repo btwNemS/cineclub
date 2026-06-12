@@ -1,4 +1,5 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
+import { registerAuthHandlers } from './Components/tokencheck';
 
 // Création d'un contexte d'authentification pour partager l'état utilisateur dans toute l'application
 const AuthContext = createContext();
@@ -69,13 +70,33 @@ export const AuthProvider = ({ children }) => {
         }
         
         // Réinitialisation de l'état utilisateur et nettoyage du localStorage
-        setUser(null); 
+        setUser(null);
         localStorage.removeItem('cineclub_user');
     };
 
+    // État de la modale de connexion, partagé via le contexte pour qu'apiFetch puisse l'ouvrir
+    // automatiquement lorsqu'une requête renvoie 401 (session expirée).
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [authModalMessage, setAuthModalMessage] = useState(null);
+    const openAuthModal = (message = null) => {
+        setAuthModalMessage(message);
+        setAuthModalOpen(true);
+    };
+    const closeAuthModal = () => {
+        setAuthModalOpen(false);
+        setAuthModalMessage(null);
+    };
+
+    useEffect(() => {
+        registerAuthHandlers({
+            logout,
+            openLoginDialog: () => openAuthModal("Votre session a expiré. Veuillez vous reconnecter."),
+        });
+    });
+
     return (
         // Fourniture des données et fonctions d'authentification aux composants enfants
-        <AuthContext.Provider value={{ user, login, signin, logout }}>
+        <AuthContext.Provider value={{ user, login, signin, logout, authModalOpen, authModalMessage, openAuthModal, closeAuthModal }}>
             {children}
         </AuthContext.Provider>
     );

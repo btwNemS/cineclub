@@ -16,6 +16,7 @@ import {
   DialogActions, 
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import apiFetch from "./tokencheck";
 
 export default function DeleteMovie({ id }) {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function DeleteMovie({ id }) {
     setOpen(false);
   };
   async function deleteFilm() {
-    await fetch(import.meta.env.VITE_API_URL + "/films/protected/delete/" + id, {
+    await apiFetch(import.meta.env.VITE_API_URL + "/films/protected/delete/" + id, {
       method: "DELETE",
       credentials: "include",
     });
@@ -38,7 +39,7 @@ export default function DeleteMovie({ id }) {
   }
   
   async function getFilms() {
-    const response = await fetch(import.meta.env.VITE_API_URL + "/films/get/" + id);
+    const response = await apiFetch(import.meta.env.VITE_API_URL + "/films/get/" + id);
     const data = await response.json();
     return data;
   }

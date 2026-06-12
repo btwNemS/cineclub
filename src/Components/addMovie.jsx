@@ -14,6 +14,7 @@ import {
   Alert,
   AlertTitle,
 } from "@mui/material";
+import apiFetch from "./tokencheck";
 
 
 export default function AddMovie() {
@@ -40,7 +41,7 @@ export default function AddMovie() {
     form.set("film_genre", genres.join(","));
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
+      const response = await apiFetch(import.meta.env.VITE_API_URL + "/films/protected/create", {
         method: "POST",
         credentials: "include",
         body: form,
@@ -109,17 +110,20 @@ export default function AddMovie() {
           options={["Action", "Comédie", "Drame", "Thriller", "Horreur", "Science-Fiction", "Romance", "Animation", "Documentaire", "Aventure"]}
           value={genres}
           onChange={(_, newValue) => setGenres(newValue)}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip
-                key={option}
-                label={option}
-                {...getTagProps({ index })}
-                color="secondary"
-                variant="outlined"
-                size="small"
-              />
-            ))
+          renderValue={(value, getItemProps) =>
+            value.map((option, index) => {
+              const { key, ...itemProps } = getItemProps({ index });
+              return (
+                <Chip
+                  key={key}
+                  label={option}
+                  {...itemProps}
+                  color="secondary"
+                  variant="outlined"
+                  size="small"
+                />
+              );
+            })
           }
           renderInput={(params) => (
             <TextField

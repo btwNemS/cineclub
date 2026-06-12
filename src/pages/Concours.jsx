@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentification";
 import DynamicText from "../Components/dymanicText";
+import apiFetch from "../Components/tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -201,7 +202,7 @@ export default function Concours() {
       await Promise.all(
         filmsList.map(async (film) => {
           try {
-            const res = await fetch(
+            const res = await apiFetch(
               `${API_URL}/scores/protected/getUserScoreForFilm`,
               {
                 method: "POST",
@@ -229,7 +230,7 @@ export default function Concours() {
   );
 
   const loadData = useCallback(() => {
-    fetch(`${API_URL}/films/getAll`)
+    apiFetch(`${API_URL}/films/getAll`)
       .then((r) => {
         if (!r.ok) {
           throw new Error(`Erreur serveur : ${r.status}`);
@@ -264,7 +265,7 @@ export default function Concours() {
 
     try {
       // Étape 2 : Enregistrement du score (Attente de la validation serveur)
-      await fetch(`${API_URL}/scores/protected/create`, {
+      await apiFetch(`${API_URL}/scores/protected/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -272,7 +273,7 @@ export default function Concours() {
       });
 
       // Étape 3 : Enregistrement du jeton d'activité de vote
-      await fetch(`${API_URL}/votes/protected/vote`, {
+      await apiFetch(`${API_URL}/votes/protected/vote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -280,7 +281,7 @@ export default function Concours() {
       });
 
       // Étape 4 : Récupération des moyennes recalculées côté serveur
-      const response = await fetch(`${API_URL}/films/getAll`);
+      const response = await apiFetch(`${API_URL}/films/getAll`);
       if (response.ok) {
         const data = await response.json();
         setFilms(data.filter((f) => f.status === "suggested"));
