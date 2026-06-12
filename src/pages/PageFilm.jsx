@@ -225,7 +225,11 @@ export default function FilmPage() {
               >
                 Projection :
               </Box>{" "}
-              {new Date(film.projection_date).toLocaleDateString()}
+              {new Date(film.projection_date).toLocaleDateString()} à{" "}
+              {new Date(film.projection_date).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </Typography>
           )}
 

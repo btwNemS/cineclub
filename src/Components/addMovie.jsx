@@ -94,8 +94,8 @@ export default function AddMovie() {
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <TextField
               name="projection_date"
-              label="Date de projection"
-              type="date"
+              label="Date et heure de projection"
+              type="datetime-local"
               fullWidth
               slotProps={{ inputLabel: { shrink: true } }}
             required/>
