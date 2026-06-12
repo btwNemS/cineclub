@@ -23,6 +23,14 @@ import apiFetch from "./tokencheck";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Formate une date au format attendu par un input datetime-local
+// (YYYY-MM-DDTHH:mm), en heure locale et non en UTC
+function toDatetimeLocal(date) {
+  const d = new Date(date);
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export default function EditMovie({ id }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -186,11 +194,11 @@ export default function EditMovie({ id }) {
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <TextField
                     name="projection_date"
-                    label="Date de projection"
-                    type="date"
+                    label="Date et heure de projection"
+                    type="datetime-local"
                     defaultValue={
                       film.projection_date
-                        ? new Date(film.projection_date).toISOString().split("T")[0]
+                        ? toDatetimeLocal(film.projection_date)
                         : ""
                     }
                     fullWidth

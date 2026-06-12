@@ -22,8 +22,16 @@ export default function CardMovie({ film, onVoteSuccess }) {
     .map((g) => g.trim().toLowerCase())
     .includes("concours");
 
+  // CORRECTION : Détermination fiable si le film est passé (soit par la date, soit par le texte)
+  const today = Date.now();
+  const isPassed = 
+    film.status === "passed" || 
+    film.status === "passé" || 
+    (film.status === "programmed" && film.projection_date && new Date(film.projection_date).getTime() < today);
+
   useEffect(() => {
-    if (isConcours) return;
+    // Bloque le fetch du score si le film n'est pas passé ou s'il s'agit d'un concours
+    if (isConcours || !isPassed) return;
 
     async function getScore() {
       if (!user) {
@@ -57,7 +65,7 @@ export default function CardMovie({ film, onVoteSuccess }) {
     }
 
     getScore();
-  }, [user, film.id, isConcours]);
+  }, [user, film.id, isConcours, isPassed]);
 
   return (
     <div className="card">
@@ -93,7 +101,11 @@ export default function CardMovie({ film, onVoteSuccess }) {
           {film.projection_date && (
             <p>
               <strong>Projection :</strong>{" "}
-              {new Date(film.projection_date).toLocaleDateString()}
+              {new Date(film.projection_date).toLocaleDateString()} à{" "}
+              {new Date(film.projection_date).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </p>
           )}
 
@@ -123,30 +135,32 @@ export default function CardMovie({ film, onVoteSuccess }) {
             </Button>
           </Box>
         ) : (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-              mt: 1,
-              flexDirection: "column-reverse",
-            }}
-          >
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
+          /* CORRECTION : Affichage si la condition isPassed globale est vraie */
+          isPassed && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                mt: 1,
+                flexDirection: "column-reverse",
               }}
-              style={{ display: "inline-flex" }}
             >
-              <Rating
-                name={`user-vote-suggested-${film.id}`}
-                value={noteUtilisateur}
-                disabled={!user}
-                size="small"
-                onChange={(event, newValue) => {
-                  if (newValue !== null) {
-                    setNoteUtilisateur(newValue);
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                style={{ display: "inline-flex" }}
+              >
+                <Rating
+                  name={`user-vote-suggested-${film.id}`}
+                  value={noteUtilisateur}
+                  disabled={!user}
+                  size="small"
+                  onChange={(event, newValue) => {
+                    if (newValue !== null) {
+                      setNoteUtilisateur(newValue);
 
                     apiFetch(`${API_URL}/scores/protected/create`, {
                       method: "POST",
@@ -176,18 +190,19 @@ export default function CardMovie({ film, onVoteSuccess }) {
               />
             </span>
 
-            <Typography
-              variant="body2"
-              sx={{
-                color: "text.secondary",
-                fontWeight: "bold",
-                fontSize: "0.95rem",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Moyenne : {moyenne ? parseFloat(moyenne).toFixed(1) : 0} / 5
-            </Typography>
-          </Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  fontWeight: "bold",
+                  fontSize: "0.95rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Moyenne : {moyenne ? parseFloat(moyenne).toFixed(1) : 0} / 5
+              </Typography>
+            </Box>
+          )
         )}
       </div>
     </div>
