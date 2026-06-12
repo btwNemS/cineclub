@@ -28,14 +28,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function FilmPage() {
   const { id } = useParams();
-
   const { user } = useAuth();
-
   const theme = useTheme();
 
   const [film, setFilm] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [text, setText] = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/films/get/${id}`)
@@ -43,7 +39,6 @@ export default function FilmPage() {
         if (!res.ok) {
           throw new Error("Erreur lors du chargement du film");
         }
-
         return res.json();
       })
       .then((data) => {
@@ -70,6 +65,13 @@ export default function FilmPage() {
     ?.split(",")
     .map((g) => g.trim().toLowerCase())
     .includes("concours");
+
+  // CORRECTION : Même logique de détection double (Statut texte OU Date passée)
+  const today = Date.now();
+  const isPassed = 
+    film.status === "passed" || 
+    film.status === "passé" || 
+    (film.status === "programmed" && film.projection_date && new Date(film.projection_date).getTime() < today);
 
   return (
     <Box
@@ -152,7 +154,8 @@ export default function FilmPage() {
             </Button>
           </Box>
         ) : (
-          <Vote filmId={id} />
+          /* CORRECTION : Affiche le module de vote si le film est considéré comme passé */
+          isPassed && <Vote filmId={id} />
         )}
 
         <Stack direction="row" spacing={2} mb={4} sx={{ flexWrap: "wrap" }}>

@@ -21,8 +21,16 @@ export default function CardMovie({ film, onVoteSuccess }) {
     .map((g) => g.trim().toLowerCase())
     .includes("concours");
 
+  // CORRECTION : Détermination fiable si le film est passé (soit par la date, soit par le texte)
+  const today = Date.now();
+  const isPassed = 
+    film.status === "passed" || 
+    film.status === "passé" || 
+    (film.status === "programmed" && film.projection_date && new Date(film.projection_date).getTime() < today);
+
   useEffect(() => {
-    if (isConcours) return;
+    // Bloque le fetch du score si le film n'est pas passé ou s'il s'agit d'un concours
+    if (isConcours || !isPassed) return;
 
     async function getScore() {
       if (!user) {
@@ -56,7 +64,7 @@ export default function CardMovie({ film, onVoteSuccess }) {
     }
 
     getScore();
-  }, [user, film.id, isConcours]);
+  }, [user, film.id, isConcours, isPassed]);
 
   return (
     <div className="card">
@@ -122,71 +130,74 @@ export default function CardMovie({ film, onVoteSuccess }) {
             </Button>
           </Box>
         ) : (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-              mt: 1,
-              flexDirection: "column-reverse",
-            }}
-          >
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              style={{ display: "inline-flex" }}
-            >
-              <Rating
-                name={`user-vote-suggested-${film.id}`}
-                value={noteUtilisateur}
-                disabled={!user}
-                size="small"
-                onChange={(event, newValue) => {
-                  if (newValue !== null) {
-                    setNoteUtilisateur(newValue);
-
-                    fetch(`${API_URL}/scores/protected/create`, {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      credentials: "include",
-                      body: JSON.stringify({
-                        filmId: parseInt(film.id),
-                        score: newValue,
-                      }),
-                    })
-                      .then((response) => {
-                        if (response.ok && onVoteSuccess) {
-                          onVoteSuccess();
-                        }
-                      })
-                      .catch((error) => console.error("Erreur vote:", error));
-                  }
-                }}
-                sx={{
-                  "& .MuiRating-iconFilled": {
-                    color: "secondary.main",
-                  },
-                  "& .MuiRating-iconEmpty": {
-                    color: "#B8921F",
-                  },
-                }}
-              />
-            </span>
-
-            <Typography
-              variant="body2"
+          /* CORRECTION : Affichage si la condition isPassed globale est vraie */
+          isPassed && (
+            <Box
               sx={{
-                color: "text.secondary",
-                fontWeight: "bold",
-                fontSize: "0.95rem",
-                whiteSpace: "nowrap",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                mt: 1,
+                flexDirection: "column-reverse",
               }}
             >
-              Moyenne : {moyenne ? parseFloat(moyenne).toFixed(1) : 0} / 5
-            </Typography>
-          </Box>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                style={{ display: "inline-flex" }}
+              >
+                <Rating
+                  name={`user-vote-suggested-${film.id}`}
+                  value={noteUtilisateur}
+                  disabled={!user}
+                  size="small"
+                  onChange={(event, newValue) => {
+                    if (newValue !== null) {
+                      setNoteUtilisateur(newValue);
+
+                      fetch(`${API_URL}/scores/protected/create`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify({
+                          filmId: parseInt(film.id),
+                          score: newValue,
+                        }),
+                      })
+                        .then((response) => {
+                          if (response.ok && onVoteSuccess) {
+                            onVoteSuccess();
+                          }
+                        })
+                        .catch((error) => console.error("Erreur vote:", error));
+                    }
+                  }}
+                  sx={{
+                    "& .MuiRating-iconFilled": {
+                      color: "secondary.main",
+                    },
+                    "& .MuiRating-iconEmpty": {
+                      color: "#B8921F",
+                    },
+                  }}
+                />
+              </span>
+
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  fontWeight: "bold",
+                  fontSize: "0.95rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Moyenne : {moyenne ? parseFloat(moyenne).toFixed(1) : 0} / 5
+              </Typography>
+            </Box>
+          )
         )}
       </div>
     </div>
