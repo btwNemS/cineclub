@@ -2,26 +2,24 @@ import BoutonLike from "./buttonLike";
 import ListeLikes from "./listeLikes";
 import { useState, useEffect } from "react";
 import { useAuth } from "../Authentification";
+import apiFetch from "./tokencheck";
 
 export default function Liker({postId}) { //pour avoir l'id du post et pas du film
   const API_URL = import.meta.env.VITE_API_URL;
   const { user } = useAuth();
-  console.log(user);
   const [liste, setListe] = useState([]);
   const [hovered, setHovered] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
 
   const refreshListe = async () => {
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_URL}/likes/getlikesByPostId/${postId}`,
       );
       const data = await response.json();
-      console.log(data);
       setListe(data);
 
       const pseudoList = data.map((inscrit) => inscrit.pseudo);
-      console.log(pseudoList);
       if (user && pseudoList.includes(user.pseudo)) {
         setHasLiked(true);
       }
