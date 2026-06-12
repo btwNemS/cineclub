@@ -35,7 +35,7 @@ export default function Post({ content, children, level = 1, filmId, postId, use
                         <Typography variant="subtitle2"
                             sx={{
                                 fontWeight: 600,
-                                color: "primary.main",
+                                color: "secondary.main",
                                 mb: 0.5,
                             }} >{author ?? "Utilisateur supprimé"}</Typography>
                         <Like postId={postId}/>
