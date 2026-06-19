@@ -1,35 +1,47 @@
+// On importe les hooks React dont on a besoin :
+// - createContext : crée une "boîte" de données partageable par tous les composants
+// - useState      : crée une variable d'état qui déclenche un re-rendu quand elle change
+// - useContext     : permet à un composant de lire le contenu d'un contexte (ici AuthContext)
+// - useEffect      : exécute du code après le rendu du composant (effet de bord)
 import { createContext, useState, useContext, useEffect } from 'react';
+// Fonction utilitaire qui enregistre les fonctions logout/openLoginDialog
+// pour que d'autres fichiers (ex: un fetch global) puissent les appeler sans import circulaire
 import { registerAuthHandlers } from './Components/tokencheck';
 
 // Création d'un contexte d'authentification pour partager l'état utilisateur dans toute l'application
+// createContext() crée un objet contexte vide ; il sera "rempli" par AuthContext.Provider plus bas
 const AuthContext = createContext();
 const API_URL = import.meta.env.VITE_API_URL; // Récupération de l'URL de l'API depuis les variables d'environnement
 
 // Fournisseur du contexte d'authentification
+// Ce composant doit englober (wrapper) toute l'application (ou la partie qui a besoin de l'auth)
 export const AuthProvider = ({ children }) => {
-    // Initialisation de l'état utilisateur avec les données du localStorage (permet de rester connecté après un rafraîchissement de la page)
+    // useState déclare une variable "user" (état actuel) et "setUser" (fonction pour la modifier)
+    // L'argument passé est une fonction "lazy initializer" : elle ne s'exécute qu'une seule fois,
+    // au tout premier rendu, pour calculer la valeur initiale de "user"
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('cineclub_user'); // Récupération de l'utilisateur sauvegardé
         if (savedUser) {
-            return JSON.parse(savedUser); // Conversion des données JSON en objet
+            return JSON.parse(savedUser); // Conversion des données JSON (texte) en objet JavaScript
         }
-        return null; // Si aucun utilisateur n'est sauvegardé, on retourne null
+        return null; // Si aucun utilisateur n'est sauvegardé, on retourne null (= pas connecté)
     });
 
     // 1. Inscription (Sign In)
+    // Fonction asynchrone (utilise await) appelée par le composant d'inscription
     const signin = async (email, pseudo, password) => {
         // Envoi d'une requête POST à l'API pour inscrire un nouvel utilisateur
         const res = await fetch(`${API_URL}/users/signin`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" }, // Spécification du type de contenu
-            body: JSON.stringify({ email, pseudo, password }) // Envoi des données utilisateur
+            method: "POST", // On crée une ressource côté serveur -> POST
+            headers: { "Content-Type": "application/json" }, // On prévient le serveur qu'on envoie du JSON
+            body: JSON.stringify({ email, pseudo, password }) // On convertit l'objet JS en texte JSON pour l'envoyer
         });
         if (!res.ok) {
-            // Gestion des erreurs si la requête échoue
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.message || "Erreur lors de l'inscription");
+            // res.ok est false si le code HTTP n'est pas 2xx (ex: 400, 409...)
+            const errData = await res.json().catch(() => ({})); // On essaie de lire le message d'erreur renvoyé par l'API
+            throw new Error(errData.message || "Erreur lors de l'inscription"); // On stoppe l'exécution avec une erreur explicite
         }
-        return await res.json(); // Retourne les données de réponse
+        return await res.json(); // Si tout va bien, on retourne la réponse JSON de l'API
     };
 
     // 2. Connexion (Login)
@@ -37,56 +49,61 @@ export const AuthProvider = ({ children }) => {
         // Envoi d'une requête POST à l'API pour connecter un utilisateur
         const res = await fetch(`${API_URL}/users/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" }, // Spécification du type de contenu
-            credentials: "include", // Inclure les cookies pour la session
-            body: JSON.stringify({ pseudo, password }) // Envoi des données utilisateur
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // Demande au navigateur d'envoyer/recevoir les cookies de session
+            body: JSON.stringify({ pseudo, password })
         });
 
         if (!res.ok) {
-            // Gestion des erreurs si la connexion échoue
+            // Identifiants invalides ou erreur serveur -> on lève une erreur que le composant pourra afficher
             throw new Error("Pseudo ou mot de passe incorrect");
         }
 
-        const data = await res.json(); // Récupération des données utilisateur
+        const data = await res.json(); // On récupère { user: {...} } renvoyé par le backend
 
-        // Mise à jour de l'état utilisateur et sauvegarde dans le localStorage
-        setUser(data.user); 
-        localStorage.setItem('cineclub_user', JSON.stringify(data.user)); 
-        
-        return data.user; // Retourne les données utilisateur
+        // setUser déclenche un re-rendu de tous les composants qui utilisent "user" via useAuth()
+        setUser(data.user);
+        // On persiste l'utilisateur dans le localStorage pour qu'il reste connecté après un F5
+        localStorage.setItem('cineclub_user', JSON.stringify(data.user));
+
+        return data.user; // Retourne l'utilisateur au composant appelant (ex: pour rediriger après login)
     };
 
     // 3. Déconnexion (Logout)
     const logout = async () => {
         try {
-            // Envoi d'une requête POST à l'API pour déconnecter l'utilisateur
+            // On informe le backend pour qu'il invalide la session/cookie côté serveur
             await fetch(`${API_URL}/users/logout`, {
                 method: "POST",
-                credentials: "include" // Inclure les cookies pour la session
+                credentials: "include"
             });
         } catch (err) {
-            // Gestion des erreurs lors de la déconnexion
+            // Si le serveur est inaccessible, on continue quand même la déconnexion côté client
             console.error("Erreur logout backend", err);
         }
-        
-        // Réinitialisation de l'état utilisateur et nettoyage du localStorage
+
+        // On vide l'état local : "user" redevient null -> l'UI repasse en mode "non connecté"
         setUser(null);
-        localStorage.removeItem('cineclub_user');
+        localStorage.removeItem('cineclub_user'); // On supprime aussi la trace en localStorage
     };
 
     // État de la modale de connexion, partagé via le contexte pour qu'apiFetch puisse l'ouvrir
     // automatiquement lorsqu'une requête renvoie 401 (session expirée).
-    const [authModalOpen, setAuthModalOpen] = useState(false);
-    const [authModalMessage, setAuthModalMessage] = useState(null);
+    const [authModalOpen, setAuthModalOpen] = useState(false); // true/false : la modale est-elle affichée ?
+    const [authModalMessage, setAuthModalMessage] = useState(null); // message à afficher dans la modale (ex: "session expirée")
     const openAuthModal = (message = null) => {
-        setAuthModalMessage(message);
-        setAuthModalOpen(true);
+        setAuthModalMessage(message); // on stocke le message
+        setAuthModalOpen(true); // on ouvre la modale -> re-rendu, le composant Modal devient visible
     };
     const closeAuthModal = () => {
-        setAuthModalOpen(false);
-        setAuthModalMessage(null);
+        setAuthModalOpen(false); // on referme la modale
+        setAuthModalMessage(null); // on efface le message pour la prochaine ouverture
     };
 
+    // useEffect exécute son code après chaque rendu du composant (ici, sans tableau de dépendances,
+    // donc il se ré-exécute à chaque re-rendu). Il sert à "brancher" logout/openAuthModal sur un module
+    // externe (tokencheck) qui n'a pas accès au contexte React, pour qu'il puisse forcer une déconnexion
+    // ou ouvrir la modale de login depuis n'importe où (ex: un fetch global qui reçoit un 401).
     useEffect(() => {
         registerAuthHandlers({
             logout,
@@ -95,12 +112,15 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        // Fourniture des données et fonctions d'authentification aux composants enfants
+        // AuthContext.Provider rend toutes ces valeurs (user, login, signin...) disponibles
+        // à n'importe quel composant enfant, sans avoir à les passer manuellement en props
         <AuthContext.Provider value={{ user, login, signin, logout, authModalOpen, authModalMessage, openAuthModal, closeAuthModal }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-// Hook personnalisé pour accéder facilement au contexte d'authentification
+// Hook personnalisé : useContext(AuthContext) lit la valeur fournie par AuthContext.Provider.
+// Grâce à ça, n'importe quel composant peut faire `const { user, login } = useAuth();`
+// au lieu d'écrire `useContext(AuthContext)` partout.
 export const useAuth = () => useContext(AuthContext);

@@ -1,64 +1,57 @@
 import { Alert, Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { useAuth } from "./Authentification"; // Importation du hook personnalisé pour gérer l'état global d'authentification
+import { useAuth } from "./Authentification"; // Hook pour accéder à login/signin et au contexte d'auth
 
 export default function AuthModal({ open, handleClose }) {
-  // Extraction des fonctions de connexion et d'inscription depuis le contexte d'authentification
   const { login, signin, authModalMessage } = useAuth();
-  
-  // État local pour savoir si on affiche le formulaire de connexion (true) ou d'inscription (false)
+
+  // true = formulaire de connexion affiché, false = formulaire d'inscription
   const [isLogin, setIsLogin] = useState(true);
 
-  // États locaux pour stocker la valeur des différents champs de saisie du formulaire
+  // Valeurs des champs du formulaire, contrôlées par React (controlled inputs)
   const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Fonction déclenchée lors de la soumission du formulaire
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Empêche le rechargement par défaut de la page
-    
-    // Appel de la fonction appropriée selon le mode actuel (connexion ou inscription)
+    e.preventDefault(); // empêche le rechargement de page par défaut d'un <form>
+
     if (isLogin) {
       await login(pseudo, password);
     } else {
       await signin(email, pseudo, password);
     }
-    
-    handleClose(); // Ferme automatiquement la modale une fois l'action terminée
+
+    handleClose(); // ferme la modale une fois l'action terminée
   };
 
   return (
-    // Composant de fenêtre modale MUI. Gère l'affichage (open) et la fermeture au clic à l'extérieur (onClose)
+    // Modale MUI : visible si open=true, se ferme au clic extérieur via onClose
     <Modal open={open} onClose={handleClose}>
-      {/* Conteneur principal de la modale stylisé pour être centré au milieu de l'écran */}
+      {/* Carte centrée au milieu de l'écran */}
       <Box
         sx={{
           position: "absolute",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -50%)", // Centrage parfait
+          transform: "translate(-50%, -50%)",
           width: 400,
-          bgcolor: "background.paper", // Couleur de fond adaptative (ex: blanc en clair, sombre en mode nuit)
-          boxShadow: 24, // Ombre portée pour donner du relief
-          p: 4, // Padding (marge interne)
-          borderRadius: 2, // Coins arrondis
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 2,
         }}
       >
-        {/* Titre dynamique de la modale (CONNEXION ou INSCRIPTION) */}
-        <Typography 
-          variant="h5" 
-          component="h2" 
-          sx={{ 
-            fontWeight: "bold",
-            color: "text.primary", // Noir/bleu en clair, blanc crème en sombre
-            textAlign: "center",
-            mb: 3,
-          }}
+        {/* Titre qui change selon le mode connexion/inscription */}
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{ fontWeight: "bold", color: "text.primary", textAlign: "center", mb: 3 }}
         >
           {isLogin ? "CONNEXION" : "INSCRIPTION"}
         </Typography>
 
+        {/* Message d'avertissement (ex: session expirée), affiché seulement s'il existe */}
         {authModalMessage && (
           <Alert severity="warning" sx={{ mb: 2 }}>
             {authModalMessage}
@@ -66,7 +59,7 @@ export default function AuthModal({ open, handleClose }) {
         )}
 
         <form onSubmit={handleSubmit}>
-          {/* AFFICHAGE CONDITIONNEL : Le champ Email ne s'affiche que si 'isLogin' est faux (donc en mode Inscription) */}
+          {/* Champ Email visible uniquement en mode inscription */}
           {!isLogin && (
             <TextField
               label="Email *"
@@ -75,30 +68,30 @@ export default function AuthModal({ open, handleClose }) {
               fullWidth
               margin="normal"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // Met à jour l'état de l'email
+              onChange={(e) => setEmail(e.target.value)}
               sx={{
-                "& .MuiInputBase-input": { color: "text.primary" }, 
+                "& .MuiInputBase-input": { color: "text.primary" },
                 "& .MuiInputLabel-root": { color: "text.secondary" },
-                "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" }, // Devient doré/jaune au focus
+                "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" },
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "divider" }, 
+                  "& fieldset": { borderColor: "divider" },
                   "&:hover fieldset": { borderColor: "text.secondary" },
-                  "&.Mui-focused fieldset": { borderColor: "secondary.main", borderWidth: "2px" }, // Bordure dorée plus épaisse au focus
+                  "&.Mui-focused fieldset": { borderColor: "secondary.main", borderWidth: "2px" },
                 },
               }}
             />
           )}
 
-          {/* Champ de saisie pour le Pseudo (commun aux deux modes) */}
+          {/* Pseudo, commun aux deux modes */}
           <TextField
             label="Pseudo *"
             variant="outlined"
             fullWidth
             margin="normal"
             value={pseudo}
-            onChange={(e) => setPseudo(e.target.value)} // Met à jour l'état du pseudo
+            onChange={(e) => setPseudo(e.target.value)}
             sx={{
-              "& .MuiInputBase-input": { color: "text.primary" }, 
+              "& .MuiInputBase-input": { color: "text.primary" },
               "& .MuiInputLabel-root": { color: "text.secondary" },
               "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" },
               "& .MuiOutlinedInput-root": {
@@ -109,17 +102,17 @@ export default function AuthModal({ open, handleClose }) {
             }}
           />
 
-          {/* Champ de saisie pour le Mot de passe (commun aux deux modes) */}
+          {/* Mot de passe, commun aux deux modes */}
           <TextField
             label="Mot de passe *"
-            type="password" // Masque les caractères saisis
+            type="password"
             variant="outlined"
             fullWidth
             margin="normal"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} // Met à jour l'état du mot de passe
+            onChange={(e) => setPassword(e.target.value)}
             sx={{
-              "& .MuiInputBase-input": { color: "text.primary" }, 
+              "& .MuiInputBase-input": { color: "text.primary" },
               "& .MuiInputLabel-root": { color: "text.secondary" },
               "& .MuiInputLabel-root.Mui-focused": { color: "secondary.main" },
               "& .MuiOutlinedInput-root": {
@@ -130,11 +123,11 @@ export default function AuthModal({ open, handleClose }) {
             }}
           />
 
-          {/* Bouton de validation dont le texte s'adapte au mode choisi */}
+          {/* Le texte du bouton s'adapte au mode choisi */}
           <Button
             type="submit"
             variant="contained"
-            color="secondary" // Utilise la couleur secondaire définie dans le thème MUI
+            color="secondary"
             fullWidth
             sx={{ mt: 3, mb: 2, fontWeight: "bold" }}
           >
@@ -142,17 +135,17 @@ export default function AuthModal({ open, handleClose }) {
           </Button>
         </form>
 
-        {/* Section en bas de la modale permettant de basculer entre Connexion et Inscription */}
+        {/* Lien pour basculer entre connexion et inscription */}
         <Box sx={{ mt: 2, textAlign: "center" }}>
           <Typography
             variant="body2"
-            onClick={() => setIsLogin(!isLogin)} // Inverse la valeur de 'isLogin' au clic
-            sx={{ 
-              color: "text.secondary", 
-              cursor: "pointer", // Curseur en forme de main au survol
-              textDecoration: "underline", // Texte souligné comme un lien hypertexte
-              "&:hover": { color: "secondary.main" }, 
-              transition: "color 0.2s" // Effet de transition fluide sur le changement de couleur
+            onClick={() => setIsLogin(!isLogin)}
+            sx={{
+              color: "text.secondary",
+              cursor: "pointer",
+              textDecoration: "underline",
+              "&:hover": { color: "secondary.main" },
+              transition: "color 0.2s",
             }}
           >
             {isLogin ? "Pas encore de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
